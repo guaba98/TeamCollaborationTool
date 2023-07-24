@@ -1,7 +1,7 @@
 import sys
 
 from code.domain.class_db_connector import DBConnector
-from server_program.test_class_server import Server
+from server_program.class_server_1 import Server
 
 if __name__ == '__main__':
     conn = DBConnector()
@@ -15,8 +15,8 @@ if __name__ == '__main__':
     # for i in range(len(item_list)):
     #     item_dict.append(dict(zip(item_test,item_list[i])))
     # print(item_dict)
-    for i in item_list:
-        conn.item_sign_up(i)
+    # for i in item_list:
+    #     conn.item_sign_up(i)
     # item_id, item_name, hunger, affection, health, exp
     server = Server(conn)
     server.start()

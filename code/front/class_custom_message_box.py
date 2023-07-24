@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QMessageBox, QDialog
 from PyQt5.QtCore import Qt
 
-from code.front.ui.ui_class_widget_custom_message_box import Ui_custom_message_box
+# from code.front.ui.ui_class_widget_custom_message_box import Ui_custom_message_box
 
+# class NoFrameMessageBox(QDialog, Ui_custom_message_box):
 class NoFrameMessageBox(QDialog, Ui_custom_message_box):
     def __init__(self, client_controller, title, contents, dialog_type):
         super().__init__()

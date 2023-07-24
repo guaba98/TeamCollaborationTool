@@ -2,6 +2,7 @@ import sqlite3
 import select
 from socket import *
 from threading import *
+from code.domain.class_db_connector import DBConnector
 
 # 사용할 구분자
 header_split = chr(1)
@@ -17,7 +18,8 @@ class Server():
     FORMAT = 'utf-8'
 
     connected_member = list()
-    def __init__(self, ):
+    def __init__(self, db_conn: DBConnector):
+        self.db_conn = db_conn
         self._serverSocket = socket(AF_INET, SOCK_STREAM)
         self.server_socket = None
         self.config = None
@@ -240,6 +242,6 @@ class Server():
 
 
 
-if __name__ == '__main__':
-    server = Server()
-    server.start()
+# if __name__ == '__main__':
+#     server = Server()
+#     server.start()

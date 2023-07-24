@@ -4,9 +4,9 @@ import time
 from PyQt5.QtWidgets import QApplication
 
 from class_client.class_client_1 import ClientApp
-from code.front.client_controller import ClientController
+# from code.front.asdasffsa import ClientController
 # from common.common_module import *
-
+from code.front.client_controller import ClientController
 
 
 if __name__ == '__main__':
