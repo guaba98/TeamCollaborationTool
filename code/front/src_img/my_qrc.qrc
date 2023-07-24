@@ -1,0 +1,20 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>logo.png</file>
+    <file>log-out.svg</file>
+    <file>mdB4BnfvMPx99B1zL0rnNQSV5WFh53Zy2CAq482I_mPNTaJHAephagdt-jUVPSQJ-tLTpb5JqtPb4nGsVRhX6w.webp</file>
+    <file>minus.svg</file>
+    <file>mon1.png</file>
+    <file>plus.svg</file>
+    <file>user.svg</file>
+    <file>user-l.svg</file>
+    <file>user-minus.svg</file>
+    <file>user-minus-l.svg</file>
+    <file>user-plus.svg</file>
+    <file>user-plus-l.svg</file>
+    <file>x.svg</file>
+    <file>x-yellow.svg</file>
+    <file>누끼 마멧.png</file>
+    <file>다운로드파일＿20230612＿162417.jpg</file>
+  </qresource>
+</RCC>
