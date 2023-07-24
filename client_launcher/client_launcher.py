@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QApplication
 from code.front.client_controller import ClientController
 from common.common_module import *
 
-from class_client.class_client import ClientApp
+from class_client.test_class_client import ClientApp
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

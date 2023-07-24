@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 
-from class_client.class_client import ClientApp
+from class_client.test_class_client import ClientApp
 from code.front.class_custom_message_box import NoFrameMessageBox
 
 
