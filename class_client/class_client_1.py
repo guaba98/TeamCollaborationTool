@@ -1,6 +1,5 @@
 from threading import *
 from socket import *
-from temporary_storage import Store
 
 # _SERVER_IP = '10.10.20.109'
 _SERVER_IP = gethostbyname(gethostname())
@@ -14,7 +13,7 @@ list_split_1 = chr(2)
 list_split_2 = chr(3)
 
 
-class Client(Store):
+class ClientApp:
     def __init__(self, ui_controller = None):
         super().__init__()
         self.ui_controller = ui_controller

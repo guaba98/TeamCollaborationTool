@@ -1,7 +1,7 @@
 import sys
 
 from code.domain.class_db_connector import DBConnector
-from server_program.class_server import Server
+from server_program.test_class_server import Server
 
 if __name__ == '__main__':
     conn = DBConnector()

@@ -9,7 +9,7 @@ list_split_1 = chr(2)
 list_split_2 = chr(3)
 
 
-class ClientApp:
+class TestClientApp:
     HOST = '127.0.0.12'
     PORT = 9999
     BUFFER = 50000

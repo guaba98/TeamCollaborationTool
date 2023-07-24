@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 
-from class_client.test_class_client import ClientApp
+from class_client.class_client_1 import ClientApp
 from code.front.class_custom_message_box import NoFrameMessageBox
 
 
@@ -16,7 +16,6 @@ class ClientController(QtWidgets.QWidget):
         super().__init__()
         self.client_app = client_app
         self.client_app.set_widget(self)
-
         # ui 동작 관련 변수
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
@@ -32,3 +31,5 @@ class ClientController(QtWidgets.QWidget):
         if event.buttons() == Qt.LeftButton:
             widget.move(event.globalPos() - self.drag_start_position)
             event.accept()
+    def run(self):
+        self.widget_screen.show()
