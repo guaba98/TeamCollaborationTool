@@ -70,3 +70,14 @@ class ClientApp:
                 self.client_controller.emit_login('로긴성공')
                 # self.user_id, self.username, self.user_pw, self.user_nickname = result
 
+        if header == 'duple':
+            result = parsed[1]
+            print(result)
+
+            if result == 'False':
+                self.client_controller.emit_duple('사용 불가 아이디')
+            else:
+                print(result)
+                self.client_controller.emit_duple('가용 가능 아이디')
+                # self.user_id, self.username, self.user_pw, self.user_nickname = result
+

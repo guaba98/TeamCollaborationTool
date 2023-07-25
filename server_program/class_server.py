@@ -4,6 +4,7 @@ import select
 from socket import *
 from threading import *
 
+from  code.domain.class_db_connector import DBConnector
 # 사용할 구분자
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -19,8 +20,10 @@ class Server():
 
     connected_member = list()
 
-    def __init__(self, DBConnector:DBConnector):
+    def __init__(self, db_conn: DBConnector):
         self._serverSocket = socket(AF_INET, SOCK_STREAM)
+        self.db_conn = db_conn
+        # print(self.db_conn.log_in('123', '142'))
         self.server_socket = None
         self.config = None
         self.sockets_list = list()
@@ -89,9 +92,10 @@ class Server():
                 data = substance.split(list_split_1)
                 id, pw = data
                 print( id, pw, '잘 받니?')
-                # result = self.db_conn.log_in(login_name, login_pw) #todo: db에서 아이디 비번 조회
-                result = ['유저 고유번호','유저아이디', '유저닉네임', '유저 이름']
-
+                print(self.db_conn)
+                result = self.db_conn.log_in(id, pw) #todo: db에서 아이디 비번 조회
+                # result = ['유저 고유번호','유저아이디', '유저닉네임', '유저 이름']
+                print('통과?')
                 if result is False: # 아이디와 비밀번호가 없으면 False를 보낸다
                     response_header = f"{f'login{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     self.send_message(client_socket, response_header)
@@ -106,18 +110,18 @@ class Server():
             elif header == 'duple': # 회원가입 아이디 중복확인
                 substance = decode_msg.split(header_split)[1]
                 join_username = substance
-                result = self.db_conn.duple_reg_id(join_username)
+                # result = self.db_conn.duple_reg_id(join_username)
+                result = True
                 if result is True:
-                    response_header = f"{f'assertu_username{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
-                    client_socket.send(response_header)
+                    response_header = f"{f'duple{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
+                    self.send_message(client_socket, response_header)
                 elif result is False:
-                    response_header = f"{f'assertu_username{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
-                    client_socket.send(response_header)
+                    response_header = f"{f'duple{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
+                    self.send_message(client_socket, response_header)
             # elif header == 'duple':
             #     substance = decode_msg.split(header_split)[1]
             #     data = substance.split(list_split_1)
             #     result = self.db_conn.
 
-        except Exception as e:
+        except:
             pass
-

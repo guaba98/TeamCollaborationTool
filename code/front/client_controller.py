@@ -55,6 +55,8 @@ class ClientController(QtWidgets.QWidget):
     # 로그인 ===============================================================
 
     def emit_login(self, p):
-        print(p)
+        print('로그인 결과:',p)
 
     # 회원가입 ============================================================
+    def emit_duple(self, p):
+        print('중복확인 결과:',p)
