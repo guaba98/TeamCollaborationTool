@@ -354,7 +354,7 @@ class Ui_NoticeBoard(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 850, 574))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 753, 367))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)

@@ -10,7 +10,7 @@ from class_client.class_client import ClientApp
 # from code.front.class_custom_message_box import NoFrameMessageBox
 
 # ui 임풜트 예아
-from code.front.widget_notice_board import WidgetNoticeBorad
+from code.front.main_window import WidgetNoticeBorad
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -36,6 +36,8 @@ class ClientController(QtWidgets.QWidget):
     # 클라이언트에 send메시지 보내기======================================================================
     def controller_send_message(self, message):
         self.client_app.client_send_message(message)
+    def controller_send_chat_message(self, input_chat):
+        self.client_app.client_send_chat_message(input_chat)
     def controller_send_json_message(self, message):
         self.client_app.client_send_json_message(message)
 
@@ -71,5 +73,11 @@ class ClientController(QtWidgets.QWidget):
     def emit_insertuser(self, result):
         print('[client_controller]-emit_duple', result)
         self.main_window.recv_emit_insertuser.emit(result)
+
     def send_register_user_info(self):
+        pass
+
+    # 채팅=====================================================================
+    def emit_recv_chat(self, result):
+        self.main_window.emit_recv_chat_signal.emit(result)
         pass

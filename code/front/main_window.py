@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSignal
 
 # UI
+from code.front.message import Ui_RightMessage,Ui_LeftMessage
 # from code.front.client_controller import ClientController
 from code.front.ui.ui_class_notice_board import Ui_NoticeBoard
 
@@ -22,12 +23,13 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     reg_id_lab_signal = pyqtSignal(bool)
     recv_emit_insertuser = pyqtSignal(bool)
-
+    emit_recv_chat_signal = pyqtSignal(list)
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
         self.client_controller = client_controller
-
+        self.YourMsg =Ui_LeftMessage
+        self.MyMsg =Ui_RightMessage
         # window frame 설정
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
         # self.setWindowFlags(Qt.FramelessWindowHint)
@@ -37,6 +39,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.init_func()
 
         # 캐럿셀 테스트 중
+<<<<<<<< HEAD:code/front/MainWindow.py
         # 1. 카테고리 위젯 -> 완
         ctg_dict = {
             '채팅': ['send_black.png', self.main_page, self.chat_page],
@@ -50,29 +53,63 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             ctg_ = CtgList(img_name=ctg_dict[ctg][0], c_name=ctg, parent=self)
             self.category_v_lay.addWidget(ctg_)
 
+========
+        # 1. 카테고리 위젯
+        # self.stackedWidget.setCurrentWidget(self.register_page)
+        img_path = '../front/src_img/bell.png'
+        for i in range(10):
+            ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
+            self.category_v_lay.addWidget(ctg)
+>>>>>>>> origin/main:code/front/main_window.py
 
-
-    #  widget 이동 함수=======================================================================
-    # def mousePressEvent(self, event):
-    #     self.client_controller.mousePressEvent(self, event)
     #
-    # def mouseMoveEvent(self, event):
-    #     self.client_controller.mouseMoveEvent(self, event)
+     # widget 이동 함수=======================================================================
+    def mousePressEvent(self, event):
+        self.client_controller.mousePressEvent(self, event)
+
+    def mouseMoveEvent(self, event):
+        self.client_controller.mouseMoveEvent(self, event)
 
     # 시그날
     def init_func(self):
         self.reg_id_lab_signal.connect(self.set_reg_id_lab)
         self.recv_emit_insertuser.connect(self.insertuser)
+        self.emit_recv_chat_signal.connect(self.recv_chat)
     # set_btn_trigger
     def set_btn_trigger(self):
         self.login_btn.clicked.connect(lambda state: self.click_login_btn())
         self.register_btn.clicked.connect(lambda state: self.click_register_btn())
         self.reg_register_btn.clicked.connect(lambda state: self.click_reg_register_btn())
+        self.send_btn.clicked.connect(lambda state: self.click_send_btn())
 
     # window widget show=======================================================================
     def show(self):
+        self.stackedWidget.setCurrentWidget(self.main_page)
+        self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         super().show()
 
+    # 채팅 =========================================================================================
+    # 전송버튼 클릭시 채팅을 서버에 보내는 함수
+    def click_send_btn(self):
+        if len(self.chat_edit.text()) >= 1:
+            input_chat = self.chat_edit.text()
+            # message = f"{f'send_chat{header_split}{user_input_id}{list_split_1}{input_chat}':{BUFFER}}".encode(
+            #     FORMAT)
+            self.client_controller.controller_send_chat_message(input_chat)
+            pass
+        pass
+
+    # 서버에서 채팅 메시지 받는 함수
+    def recv_chat(self, result):
+        print(result)
+        print('[widget_notice]- reecv_chat',result)
+        self.chat_v_lay.addWidget(name, chat)
+
+    # 채팅방 입장시 db에 저장된 채팅 요청
+    def send_det_chat(self):
+        message = f"{f'get_chat{header_split}{user_input_id}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
     # 로그인 함수=======================================================================
     def click_login_btn(self):
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
