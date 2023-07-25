@@ -1073,8 +1073,8 @@ border-top-right-radius: 20px;</string>
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>850</width>
-                 <height>574</height>
+                 <width>753</width>
+                 <height>367</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">

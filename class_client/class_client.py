@@ -26,8 +26,9 @@ class ClientApp:
         self.listeningThread = Thread(target=self.check_server_response, daemon=True)
         self.listeningThread.start()
         # client 로그인 유저 정보 저장
+        self.user_no = None
         self.user_id = None
-        self.username = None
+        self.user_name = None
         self.user_pw = None
         self.user_nickname = None
 
@@ -40,6 +41,12 @@ class ClientApp:
 
     def client_send_message(self, message):
         print('메세지 잘보내?', message.split())
+        self.client_socket.send(message)
+
+    def client_send_chat_message(self, input_chat):
+        team_no = 1
+        message = f"{f'send_chat{header_split}{self.user_no}{list_split_1}{team_no}{list_split_1}{self.user_name}{list_split_1}{input_chat}':{BUFFER}}".encode(
+            FORMAT)
         self.client_socket.send(message)
 
     def client_send_json_message(self, message):
@@ -73,7 +80,7 @@ class ClientApp:
                 result = eval(result)
                 print(result)
                 self.client_controller.emit_login('로긴성공')
-                # self.user_id, self.username, self.user_pw, self.user_nickname = result
+                self.user_id, self.username, self.user_pw, self.user_nickname, _, _ = result
 
         if header == 'duple':
             result = parsed[1]
@@ -85,6 +92,7 @@ class ClientApp:
                 print(result)
                 self.client_controller.emit_duple(True)
                 # self.user_id, self.username, self.user_pw, self.user_nickname = result
+
         if header == 'insertuser':
             result = parsed[1]
             print(result)
@@ -94,4 +102,10 @@ class ClientApp:
             else:
                 print(result)
                 self.client_controller.emit_insertuser(True)
+                # self.user_id, self.username, self.user_pw, self.user_nickname = result
+
+        if header == 'recv_chat':
+            result = parsed[1]
+            result = eval(result)
+            self.client_controller.emit_recv_chat(result)
                 # self.user_id, self.username, self.user_pw, self.user_nickname = result

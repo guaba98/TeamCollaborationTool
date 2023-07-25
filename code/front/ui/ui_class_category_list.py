@@ -24,6 +24,7 @@ class Ui_CtgWidget(object):
         self.img_lab = QtWidgets.QLabel(CtgWidget)
         self.img_lab.setMinimumSize(QtCore.QSize(24, 24))
         self.img_lab.setMaximumSize(QtCore.QSize(24, 24))
+        self.img_lab.setText("")
         self.img_lab.setScaledContents(True)
         self.img_lab.setObjectName("img_lab")
         self.h_lay.addWidget(self.img_lab)
@@ -40,7 +41,6 @@ class Ui_CtgWidget(object):
     def retranslateUi(self, CtgWidget):
         _translate = QtCore.QCoreApplication.translate
         CtgWidget.setWindowTitle(_translate("CtgWidget", "Form"))
-        self.img_lab.setText(_translate("CtgWidget", "사진"))
         self.ctg_name_lab.setText(_translate("CtgWidget", "카테고리이름"))
 
 
