@@ -24,6 +24,7 @@ class Ui_CtgWidget(object):
         self.img_lab = QtWidgets.QLabel(CtgWidget)
         self.img_lab.setMinimumSize(QtCore.QSize(24, 24))
         self.img_lab.setMaximumSize(QtCore.QSize(24, 24))
+        self.img_lab.setStyleSheet("")
         self.img_lab.setText("")
         self.img_lab.setScaledContents(True)
         self.img_lab.setObjectName("img_lab")

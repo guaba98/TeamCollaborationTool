@@ -39,12 +39,28 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.init_func()
 
         # 캐럿셀 테스트 중
+<<<<<<<< HEAD:code/front/MainWindow.py
+        # 1. 카테고리 위젯 -> 완
+        ctg_dict = {
+            '채팅': ['send_black.png', self.main_page, self.chat_page],
+            '공지': ['bell.png', self.main_page, self.notice_page],
+            '투두리스트': ['heart.png', self.main_page, self.notice_page]
+        }
+
+        self.stackedWidget.setCurrentWidget(self.main_page)
+
+        for ctg in list(ctg_dict.keys()):
+            ctg_ = CtgList(img_name=ctg_dict[ctg][0], c_name=ctg, parent=self)
+            self.category_v_lay.addWidget(ctg_)
+
+========
         # 1. 카테고리 위젯
         # self.stackedWidget.setCurrentWidget(self.register_page)
         img_path = '../front/src_img/bell.png'
         for i in range(10):
             ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
             self.category_v_lay.addWidget(ctg)
+>>>>>>>> origin/main:code/front/main_window.py
 
     #
      # widget 이동 함수=======================================================================
