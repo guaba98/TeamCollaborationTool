@@ -87,12 +87,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="state_lab">
-        <property name="text">
-         <string>상태메세지 상태메세지</string>
+       <widget class="QLineEdit" name="state_edit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+        <property name="placeholderText">
+         <string>상태메세지를 입력하세요.</string>
         </property>
        </widget>
       </item>

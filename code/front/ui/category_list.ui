@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>CtgWidget</class>
+ <widget class="QWidget" name="CtgWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,9 +30,9 @@
     <number>16</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="h_lay">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="img_lab">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -46,12 +46,15 @@
         </size>
        </property>
        <property name="text">
-        <string>사진</string>
+        <string/>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="h_spacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -67,7 +70,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="ctg_name_lab">
        <property name="text">
         <string>카테고리이름</string>
        </property>

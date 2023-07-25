@@ -39,10 +39,10 @@ class Ui_ProfileDialog(object):
         self.name_lab.setAlignment(QtCore.Qt.AlignCenter)
         self.name_lab.setObjectName("name_lab")
         self.verticalLayout.addWidget(self.name_lab)
-        self.state_lab = QtWidgets.QLabel(self.main_frame)
-        self.state_lab.setAlignment(QtCore.Qt.AlignCenter)
-        self.state_lab.setObjectName("state_lab")
-        self.verticalLayout.addWidget(self.state_lab)
+        self.state_edit = QtWidgets.QLineEdit(self.main_frame)
+        self.state_edit.setMinimumSize(QtCore.QSize(0, 30))
+        self.state_edit.setObjectName("state_edit")
+        self.verticalLayout.addWidget(self.state_edit)
         self.admit_btn = QtWidgets.QPushButton(self.main_frame)
         self.admit_btn.setMinimumSize(QtCore.QSize(0, 56))
         font = QtGui.QFont()
@@ -63,7 +63,7 @@ class Ui_ProfileDialog(object):
         ProfileDialog.setWindowTitle(_translate("ProfileDialog", "Dialog"))
         self.profile_img.setText(_translate("ProfileDialog", "여기에 프로필 사진"))
         self.name_lab.setText(_translate("ProfileDialog", "이름이름"))
-        self.state_lab.setText(_translate("ProfileDialog", "상태메세지 상태메세지"))
+        self.state_edit.setPlaceholderText(_translate("ProfileDialog", "상태메세지를 입력하세요."))
         self.admit_btn.setText(_translate("ProfileDialog", "확인"))
 
 

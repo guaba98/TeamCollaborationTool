@@ -14,6 +14,22 @@ conn = psycopg2.connect(host=host, database=database, user=user, password=passwo
 cur = conn.cursor()
 
 # 예제 SQL 쿼리 실행
+'''
+SET search_path TO public;
+SELECT * FROM "테이블이름";
+
+'''
+'''
+query = f"SELECT * FROM TB_USER WHERE username = '{username}' AND password = '{password}'"
+cursor.execute(query)
+
+# 결과 가져오기
+result = cursor.fetchall()
+if result:
+    print("로그인 성공")
+else:
+    print("아이디 또는 비밀번호가 일치하지 않습니다.")
+'''
 cur.execute('SELECT * FROM public."TB_USER"')
 rows = cur.fetchall()
 

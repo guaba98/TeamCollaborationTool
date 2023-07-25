@@ -1,8 +1,15 @@
+# 모듈
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
+
+# UI
 # from code.front.client_controller import ClientController
 from code.front.ui.ui_class_notice_board import Ui_NoticeBoard
+
+
+# 클래스
+from code.front.category_list import CtgList # 카테고리 리스트
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -19,18 +26,28 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller = client_controller
 
         # window frame 설정
-        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        # self.setAttribute(Qt.WA_TranslucentBackground, True)
         # self.setWindowFlags(Qt.FramelessWindowHint)
 
         # 버튼 트리거 함수 호출
         self.set_btn_trigger()
 
-    #  widget 이동 함수=======================================================================
-    def mousePressEvent(self, event):
-        self.client_controller.mousePressEvent(self, event)
 
-    def mouseMoveEvent(self, event):
-        self.client_controller.mouseMoveEvent(self, event)
+        # 캐럿셀 테스트 중
+        # 1. 카테고리 위젯
+        self.stackedWidget.setCurrentWidget(self.main_page)
+        img_path = '../front/src_img/bell.png'
+        for i in range(10):
+            ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
+            self.category_v_lay.addWidget(ctg)
+
+
+    #  widget 이동 함수=======================================================================
+    # def mousePressEvent(self, event):
+    #     self.client_controller.mousePressEvent(self, event)
+    #
+    # def mouseMoveEvent(self, event):
+    #     self.client_controller.mouseMoveEvent(self, event)
 
     # set_btn_trigger
     def set_btn_trigger(self):
