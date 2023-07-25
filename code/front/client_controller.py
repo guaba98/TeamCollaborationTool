@@ -9,6 +9,9 @@ from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 from class_client.class_client_1 import ClientApp
 # from code.front.class_custom_message_box import NoFrameMessageBox
 
+# ui 임풜트 예아
+from code.front.widget_notice_board import WidgetNoticeBorad
+
 header_split = chr(1)
 list_split_1 = chr(2)
 list_split_2 = chr(3)
@@ -21,6 +24,8 @@ class ClientController(QtWidgets.QWidget):
         super().__init__()
         self.client_app = ClientApp(self)
         # self.client_app.set_widget(self)
+        # ui 인슬퉐트화
+        self.main_window = WidgetNoticeBorad(self)
         # ui 동작 관련 변수
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
@@ -43,7 +48,6 @@ class ClientController(QtWidgets.QWidget):
             widget.move(event.globalPos() - self.drag_start_position)
             event.accept()
     #===========================================================================
-    # 시작화면 show
-    def run(self):
-        print('클라이언트 시작')
-        # self.widget_screen.show()
+
+    def run(self): # 시작화면 show
+        self.main_window.show()
