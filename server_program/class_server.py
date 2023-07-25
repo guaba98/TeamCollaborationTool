@@ -5,7 +5,8 @@ from socket import *
 from threading import *
 from code.domain.class_db_connector import DBConnector
 
-from  code.domain.class_db_connector import DBConnector
+from code.domain.class_db_connector import DBConnector
+
 # 사용할 구분자
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -14,7 +15,6 @@ list_split_2 = chr(3)
 
 class Server():
     HOST = gethostbyname(gethostname())
-
     PORT = 5050
     BUFFER = 50000
     FORMAT = 'utf-8'
@@ -78,6 +78,7 @@ class Server():
             for notified_socket in exception_sockets:
                 self.sockets_list.remove(notified_socket)
                 del self.clients[notified_socket]
+
     def send_message(self, client_socket: socket, result):
         print(f"Server SENDED: ({result})".split())
         client_socket.send(result)
@@ -85,42 +86,41 @@ class Server():
     def receive_message(self, client_socket: socket):
         try:
             recv_message = client_socket.recv(self.BUFFER)
-            decode_msg = recv_message.decode(self.FORMAT).strip() # recv 메시지
-            header = decode_msg.split(header_split)[0] # recv 메시지의 header
+            decode_msg = recv_message.decode(self.FORMAT).strip()  # recv 메시지
+            header = decode_msg.split(header_split)[0]  # recv 메시지의 header
 
             if header == 'login':  # client에서 유저 id pw를 받아와 db에서 조회후 client에 결과값을 보낸다
                 substance = decode_msg.split(header_split)[1]
                 data = substance.split(list_split_1)
                 id, pw = data
 
-                print( id, pw, '잘 받니?')
-                print(self.db_conn)
-                result = self.db_conn.log_in(id, pw) #todo: db에서 아이디 비번 조회
-                # result = ['유저 고유번호','유저아이디', '유저닉네임', '유저 이름']
-                print('통과?')
-                if result is False: # 아이디와 비밀번호가 없으면 False를 보낸다
+                result = self.db_conn.log_in(id, pw)
+                if result is False:  # 아이디와 비밀번호가 없으면 False를 보낸다
                     response_header = f"{f'login{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     self.send_message(client_socket, response_header)
 
-                else: # 아이디와 비밀번호가 맞으면 유저정보를 보내준다
+                else:  # 아이디와 비밀번호가 맞으면 유저정보를 보내준다
                     user_info = json.dumps(result)
+                    self.db_conn.insert_login_log(login_id=id) # 로그인 기록 저장
                     response_header = f"{f'login{header_split}{user_info}':{self.BUFFER}}".encode(
                         self.FORMAT)
                     # self.send_message(client_socket, response_header)
                     client_socket.send(bytes(message, "UTF-8"))
 
-            elif header == 'duple': # 회원가입 아이디 중복확인
+            elif header == 'duple':  # 회원가입 아이디 중복확인
                 substance = decode_msg.split(header_split)[1]
                 join_username = substance
-                result = self.db_conn.duple_reg_id(join_username)
-                if result is True:
+                result = self.db_conn.duple_reg_id(join_username) # DB에 연결해 아이디 중복확인
+                if result: # 사용 가능한 아이디일 때
                     response_header = f"{f'duple{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
+                    print('사용 가능한', result)
                     self.send_message(client_socket, response_header)
-                elif result is False:
+                else: # 사용 불가능한 아이디일 때 (중복일 때)
+                    print('사용 불가능한', result)
                     response_header = f"{f'duple{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     self.send_message(client_socket, response_header)
 
-            elif header == 'insertuser': # 회원가입
+            elif header == 'insertuser':  # 회원가입
                 register_user_info = decode_msg.split(header_split)[1]
                 result = self.db_conn.insert_user(register_user_info)
 

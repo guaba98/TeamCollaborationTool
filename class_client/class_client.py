@@ -61,30 +61,27 @@ class ClientApp:
     def _parse_packet(self, p: str):
         parsed = p.split(header_split)
         header = parsed[0].strip()
-        print(header, '헤더는?')
+        print('[class_client.py | _parse_packet] 받은 헤더: ', header)
 
         if header == 'login':
             result = parsed[1]
             print(result)
+            # self.client_controller.emit_login('로그인 실패') if result == 'False' else (
+            # print(eval(result)), self.client_controller.emit_login('로그인 성공'))
 
-            if result == 'False':
-                self.client_controller.emit_login('로긴 실패')
-            else:
+            if result:
                 result = eval(result)
                 print(result)
-                self.client_controller.emit_login('로긴성공')
-                # self.user_id, self.username, self.user_pw, self.user_nickname = result
+                self.client_controller.emit_login('로그인 성공')
+            else:
+                self.client_controller.emit_login('로그인 실패')
 
         if header == 'duple':
             result = parsed[1]
-            print(result)
+            print('[class_client.py] 중복일때 결과값: ', result)
+            self.client_controller.emit_duple(True) if result is True else self.client_controller.emit_duple(False)
 
-            if result == 'False':
-                self.client_controller.emit_duple(False)
-            else:
-                print(result)
-                self.client_controller.emit_duple(True)
-                # self.user_id, self.username, self.user_pw, self.user_nickname = result
+
         if header == 'insertuser':
             result = parsed[1]
             print(result)

@@ -91,13 +91,14 @@ class DBConnector:
 
     def insert_login_log(self, login_id):
         # TODO 왜 안타는가 피티한테 물어볼것
+        print('타나요')
         # 커서 생성
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         # c = self.start_conn()
         condition = f'"USER_ID"=\'{login_id}\''
-        user_nm = self.return_specific_data(column='USER_NM', table_name='TB_USER', condition=condition)
+        user_nm = self.return_specific_data(column='USER_NAME', table_name='TB_USER', condition=condition)
         time = self.return_datetime('time')
-        insert_query = f"INSERT INTO public.\"TB_LOG\" (\"USER_ID\", \"USER_NM\", \"USER_LOGIN_TIME\") " \
+        insert_query = f"INSERT INTO public.\"TB_LOG\" (\"USER_ID\", \"USER_NAME\", \"USER_LOGIN_TIME\") " \
                        f"VALUES ('{login_id}', '{user_nm}', '{time}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
         cur = conn.cursor()
@@ -137,19 +138,21 @@ class DBConnector:
 
     # 아이디 중복확인 (회원가입)
     def duple_reg_id(self, join_username):
-        """연결 미완"""
-        c = self.start_conn()
-        query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
-        username_id = c.execute(query).fetchone()
-        print('[db_connector.py - duple_reg_id]', username_id)
-        self.end_conn()
+        """아이디 중복 확인"""
 
+        # 커서 생성
+        c = self.start_conn()
+
+        # 쿼리문 및 중복 확인
+        query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
+        c.execute(query)
+        username_id = c.fetchone()
+        self.end_conn() # 커서 닫기
+
+        # 결과값 리턴
         if username_id is None:
-            print('사용 가능한 아이디 입니다.')  # 사용 가능 아이디
-            return True
-        else:
-            print('사용 불가능한 아이디 입니다.')  # 사용불가
-            return False
+            return True # 사용 가능한 아이디일때
+        return False # 사용 불가능한 아이디일때
 
 
     # 회원가입
