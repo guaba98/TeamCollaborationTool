@@ -64,7 +64,7 @@ class ClientController(QtWidgets.QWidget):
 
     # 회원가입 ============================================================
     def emit_duple(self, result):
-        print('[client_controller]-emit_duple', result)
+        print('[client_controller]', result)
         self.main_window.reg_id_lab_signal.emit(result)
         # if result == False:
         #     self.main_window.reg_id_lab_signal.emit(False)

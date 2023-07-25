@@ -13,13 +13,14 @@ from sqlalchemy import create_engine
 
 # PostgreSQL 데이터베이스 정보
 db_params = {
-        "host": "10.10.20.103",
-        "database": "data",
-        "user": "postgres",
-        "password": "1234",
-        "port": 5432,
-    }
-engine = create_engine(f"postgresql+psycopg2://{db_params['user']}:{db_params['password']}@{db_params['host']}/{db_params['database']}")
+    "host": "10.10.20.103",
+    "database": "data",
+    "user": "postgres",
+    "password": "1234",
+    "port": 5432,
+}
+engine = create_engine(
+    f"postgresql+psycopg2://{db_params['user']}:{db_params['password']}@{db_params['host']}/{db_params['database']}")
 
 host = '10.10.20.103'  # 데이터베이스 호스트 주소
 database = 'data'  # 데이터베이스 이름
@@ -67,8 +68,7 @@ class DBConnector:
         else:
             raise f"cannot commit database! {self.__name__}"
 
-
-    # 로그인
+    # -- 로그인
     def log_in(self, login_id, login_pw):
         """아이디와 비밀번호 조회"""
 
@@ -79,7 +79,7 @@ class DBConnector:
 
         # 결과 가져오기
         results = c.fetchall()
-        print('[db_connector.py - log_in]결과값: ',results)
+        print('[db_connector.py - log_in]결과값: ', results)
         # 연결 종료
         self.end_conn()
 
@@ -88,7 +88,7 @@ class DBConnector:
             return results
         return False
 
-
+    # -- 로그인 기록 넣기
     def insert_login_log(self, login_id):
         # TODO 왜 안타는가 피티한테 물어볼것
         print('타나요')
@@ -106,6 +106,38 @@ class DBConnector:
         conn.commit()
         self.end_conn()
 
+    # -- 회원가입
+    def duple_reg_id(self, join_username):
+        """아이디 중복 확인"""
+
+        # 커서 생성
+        c = self.start_conn()
+
+        # 쿼리문 및 중복 확인
+        query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
+        c.execute(query)
+        username_id = c.fetchone()
+        self.end_conn()  # 커서 닫기
+
+        # 결과값 리턴
+        if username_id is None:
+            return True  # 사용 가능한 아이디일때
+        return False  # 사용 불가능한 아이디일때
+
+    def insert_user(self, user_id, join_name, join_pw, join_nickname):
+        """회원가입 정보 db에 추가"""
+        c = self.start_conn()
+        join_date = self.return_datetime('date')
+
+        insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
+                       f"VALUES ('{join_name}, {user_id}', '{join_pw}', '{join_nickname}, {join_date}')"
+        print('[db_connector - insert_login_log]: 쿼리문', insert_query)
+        c.execute(insert_query)
+        conn.commit()
+        self.end_conn()
+
+
+    # -- 특정 데이터 반환하기
     def return_datetime(self, type):
         """원하는 날짜/시간 포멧을 반환"""
         now = datetime.now()  # 시간
@@ -118,8 +150,6 @@ class DBConnector:
 
         # print('[dateimte.py]시간 포멧팅: ', now_format)
         return now_format
-
-
 
     def return_specific_data(self, column, table_name, condition=None):
         """특정 열 데이터만 반환합니다."""
@@ -136,26 +166,8 @@ class DBConnector:
 
         return r_data[0][0]
 
-    # 아이디 중복확인 (회원가입)
-    def duple_reg_id(self, join_username):
-        """아이디 중복 확인"""
+    # 여기서부터 사용 안함
 
-        # 커서 생성
-        c = self.start_conn()
-
-        # 쿼리문 및 중복 확인
-        query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
-        c.execute(query)
-        username_id = c.fetchone()
-        self.end_conn() # 커서 닫기
-
-        # 결과값 리턴
-        if username_id is None:
-            return True # 사용 가능한 아이디일때
-        return False # 사용 불가능한 아이디일때
-
-
-    # 회원가입
     def user_sign_up(self, user_data):
         join_name, join_pw, join_nickname = user_data
         useable_id = self.assert_same_login_id(join_name)
@@ -170,31 +182,6 @@ class DBConnector:
         self.end_conn()
         sing_up_obj = self.insert_user(user_id, join_name, join_pw, join_nickname)
         return sing_up_obj
-
-
-
-
-
-    # DB에 유저 추가
-    def insert_user(self, user_id, join_name, join_pw, join_nickname):
-        c = self.start_conn()
-        user_id = user_id
-        user_name = join_name
-        password = join_pw
-        nickname = join_nickname
-        users_id = c.execute('select * from user where user_id = ?', (user_id,)).fetchone()
-        if users_id is None:
-            c.execute('insert into user(user_name, user_pw, user_nickname) values (?, ?, ?)',
-                      (user_name, password, nickname))
-            self.commit_db()
-            inserted_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
-            # inserted_user_obj = User(*inserted_user_row)
-            self.end_conn()
-            # return inserted_user_obj
-        else:
-            print('pass')
-
-
 
     # def assert_same_login_id(self, inserted_id):
     #     c = self.start_conn()
@@ -222,6 +209,8 @@ class DBConnector:
     #     self.end_conn()
     #     sing_up_obj = self.insert_user(sign_up_user_obj)
     #     return sing_up_obj
+
+
 if __name__ == '__main__':
     d = DBConnector()
     # query = '\"USER_NAME\"=\'박소연\''

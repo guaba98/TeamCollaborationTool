@@ -4,13 +4,11 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSignal
 
 # UI
-from code.front.message import Ui_RightMessage,Ui_LeftMessage
+from code.front.message import Ui_RightMessage, Ui_LeftMessage  # 메세지
 # from code.front.client_controller import ClientController
-from code.front.ui.ui_class_notice_board import Ui_NoticeBoard
-
-
-# 클래스
-from code.front.category_list import CtgList # 카테고리 리스트
+from code.front.ui.ui_class_notice_board import Ui_NoticeBoard  # 메인 화면
+from code.front.profile_widget import ProFile  # 프로필 변경
+from code.front.category_list import CtgList  # 카테고리 리스트
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -20,16 +18,17 @@ FORMAT = "utf-8"
 
 
 class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
-
     reg_id_lab_signal = pyqtSignal(bool)
     recv_emit_insertuser = pyqtSignal(bool)
     emit_recv_chat_signal = pyqtSignal(list)
+
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
         self.client_controller = client_controller
-        self.YourMsg =Ui_LeftMessage
-        self.MyMsg =Ui_RightMessage
+        self.YourMsg = Ui_LeftMessage
+        self.MyMsg = Ui_RightMessage
+
         # window frame 설정
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
         # self.setWindowFlags(Qt.FramelessWindowHint)
@@ -39,7 +38,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.init_func()
 
         # 캐럿셀 테스트 중
-
+<<<<<<<< HEAD:code/front/MainWindow.py
         # 1. 카테고리 위젯 -> 완
         ctg_dict = {
             '채팅': ['send_black.png', self.main_page, self.chat_page],
@@ -53,17 +52,17 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             ctg_ = CtgList(img_name=ctg_dict[ctg][0], c_name=ctg, parent=self)
             self.category_v_lay.addWidget(ctg_)
 
-
+========
         # 1. 카테고리 위젯
         # self.stackedWidget.setCurrentWidget(self.register_page)
-        # img_path = '../front/src_img/bell.png'
-        # for i in range(10):
-        #     ctg = CtgList(img_path=None, c_name='공지', parent=self)
-        #     self.category_v_lay.addWidget(ctg)
-
+        img_path = '../front/src_img/bell.png'
+        for i in range(10):
+            ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
+            self.category_v_lay.addWidget(ctg)
+>>>>>>>> origin/main:code/front/main_window.py
 
     #
-     # widget 이동 함수=======================================================================
+    # widget 이동 함수=======================================================================
     def mousePressEvent(self, event):
         self.client_controller.mousePressEvent(self, event)
 
@@ -72,15 +71,43 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 시그날
     def init_func(self):
+        """클라이언트 - 서버 받는 시그널"""
         self.reg_id_lab_signal.connect(self.set_reg_id_lab)
         self.recv_emit_insertuser.connect(self.insertuser)
         self.emit_recv_chat_signal.connect(self.recv_chat)
-    # set_btn_trigger
+
     def set_btn_trigger(self):
+        """UI 버튼 시그널 연결"""
+        self.ctg_list_show()  # 카테고리 넣어주기
         self.login_btn.clicked.connect(lambda state: self.click_login_btn())
         self.register_btn.clicked.connect(lambda state: self.click_register_btn())
         self.reg_register_btn.clicked.connect(lambda state: self.click_reg_register_btn())
         self.send_btn.clicked.connect(lambda state: self.click_send_btn())
+
+    def ctg_list_show(self):
+        """카테고리 넣어주기"""
+        self.ctg_dict = {
+            '프로필 수정': ['user.png', None],
+            '채팅': ['send_black.png', self.chat_page],
+            '공지': ['bell.png', self.notice_page],
+            '투두리스트': ['heart.png', self.notice_page]
+        }
+        self.ctg_list = list(self.ctg_dict.keys())
+
+        for ctg in self.ctg_list:  # 카테고리 이미지, 카테고리 이름 넣어주기
+            img_name = self.ctg_dict[ctg][0]
+            ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self)
+            self.category_v_lay.addWidget(ctg_)
+
+    def ctg_list_trigger(self, ctg_name):
+        """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
+        for c in self.ctg_list:
+            if ctg_name == '프로필 수정':
+                p_ = ProFile(img=None, name='test', state='test')
+                p_.show_dialog()
+                break
+            elif ctg_name == c:
+                self.inner_stackedWidget.setCurrentWidget(self.ctg_dict[c][1])
 
     # window widget show=======================================================================
     def show(self):
@@ -111,6 +138,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_chat{header_split}{user_input_id}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
+
     # 로그인 함수=======================================================================
     def click_login_btn(self):
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
@@ -128,6 +156,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             print('회원가입 성공')
         else:
             print('회원가입 실패')
+
     # 회원 가입 화면 으로 이동 하는 함수
     def click_register_btn(self):
         self.stackedWidget.setCurrentWidget(self.register_page)
@@ -152,8 +181,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         input_reg_pw = self.reg_pw_edit.text()
         input_reg_name = self.reg_name_edit.text()
         input_reg_nn = self.reg_nn_edit.text()
-        result =  input_reg_id, input_reg_pw, input_reg_name, input_reg_nn
-        print('[widget_notice]-register_user',result)
+        result = input_reg_id, input_reg_pw, input_reg_name, input_reg_nn
+        print('[widget_notice]-register_user', result)
 
         user_info = json.dumps(result)
         message = f"{f'insertuser{header_split}{input_reg_id}':{BUFFER}}".encode(

@@ -15,6 +15,7 @@ class Ui_ProfileDialog(object):
     def setupUi(self, ProfileDialog):
         ProfileDialog.setObjectName("ProfileDialog")
         ProfileDialog.resize(430, 460)
+        ProfileDialog.setMinimumSize(QtCore.QSize(430, 460))
         ProfileDialog.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(ProfileDialog)
         self.verticalLayout_2.setContentsMargins(15, 70, 15, 70)
