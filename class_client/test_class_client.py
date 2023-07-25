@@ -27,18 +27,6 @@ class TestClientApp:
         self.username = None
         self.user_nickname = None
 
-        # 로그인한 유저의 캐릭터 정보 저장
-        self.user_character_id = None
-        self.user_character_exp = None
-        self.user_character_id = None
-        self.user_character_hunger = None
-        self.user_character_affection = None
-        self.user_character_health = None
-        self.user_character_exp = None
-
-        # 상점 아이템 리스트
-        self.shop_items_list = None
-
         # 클라이언트 recv 스레드
         self.receive_thread = Thread(target=self.receive_message)
         self.receive_thread.daemon = True
@@ -46,41 +34,6 @@ class TestClientApp:
 
     def set_widget(self, widget_):
         self.client_widget = widget_
-
-    def send_chat_all_clients(self, user_chat):
-        msg = user_chat
-        print('보내는 메시지')
-        client_sand_data = f"{f'send_all_clients{header_split}{msg}':{self.BUFFER}}".encode(self.FORMAT)
-        self.client_socket.send(client_sand_data)
-
-    def send_get_shop_item_list(self):
-        client_sand_data = f"{f'get_shop_item_list{header_split}':{self.BUFFER}}".encode(
-            self.FORMAT)
-        self.client_socket.send(client_sand_data)
-
-    def send_get_user_character(self):
-        client_sand_data = f"{f'get_user_character{header_split}{self.user_id}':{self.BUFFER}}".encode(
-            self.FORMAT)
-        self.client_socket.send(client_sand_data)
-
-    def send_get_user_character_stat(self):
-        client_sand_data = f"{f'get_user_character_stat{header_split}{self.user_character_id}':{self.BUFFER}}".encode(
-            self.FORMAT)
-        self.client_socket.send(client_sand_data)
-
-    def send_join_id_and_pw_for_join_access(self, join_username, join_pw, join_nickname):
-        client_sand_data = f"{f'join_access{header_split}{join_username}{list_split_1}{join_pw}{list_split_1}{join_nickname}':{self.BUFFER}}".encode(
-            self.FORMAT)
-        self.client_socket.send(client_sand_data)
-
-    def send_username_duplicatecheck(self, join_inp_username):
-        client_sand_data = f"{f'assertu_username{header_split}{join_inp_username}':{self.BUFFER}}".encode(self.FORMAT)
-        self.client_socket.send(client_sand_data)
-
-    def send_login_id_and_pw_for_login_access(self, login_username, login_pw):
-        client_sand_data = f"{f'login{header_split}{login_username}{list_split_1}{login_pw}':{self.BUFFER}}".encode(
-            self.FORMAT)
-        self.client_socket.send(client_sand_data)
 
     def receive_message(self):
         while True:
