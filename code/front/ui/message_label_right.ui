@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>widget_message</class>
- <widget class="QWidget" name="widget_message">
+ <class>RightMessage</class>
+ <widget class="QWidget" name="RightMessage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,13 +21,13 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>40</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>40</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
@@ -35,16 +35,17 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);
-    border-top-right-radius: 20px;
+      <string notr="true">background-color: #14C871;
+    border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    border-bottom-right-radius:20px;</string>
+    border-bottom-right-radius:20px;
+color:white;</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>여기는 타인의 메세지 메세지</string>
+         <string>이건 나의 메세지 메세지</string>
         </property>
        </widget>
       </item>
