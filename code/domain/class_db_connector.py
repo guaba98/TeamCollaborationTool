@@ -153,9 +153,11 @@ class DBConnector:
 
     # 아이디 중복확인 (회원가입)
     def duple_reg_id(self, join_username):
-        print('이거는?')
+        """연결 미완"""
         c = self.start_conn()
-        username_id = c.execute('select * from TB_USER where USER_ID = ?', (join_username,)).fetchone()
+        query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
+        username_id = c.execute(query).fetchone()
+        print('[db_connector.py - duple_reg_id]', username_id)
         self.end_conn()
 
         if username_id is None:

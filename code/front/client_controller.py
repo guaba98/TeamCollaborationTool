@@ -31,10 +31,13 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
 
+
+
     # 클라이언트에 send메시지 보내기======================================================================
     def controller_send_message(self, message):
-        print('센드 메시지')
         self.client_app.client_send_message(message)
+    def controller_send_json_message(self, message):
+        self.client_app.client_send_json_message(message)
 
     # widget 이동 함수============================================================
     def mousePressEvent(self, widget, event):
@@ -58,5 +61,15 @@ class ClientController(QtWidgets.QWidget):
         print('로그인 결과:',p)
 
     # 회원가입 ============================================================
-    def emit_duple(self, p):
-        print('중복확인 결과:',p)
+    def emit_duple(self, result):
+        print('[client_controller]-emit_duple', result)
+        self.main_window.reg_id_lab_signal.emit(result)
+        # if result == False:
+        #     self.main_window.reg_id_lab_signal.emit(False)
+        # else:
+        #     self.main_window.reg_id_lab_signal.emit(True)
+    def emit_insertuser(self, result):
+        print('[client_controller]-emit_duple', result)
+        self.main_window.recv_emit_insertuser.emit(result)
+    def send_register_user_info(self):
+        pass

@@ -92,6 +92,7 @@ class Server():
                 substance = decode_msg.split(header_split)[1]
                 data = substance.split(list_split_1)
                 id, pw = data
+
                 print( id, pw, '잘 받니?')
                 print(self.db_conn)
                 result = self.db_conn.log_in(id, pw) #todo: db에서 아이디 비번 조회
@@ -105,19 +106,29 @@ class Server():
                     user_info = json.dumps(result)
                     response_header = f"{f'login{header_split}{user_info}':{self.BUFFER}}".encode(
                         self.FORMAT)
-                    self.send_message(client_socket, response_header)
+                    # self.send_message(client_socket, response_header)
                     client_socket.send(bytes(message, "UTF-8"))
 
             elif header == 'duple': # 회원가입 아이디 중복확인
                 substance = decode_msg.split(header_split)[1]
                 join_username = substance
-                # result = self.db_conn.duple_reg_id(join_username)
-                result = True
+                result = self.db_conn.duple_reg_id(join_username)
                 if result is True:
                     response_header = f"{f'duple{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
                     self.send_message(client_socket, response_header)
                 elif result is False:
                     response_header = f"{f'duple{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
+                    self.send_message(client_socket, response_header)
+
+            elif header == 'insertuser': # 회원가입
+                register_user_info = decode_msg.split(header_split)[1]
+                result = self.db_conn.insert_user(register_user_info)
+
+                if result is True:
+                    response_header = f"{f'insertuser{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
+                    self.send_message(client_socket, response_header)
+                elif result is False:
+                    response_header = f"{f'insertuser{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     self.send_message(client_socket, response_header)
             # elif header == 'duple':
             #     substance = decode_msg.split(header_split)[1]
