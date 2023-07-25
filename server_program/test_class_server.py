@@ -120,7 +120,7 @@ class Server:
 
             elif header == 'assertu_username':  # 아이디 중복
                 join_username = substance
-                result = self.db_conn.assertu_username(join_username)
+                result = self.db_conn.duple_reg_id(join_username)
                 if result is True:
                     response_header = f"{f'assertu_username{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
                     client_socket.send(response_header)

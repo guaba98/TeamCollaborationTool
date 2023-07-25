@@ -102,9 +102,9 @@ class DBConnector:
         return item_data
 
     # 로그인
-    def user_log_in(self, login_id, login_pw):
+    def log_in(self, login_id, login_pw):
         c = self.start_conn()
-        exist_user = c.execute('select * from user where user_name = ? and user_pw = ?',
+        exist_user = c.execute('select * from TB_USER where USER_ID = ? and USER_PW = ?',
                                (login_id, login_pw)).fetchone()
         self.end_conn()
         if exist_user is not None:
@@ -114,9 +114,10 @@ class DBConnector:
             print('아이디 혹은 비밀번호를 잘못 입력했습니다.')
             return False
 
-    def assertu_username(self, join_username):
+    # 아이디 중복확인 (회원가입)
+    def duple_reg_id(self, join_username):
         c = self.start_conn()
-        username_id = c.execute('select * from user where user_name = ?', (join_username,)).fetchone()
+        username_id = c.execute('select * from TB_USER where USER_ID = ?', (join_username,)).fetchone()
         self.end_conn()
 
         if username_id is None:
@@ -126,6 +127,7 @@ class DBConnector:
             print('사용 불가능한 아이디 입니다.')  # 사용불가
             return False
 
+    #
     def assert_same_login_id(self, inserted_id):
         c = self.start_conn()
         username_id = c.execute('select * from user where user_name = ?', (inserted_id,)).fetchone()
