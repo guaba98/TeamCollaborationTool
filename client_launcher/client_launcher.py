@@ -3,7 +3,7 @@ import time
 
 from PyQt5.QtWidgets import QApplication
 
-from class_client.class_client_1 import ClientApp
+from class_client.class_client import ClientApp
 # from code.front.asdasffsa import ClientController
 # from common.common_module import *
 from code.front.client_controller import ClientController

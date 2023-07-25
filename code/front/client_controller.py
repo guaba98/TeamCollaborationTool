@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 
-from class_client.class_client_1 import ClientApp
+from class_client.class_client import ClientApp
 # from code.front.class_custom_message_box import NoFrameMessageBox
 
 # ui 임풜트 예아
@@ -47,9 +47,14 @@ class ClientController(QtWidgets.QWidget):
         if event.buttons() == Qt.LeftButton:
             widget.move(event.globalPos() - self.drag_start_position)
             event.accept()
-    #===========================================================================
+
+    #런처 실행시 나오는 window ===========================================================================
     def run(self): # 시작화면 show
         self.main_window.show()
+
     # 로그인 ===============================================================
-    def emit_login(self, bool):
-        print(bool)
+
+    def emit_login(self, p):
+        print(p)
+
+    # 회원가입 ============================================================

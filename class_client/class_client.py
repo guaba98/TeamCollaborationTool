@@ -56,13 +56,17 @@ class ClientApp:
     def _parse_packet(self, p: str):
         parsed = p.split(header_split)
         header = parsed[0].strip()
+        print(header, '헤더는?')
 
         if header == 'login':
             result = parsed[1]
-            self.user_id, self.username, self.user_pw, self.user_nickname = result
+            print(result)
 
-            if result == 'false':
-                self.client_controller.emit_login(False)
+            if result == 'False':
+                self.client_controller.emit_login('로긴 실패')
             else:
-                self.client_controller.emit_login(True)
+                result = eval(result)
+                print(result)
+                self.client_controller.emit_login('로긴성공')
+                # self.user_id, self.username, self.user_pw, self.user_nickname = result
 

@@ -35,7 +35,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # set_btn_trigger
     def set_btn_trigger(self):
         self.login_btn.clicked.connect(lambda state: self.click_login_btn())
-        # self.register_btn.clicked.connect(lambda state:)
+        self.register_btn.clicked.connect(lambda state: self.click_register_btn())
+        # self.reg_register_btn.clicked.connect(lambda state: self.click_register_btn())
 
     # window widget show=======================================================================
     def show(self):
@@ -43,11 +44,26 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 로그인 함수=======================================================================
     def click_login_btn(self):
-        user_input_id = self.login_id_edit.text() # 유저가 입력한 id
-        user_input_pw = self.login_pw_edit.text() # 유저가 입력한 pw
+        user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
+        user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
 
         # 유저가 입력한 로그인 정보 encode
         message = f"{f'login{header_split}{user_input_id}{list_split_1}{user_input_pw}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
+
     # 회원 가입 함수=======================================================================
+    # 회원 가입 화면 으로 이동 하는 함수
+    def click_register_btn(self):
+        self.stackedWidget.setCurrentWidget(self.register_page)
+        # 가입 버튼 눌렀을 때 이벤트 발생 시키는 함수
+
+    def click_reg_register_btn(self):
+        self.send_duple()
+        pass
+
+    def send_duple(self):
+        input_reg_id = self.reg_id_edit.text()
+        message = f"{f'duple{header_split}{input_reg_id}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
