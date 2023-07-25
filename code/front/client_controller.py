@@ -10,7 +10,7 @@ from class_client.class_client import ClientApp
 # from code.front.class_custom_message_box import NoFrameMessageBox
 
 # ui 임풜트 예아
-from code.front.MainWindow import WidgetNoticeBorad
+from code.front.widget_notice_board import WidgetNoticeBorad
 
 header_split = chr(1)
 list_split_1 = chr(2)
