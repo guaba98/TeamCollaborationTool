@@ -26,4 +26,5 @@ class CtgList(QWidget, Ui_CtgWidget):
 
     def mousePressEvent(self, event):
         print(self.category_name)
+        self.parent.ctg_list_trigger(self.category_name)
         # 여기서 이벤트 시그널 연결

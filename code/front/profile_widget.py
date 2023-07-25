@@ -1,15 +1,29 @@
 from PyQt5.QtWidgets import *
-from code.front.ui.ui_class_profile_dialog import ProfileDialog
+from code.front.ui.ui_class_profile_dialog import Ui_ProfileDialog
 from PyQt5.QtGui import *
 
 '''
 프로필 변경 다이얼로그
 '''
 
-class CtgList(QWidget, Ui_CtgWidget):
-    """왼쪽 상단 카테고리 리스트 관련 클래스"""
-    def __init__(self, img_name, c_name, parent):
+class ProFile(QDialog, Ui_ProfileDialog):
+    """프로필 변경 다이얼로그"""
+    def __init__(self, img, name, state):
         super().__init__()
         self.setupUi(self)
-        self.parent = parent
-        self.category_name = c_name
+
+        # 값 넣어주기
+        self.profile_img.setPixmap(QPixmap(img))
+        self.name_lab.setText(name)
+        self.state_edit.setText(state)
+
+        # 버튼 누를 때 시그널 연결
+        self.admit_btn.clicked.connect(self.change_profile)
+
+
+    def change_profile(self):
+        """여기에서 프로필 상태메세지를 변경합니다."""
+        self.close()
+
+    def show_dialog(self):
+        return self.exec_()
