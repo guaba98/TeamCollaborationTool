@@ -1,7 +1,7 @@
 # 모듈
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 # UI
 # from code.front.client_controller import ClientController
@@ -20,6 +20,9 @@ FORMAT = "utf-8"
 
 class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
+    reg_id_lab_signal = pyqtSignal(bool)
+    recv_emit_insertuser = pyqtSignal(bool)
+
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
@@ -31,7 +34,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
         # 버튼 트리거 함수 호출
         self.set_btn_trigger()
-
+        self.init_func()
 
         # 캐럿셀 테스트 중
         # 1. 카테고리 위젯
@@ -49,6 +52,10 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # def mouseMoveEvent(self, event):
     #     self.client_controller.mouseMoveEvent(self, event)
 
+    # 시그날
+    def init_func(self):
+        self.reg_id_lab_signal.connect(self.set_reg_id_lab)
+        self.recv_emit_insertuser.connect(self.insertuser)
     # set_btn_trigger
     def set_btn_trigger(self):
         self.login_btn.clicked.connect(lambda state: self.click_login_btn())
@@ -70,17 +77,81 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
     # 회원 가입 함수=======================================================================
+
+    def insertuser(self, result):
+        if result:
+            print('회원가입 성공')
+        else:
+            print('회원가입 실패')
     # 회원 가입 화면 으로 이동 하는 함수
     def click_register_btn(self):
         self.stackedWidget.setCurrentWidget(self.register_page)
-        # 가입 버튼 눌렀을 때 이벤트 발생 시키는 함수
 
+    # 아이디 중복 검사
     def click_reg_register_btn(self):
         self.send_duple()
-        pass
+
+    # 아이디 중복검사후 pw name nickname 검사
+    def click_reg_register_btn2(self):
+        if self.register():
+            self.register_user()
 
     def send_duple(self):
         input_reg_id = self.reg_id_edit.text()
         message = f"{f'duple{header_split}{input_reg_id}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
+
+    def register_user(self):
+        input_reg_id = self.reg_id_edit.text()
+        input_reg_pw = self.reg_pw_edit.text()
+        input_reg_name = self.reg_name_edit.text()
+        input_reg_nn = self.reg_nn_edit.text()
+        result =  input_reg_id, input_reg_pw, input_reg_name, input_reg_nn
+        print('[widget_notice]-register_user',result)
+
+        user_info = json.dumps(result)
+        message = f"{f'insertuser{header_split}{input_reg_id}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_json_message(message)
+
+    def set_reg_id_lab(self, result):
+        if result is True:
+            self.reg_id_lab.setText('ID 사용가능')
+            self.click_reg_register_btn2()
+        else:
+            self.reg_id_lab.setText('ID 사용불가')
+
+    def set_reg_name_lab(self):
+        self.reg_name_lab.setText('이름 정상적으로 적어주세요')
+
+
+    def set_reg_nn_lab(self):
+        self.reg_nn_lab.setText('닉네임 정상적으로 적어주세요')
+
+
+    def set_reg_pw_lab(self):
+        self.reg_pw_lab.setText('비밀번호 다시 확인해주세요')
+
+
+    def register(self):
+        self.reg_name_lab.setText('이름')
+        self.reg_nn_lab.setText('닉네임')
+        self.reg_pw_lab.setText('비밀번호')
+
+        if len(reg_name_edit) < 2:
+            self.set_reg_name_lab()
+            return False
+
+        if len(reg_nn_edit) < 2:
+            self.set_reg_nn_lab()
+            return False
+
+        if self.reg_pw_edit.text() == self.reg_pw_check_edit.text():
+            self.set_reg_pw_lab()
+            return False
+
+        if self.reg_id_lab.text() != 'ID 사용가능':
+            return False
+
+        return True

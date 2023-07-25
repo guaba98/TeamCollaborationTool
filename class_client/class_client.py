@@ -1,5 +1,6 @@
 from threading import *
 from socket import *
+
 # import socket
 # _SERVER_IP = '10.10.20.109'
 _SERVER_IP = gethostbyname(gethostname())
@@ -13,9 +14,8 @@ list_split_1 = chr(2)
 list_split_2 = chr(3)
 
 
-
 class ClientApp:
-    def __init__(self, client_controller = None):
+    def __init__(self, client_controller=None):
         super().__init__()
         self.client_controller = client_controller
         self.client_socket = None
@@ -30,6 +30,7 @@ class ClientApp:
         self.username = None
         self.user_pw = None
         self.user_nickname = None
+
     def connect_server(self):
         self.client_socket = socket(AF_INET, SOCK_STREAM)
         self.client_socket.connect(_CONNECT)
@@ -40,6 +41,10 @@ class ClientApp:
     def client_send_message(self, message):
         print('메세지 잘보내?', message.split())
         self.client_socket.send(message)
+
+    def client_send_json_message(self, message):
+        print('메세지 잘보내?', message.split())
+        self.client_socket.send((bytes(message, "UTF-8")))
 
     def check_server_response(self):
         while self._connected:
@@ -75,9 +80,18 @@ class ClientApp:
             print(result)
 
             if result == 'False':
-                self.client_controller.emit_duple('사용 불가 아이디')
+                self.client_controller.emit_duple(False)
             else:
                 print(result)
-                self.client_controller.emit_duple('가용 가능 아이디')
+                self.client_controller.emit_duple(True)
                 # self.user_id, self.username, self.user_pw, self.user_nickname = result
+        if header == 'insertuser':
+            result = parsed[1]
+            print(result)
 
+            if result == 'False':
+                self.client_controller.emit_insertuser(False)
+            else:
+                print(result)
+                self.client_controller.emit_insertuser(True)
+                # self.user_id, self.username, self.user_pw, self.user_nickname = result
