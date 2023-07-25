@@ -1,7 +1,6 @@
 import sqlite3
 
 import pandas as pd
-import psycopg2
 from datetime import datetime
 # from Code.domain.class_user import User
 # from Code.domain.class_user_talk_room import UserTalkRoom
@@ -22,7 +21,7 @@ db_params = {
 engine = create_engine(
     f"postgresql+psycopg2://{db_params['user']}:{db_params['password']}@{db_params['host']}/{db_params['database']}")
 
-host = '10.10.20.103'  # 데이터베이스 호스트 주소
+host = '192.168.56.1'  # 데이터베이스 호스트 주소
 database = 'data'  # 데이터베이스 이름
 user = 'postgres'  # 데이터베이스 사용자 이름
 password = '1234'  # 데이터베이스 비밀번호
@@ -50,9 +49,15 @@ class DBConnector:
         print('서버랑 db연결')
 
         self.conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+
         # self.conn = psycopg2.connect(**db_params)
         # 커서 생성
         cur = self.conn.cursor()
+        query = f"SELECT * FROM public.\"TB_USER\""
+        cur.execute(query)
+        results = cur.fetchall()
+        print(results)
+
         return cur
 
     def end_conn(self):
@@ -67,6 +72,8 @@ class DBConnector:
             self.conn.commit()
         else:
             raise f"cannot commit database! {self.__name__}"
+
+
 
     # -- 로그인
     def log_in(self, login_id, login_pw):
@@ -93,18 +100,31 @@ class DBConnector:
         # TODO 왜 안타는가 피티한테 물어볼것
         print('타나요')
         # 커서 생성
-        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-        # c = self.start_conn()
+        # conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        c = self.start_conn()
         condition = f'"USER_ID"=\'{login_id}\''
         user_nm = self.return_specific_data(column='USER_NAME', table_name='TB_USER', condition=condition)
         time = self.return_datetime('time')
         insert_query = f"INSERT INTO public.\"TB_LOG\" (\"USER_ID\", \"USER_NAME\", \"USER_LOGIN_TIME\") " \
                        f"VALUES ('{login_id}', '{user_nm}', '{time}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
-        cur = conn.cursor()
-        cur.execute(insert_query)
-        conn.commit()
-        self.end_conn()
+        # cur = conn.cursor()
+        try:
+            c.execute(insert_query)
+            self.commit_db()
+        except psycopg2.DatabaseError as e:
+            print(f"Database error occurred: {e}")
+        except psycopg2.ProgrammingError as e:
+            print(f"Programming error occurred: {e}")
+        finally:
+            self.end_conn()
+
+        # c.execute(insert_query)
+        # self.commit_db()
+        # self.end_conn()
+
+
+
 
     # -- 회원가입
     def duple_reg_id(self, join_username):

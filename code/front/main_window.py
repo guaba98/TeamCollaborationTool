@@ -9,6 +9,7 @@ from code.front.message import Ui_RightMessage, Ui_LeftMessage  # 메세지
 from code.front.ui.ui_class_notice_board import Ui_NoticeBoard  # 메인 화면
 from code.front.profile_widget import ProFile  # 프로필 변경
 from code.front.category_list import CtgList  # 카테고리 리스트
+from code.front.Warning_dialog import DialogWarning # 경고창
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -28,6 +29,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller = client_controller
         self.YourMsg = Ui_LeftMessage
         self.MyMsg = Ui_RightMessage
+        self.Warn = DialogWarning()
 
         # window frame 설정
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -136,8 +138,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 채팅방 입장시 db에 저장된 채팅 요청
     def send_det_chat(self):
-        message = f"{f'get_chat{header_split}{user_input_id}':{BUFFER}}".encode(
-            FORMAT)
+        message = f"{f'get_chat{header_split}{user_input_id}':{BUFFER}}".encode(FORMAT)
         self.client_controller.controller_send_message(message)
 
     # 로그인 함수=======================================================================
@@ -154,8 +155,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def insertuser(self, result):
         if result:
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
+            self.Warn.show_dialog()
             print('회원가입 성공')
         else:
+            self.Warn.set_dialog_type(bt_cnt=1, text='회원가입 실패')
+            self.Warn.show_dialog()
             print('회원가입 실패')
 
     # 회원 가입 화면 으로 이동 하는 함수
