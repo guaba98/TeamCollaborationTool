@@ -36,7 +36,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def set_btn_trigger(self):
         self.login_btn.clicked.connect(lambda state: self.click_login_btn())
         self.register_btn.clicked.connect(lambda state: self.click_register_btn())
-        # self.reg_register_btn.clicked.connect(lambda state: self.click_register_btn())
+        self.reg_register_btn.clicked.connect(lambda state: self.click_reg_register_btn())
 
     # window widget show=======================================================================
     def show(self):

@@ -1,10 +1,18 @@
 import sqlite3
-
+import psycopg2
 # from Code.domain.class_user import User
 # from Code.domain.class_user_talk_room import UserTalkRoom
 # from Code.domain.class_talk_room import TalkRoom
 # from Code.domain.class_message import Message
 # from Code.domain.class_long_contents import LongContents
+import psycopg2
+
+# PostgreSQL 데이터베이스 정보
+host = '10.10.20.103'  # 데이터베이스 호스트 주소
+database = 'data'  # 데이터베이스 이름
+user = 'postgres'  # 데이터베이스 사용자 이름
+password = '1234'  # 데이터베이스 비밀번호
+port = 5432  # 포트번호
 
 # 사용할 구분자
 header_split = chr(1)
@@ -15,6 +23,26 @@ list_split_2 = chr(3)
 class DBConnector:
     _instance = None
 
+    # ==================================================
+    # # 데이터베이스에 연결
+    # conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+    #
+    # # 커서 생성
+    # cur = conn.cursor()
+    #
+    # # 예제 SQL 쿼리 실행
+    # cur.execute('SELECT * FROM public."TB_USER"')
+    # rows = cur.fetchall()
+    #
+    # # 결과 출력
+    # for row in rows:
+    #     print(row)
+    #
+    # # 커넥션과 커서 닫기
+    # cur.close()
+    # conn.close()
+
+    # ==================================================
     def __new__(cls, test_option=None):
         if not isinstance(cls._instance, cls):
             cls._instance = object.__new__(cls)
@@ -28,6 +56,24 @@ class DBConnector:
         if self.test_option is True:
             self.conn = sqlite3.connect('db_test.db')
         else:
+            # 데이터베이스에 연결
+            print('서버랑 db연결')
+            self.conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+            print('커넥됨?')
+            # 커서 생성
+            cur = self.conn.cursor()
+
+            # 예제 SQL 쿼리 실행
+            cur.execute('SELECT * FROM public."TB_USER"')
+            rows = cur.fetchall()
+
+            # 결과 출력
+            for row in rows:
+                print(row)
+
+            # 커넥션과 커서 닫기
+            cur.close()
+            self.conn.close()
             self.conn = sqlite3.connect('main_db.db')
         return self.conn.cursor()
 
@@ -42,53 +88,36 @@ class DBConnector:
         else:
             raise f"cannot commit database! {self.__name__}"
 
+    # # ==================================================
+    # def __new__(cls, test_option=None):
+    #     if not isinstance(cls._instance, cls):
+    #         cls._instance = object.__new__(cls)
+    #     return cls._instance
+    #
+    # def __init__(self, test_option=None):
+    #     self.conn = None
+    #     self.test_option = test_option
+    #
+    # def start_conn(self):
+    #     if self.test_option is True:
+    #         self.conn = sqlite3.connect('db_test.db')
+    #     else:
+    #
+    #         self.conn = sqlite3.connect('main_db.db')
+    #     return self.conn.cursor()
+    #
+    # def end_conn(self):
+    #     if self.conn is not None:
+    #         self.conn.close()
+    #         self.conn = None
+    #
+    # def commit_db(self):
+    #     if self.conn is not None:
+    #         self.conn.commit()
+    #     else:
+    #         raise f"cannot commit database! {self.__name__}"
+    #
     # CREATE TABLES =======================================================================
-    # def create_tables(self):
-    #     c = self.start_conn()
-    #     c.executescript("""
-    # DROP TABLE IF EXISTS character;
-    # CREATE TABLE "character" (
-    #     "character_id"	INTEGER,
-    #     "user_id"	INTEGER NOT NULL,
-    #     "character_nickname"	TEXT,
-    #     PRIMARY KEY("character_id" AUTOINCREMENT)
-    # );
-    # DROP TABLE IF EXISTS character_stat;
-    # CREATE TABLE "character_stat" (
-    #     "character_id"	INTEGER NOT NULL,
-    #     "character_hunger"	INTEGER NOT NULL,
-    #     "character_affection"	INTEGER NOT NULL,
-    #     "character_health"	INTEGER NOT NULL,
-    #     "character_exp"	INTEGER NOT NULL
-    # );
-    # DROP TABLE IF EXISTS inventory;
-    # CREATE TABLE "inventory" (
-    #     "user_id"	INTEGER NOT NULL,
-    #     "item_id"	INTEGER NOT NULL,
-    #     "item_name"	TEXT NOT NULL,
-    #     "item_num"	INTEGER NOT NULL
-    # );
-    # DROP TABLE IF EXISTS item_list;
-    # CREATE TABLE "item_list" (
-    #     "item_id"	INTEGER NOT NULL,
-    #     "item_name"	INTEGER NOT NULL UNIQUE,
-    #     "hunger"	INTEGER NOT NULL,
-    #     "affection"	INTEGER NOT NULL,
-    #     "health"	INTEGER NOT NULL,
-    #     "exp"	INTEGER NOT NULL,
-    #     PRIMARY KEY("item_id" AUTOINCREMENT)
-    # );
-    # DROP TABLE IF EXISTS user;
-    # CREATE TABLE "user" (
-    #     "user_id"	INTEGER,
-    #     "user_name"	TEXT NOT NULL UNIQUE,
-    #     "user_pw"	TEXT NOT NULL,
-    #     "user_nickname"	TEXT NOT NULL,
-    #     PRIMARY KEY("user_id" AUTOINCREMENT)
-    # );
-    # """)
-    #     self.commit_db()
-    #     self.end_conn()
 
     def find_all_shop_item(self):
         c = self.start_conn()
@@ -103,19 +132,28 @@ class DBConnector:
 
     # 로그인
     def log_in(self, login_id, login_pw):
+        print('db들어옴')
         c = self.start_conn()
-        exist_user = c.execute('select * from TB_USER where USER_ID = ? and USER_PW = ?',
-                               (login_id, login_pw)).fetchone()
+        print('커서 생성?')
+        sql_query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{login_id}' AND \"USER_PW\" = '{login_pw}';"
+        exist_user = c.execute(sql_query)
+        # exist_user = c.execute(f"SELECT * FROM public.\"TB_USER\" WHERE public.USER_ID = \"{login_id}\" AND public.USER_PW = \"{login_pw}\";")
+        # sql_query = "SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = %s AND \"USER_PW\" = %s;"
+        # exist_user = exist_user.fetchall()
+        # print(exist_user)
+        print('db 조회함', exist_user)
         self.end_conn()
-        if exist_user is not None:
-            print('로그인 성공')
-            return exist_user
-        else:
-            print('아이디 혹은 비밀번호를 잘못 입력했습니다.')
-            return False
+        # print('결과는:', exist_user)
+        # if exist_user is not None:
+        #     print('로그인 성공')
+        #     return exist_user
+        # else:
+        #     print('아이디 혹은 비밀번호를 잘못 입력했습니다.')
+        #     return False
 
     # 아이디 중복확인 (회원가입)
     def duple_reg_id(self, join_username):
+        print('이거는?')
         c = self.start_conn()
         username_id = c.execute('select * from TB_USER where USER_ID = ?', (join_username,)).fetchone()
         self.end_conn()
