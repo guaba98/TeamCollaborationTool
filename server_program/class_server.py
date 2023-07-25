@@ -101,11 +101,14 @@ class Server():
 
                 else:  # 아이디와 비밀번호가 맞으면 유저정보를 보내준다
                     user_info = json.dumps(result)
+
                     self.db_conn.insert_login_log(login_id=id) # 로그인 기록 저장
+
                     response_header = f"{f'login{header_split}{user_info}':{self.BUFFER}}".encode(
                         self.FORMAT)
+
                     # self.send_message(client_socket, response_header)
-                    client_socket.send(bytes(message, "UTF-8"))
+                    client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'duple':  # 회원가입 아이디 중복확인
                 substance = decode_msg.split(header_split)[1]
@@ -130,10 +133,20 @@ class Server():
                 elif result is False:
                     response_header = f"{f'insertuser{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     self.send_message(client_socket, response_header)
-            # elif header == 'duple':
-            #     substance = decode_msg.split(header_split)[1]
-            #     data = substance.split(list_split_1)
-            #     result = self.db_conn.
+
+            elif header == 'send_chat':  # 채팅 받기
+                send_chat = decode_msg.split(header_split)[1]
+                print(send_chat)
+                send_chat1 = send_chat.split(list_split_1)
+                print(send_chat1)
+                send_chat2 = json.dumps(send_chat1)
+                print(send_chat2)
+                response_header = f"{f'recv_chat{header_split}{send_chat}'}'"
+                print('222222')
+                client_socket.send(bytes(response_header, "UTF-8"))
+                print('222222')
+                # result = self.db_conn.insert_user(register_user_info) #todo 채팅 내용 저장
+
 
         except:
             pass
