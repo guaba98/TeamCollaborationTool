@@ -104,8 +104,7 @@ class Server():
 
                     self.db_conn.insert_login_log(login_id=id) # 로그인 기록 저장
 
-                    response_header = f"{f'login{header_split}{user_info}':{self.BUFFER}}".encode(
-                        self.FORMAT)
+                    response_header = f"{f'login{header_split}{user_info}'}"
 
                     # self.send_message(client_socket, response_header)
                     client_socket.send(bytes(response_header, "UTF-8"))

@@ -38,7 +38,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.init_func()
 
         # 캐럿셀 테스트 중
-<<<<<<<< HEAD:code/front/MainWindow.py
+
         # 1. 카테고리 위젯 -> 완
         ctg_dict = {
             '채팅': ['send_black.png', self.main_page, self.chat_page],
@@ -52,14 +52,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             ctg_ = CtgList(img_name=ctg_dict[ctg][0], c_name=ctg, parent=self)
             self.category_v_lay.addWidget(ctg_)
 
-========
-        # 1. 카테고리 위젯
-        # self.stackedWidget.setCurrentWidget(self.register_page)
-        img_path = '../front/src_img/bell.png'
-        for i in range(10):
-            ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
-            self.category_v_lay.addWidget(ctg)
->>>>>>>> origin/main:code/front/main_window.py
+        #
+        # # 1. 카테고리 위젯
+        # # self.stackedWidget.setCurrentWidget(self.register_page)
+        # img_path = '../front/src_img/bell.png'
+        # for i in range(10):
+        #     ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
+        #     self.category_v_lay.addWidget(ctg)
+
 
     #
     # widget 이동 함수=======================================================================
@@ -111,7 +111,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # window widget show=======================================================================
     def show(self):
-        self.stackedWidget.setCurrentWidget(self.main_page)
+        self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         super().show()
 
@@ -131,6 +131,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def recv_chat(self, result):
         print('[widget_notice]- reecv_chat', result)
         user_no, team_no, name, chat = result
+
         self.chat_v_lay.addWidget(name, chat)
 
     # 채팅방 입장시 db에 저장된 채팅 요청
