@@ -35,7 +35,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
         # 캐럿셀 테스트 중
         # 1. 카테고리 위젯
-        self.stackedWidget.setCurrentWidget(self.main_page)
+        self.stackedWidget.setCurrentWidget(self.register_page)
         img_path = '../front/src_img/bell.png'
         for i in range(10):
             ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
