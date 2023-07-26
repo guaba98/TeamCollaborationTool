@@ -36,7 +36,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="login_page">
        <property name="styleSheet">
@@ -152,8 +152,16 @@ background-color: white;}</string>
               <height>70</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>admin</string>
             </property>
             <property name="placeholderText">
              <string>아이디를 입력하세요</string>
@@ -190,8 +198,16 @@ background-color: white;}</string>
               <height>70</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>1234</string>
             </property>
             <property name="placeholderText">
              <string>비밀번호를 입력하세요</string>
@@ -372,7 +388,7 @@ background-color: white;}</string>
          </spacer>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <layout class="QVBoxLayout" name="reg_v_lay">
           <item>
            <spacer name="v_spacer_reg_top">
             <property name="orientation">
@@ -923,8 +939,8 @@ background-color: white;}</string>
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>850</width>
-                    <height>544</height>
+                    <width>829</width>
+                    <height>16</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1076,8 +1092,8 @@ border-top-right-radius: 20px;</string>
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>850</width>
-                 <height>574</height>
+                 <width>753</width>
+                 <height>367</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">

@@ -2,6 +2,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QFontDatabase
 
 # UI
 from code.front.message import Ui_RightMessage, Ui_LeftMessage  # 메세지
@@ -10,6 +11,9 @@ from code.front.ui.ui_class_notice_board import Ui_NoticeBoard  # 메인 화면
 from code.front.profile_widget import ProFile  # 프로필 변경
 from code.front.category_list import CtgList  # 카테고리 리스트
 from code.front.Warning_dialog import DialogWarning # 경고창
+from code.front.Font import Font # 폰트 클래스
+
+
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -30,37 +34,47 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.YourMsg = Ui_LeftMessage
         self.MyMsg = Ui_RightMessage
         self.Warn = DialogWarning()
+        self.font = Font()
+        # self.font_ = Font
 
         # window frame 설정
-        # self.setAttribute(Qt.WA_TranslucentBackground, True)
-        # self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowFlags(Qt.FramelessWindowHint)
 
         # 버튼 트리거 함수 호출
         self.set_btn_trigger()
         self.init_func()
 
-        # 캐럿셀 테스트 중
+        # 폰트
+        fontDB = QFontDatabase()
+        fontDB.addApplicationFont("../front/font/NanumSquareNeo-aLt.ttf")
+        fontDB.addApplicationFont("../front/font/NanumSquareNeo-bRg.ttf")
+        fontDB.addApplicationFont("../front/font/NanumSquareNeo-cBd.ttf")
+        fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
+        fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
 
-        # 1. 카테고리 위젯 -> 완
-        ctg_dict = {
-            '채팅': ['send_black.png', self.main_page, self.chat_page],
-            '공지': ['bell.png', self.main_page, self.notice_page],
-            '투두리스트': ['heart.png', self.main_page, self.notice_page]
-        }
+        # 로그인 창
+        self.login_title_lab.setFont(Font.title(1))
+        self.login_id_lab.setFont(Font.text(3))
+        self.login_pw_lab.setFont(Font.text(3))
+        self.login_id_edit.setFont(Font.text(3, False))
+        self.login_pw_edit.setFont(Font.text(3, False))
+        self.login_btn.setFont(Font.button(2))
+        self.register_btn.setFont(Font.button(2))
 
-        self.stackedWidget.setCurrentWidget(self.main_page)
+        # 회원가입 창
+        reg_lab = self.register_page.findChildren(QLabel)
+        reg_edit = self.register_page.findChildren(QLineEdit)
+        [lab.setFont(Font.text(3)) for lab in reg_lab]
+        [edit.setFont(Font.text(3, False)) for edit in reg_edit]
+        self.reg_title_lab.setFont(Font.title(1))
+        self.reg_sub_title.setFont(Font.text(4))
+        self.reg_register_btn.setFont(Font.button(1))
 
-        for ctg in list(ctg_dict.keys()):
-            ctg_ = CtgList(img_name=ctg_dict[ctg][0], c_name=ctg, parent=self)
-            self.category_v_lay.addWidget(ctg_)
 
-        #
-        # # 1. 카테고리 위젯
-        # # self.stackedWidget.setCurrentWidget(self.register_page)
-        # img_path = '../front/src_img/bell.png'
-        # for i in range(10):
-        #     ctg = CtgList(img_path=img_path, c_name='공지', parent=self)
-        #     self.category_v_lay.addWidget(ctg)
+
+
+
 
 
     #
@@ -113,7 +127,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # window widget show=======================================================================
     def show(self):
-        self.stackedWidget.setCurrentWidget(self.login_page)
+        self.stackedWidget.setCurrentWidget(self.notice_page)
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         super().show()
 
@@ -143,6 +157,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 로그인 함수=======================================================================
     def click_login_btn(self):
+        # test test
+        self.Warn.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
+        self.Warn.exec_()
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
         user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
 

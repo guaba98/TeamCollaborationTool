@@ -53,10 +53,10 @@ font_manager.load_font('nanum_heavy', '../code/front/font/NanumSquareNeo-eHv.ttf
 
 # 라벨과 버튼 생성 및 폰트 설정
 label = QLabel('Hello, World!')
-label.setFont(font_manager.get_font('nanum_bold', size=16))
+label.setFont(font_manager.get_font('nanum_light', size=16))
 
 button = QPushButton('Click me')
-button.setFont(font_manager.get_font('nanum_bold', size=20))
+button.setFont(font_manager2.get_font('nanum_regular', size=20))
 
 
 

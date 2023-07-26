@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 import sys
-from ui.ui_class_Warning_dialog import Ui_WarnDialog
+from code.front.ui.ui_class_Warning_dialog import Ui_WarnDialog
+# from ui.ui_class_Warning_dialog import Ui_WarnDialog
 
 
 class DialogWarning(QDialog, Ui_WarnDialog):
@@ -10,6 +11,7 @@ class DialogWarning(QDialog, Ui_WarnDialog):
         super().__init__()
         self.setupUi(self)
         self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.connect_event()
         self.set_ui()
 
@@ -82,7 +84,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     msgbox = DialogWarning()
-    msgbox.set_dialog_type(bt_cnt=1, text='테스트입니다.')
+    msgbox.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
     msgbox.show_dialog()
 
     pass
