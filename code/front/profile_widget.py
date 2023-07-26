@@ -23,6 +23,7 @@ class ProFile(QDialog, Ui_ProfileDialog):
 
     def change_profile(self):
         """여기에서 프로필 상태메세지를 변경합니다."""
+        self.state_edit.text()
         self.close()
 
     def show_dialog(self):

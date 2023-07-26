@@ -21,6 +21,8 @@ class Ui_RightMessage(object):
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.widget = QtWidgets.QWidget(RightMessage)
+        self.widget.setMinimumSize(QtCore.QSize(0, 45))
+        self.widget.setMaximumSize(QtCore.QSize(400, 16777215))
         self.widget.setStyleSheet("background-color: #14C871;\n"
 "    border-top-left-radius: 20px;\n"
 "    border-bottom-left-radius: 20px;\n"
