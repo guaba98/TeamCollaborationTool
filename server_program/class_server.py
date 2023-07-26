@@ -154,8 +154,11 @@ class Server():
                 client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'get_todolist':  # 공지 client에 보내주기
+                todolist_info = decode_msg.split(header_split)[1] # 데이터 받아오기
+                todolist_info = todolist_info.split(list_split_1)  #
+                print(todolist_info)
                 # result = db에서 대충 공지 받아오는 함수
-                result = [('할일1','할일 세부사항1','할일 기한1','완료여부1', '완료 시간1'),('할일1','할일 세부사항1','할일 기한1','완료여부1', '완료 시간1'),('할일1','할일 세부사항1','할일 기한1','완료여부1', '완료 시간1')]
+                result = [('할일1', '완료여부1', '팀원 목록1'),('할일1', '완료여부1', '팀원 목록1'),('할일1', '완료여부1', '팀원 목록1')]
                 result = json.dumps(result)
 
                 response_header = f"{f'recv_get_todolist{header_split}{result}'}"

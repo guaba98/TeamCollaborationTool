@@ -175,7 +175,6 @@ class DBConnector:
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
 
-
         # 데이터 저장
         insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
                        f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"USER_ID\", \"UPDATE_DATE\")" \
@@ -220,7 +219,6 @@ class DBConnector:
         # 데이터 저장 및 닫기
         conn.commit()
         conn.close()
-
 
     # -- 특정 데이터 반환하기
 

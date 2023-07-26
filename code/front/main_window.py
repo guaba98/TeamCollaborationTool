@@ -134,6 +134,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
+        name = self.client_controller.client_app.user_name
+        state = self.client_controller.client_app.user_message
         for c in self.ctg_list:
             if ctg_name == '프로필 수정':
                 p_ = ProFile(img=None, name='test', state='test')
@@ -165,6 +167,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 투루리스트==========================================
     def get_todolist(self):
         # 유저가 입력한 로그인 정보 encode
+        print('투드리스트 클릭')
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
@@ -172,7 +175,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         for i in result:
             print('[set_notice]',i)
             todo = TodoList(i)
-            print('durlsms')
             self.notice_v_lay.addWidget(todo)
 
     # 공지 화면 =====================================================================================

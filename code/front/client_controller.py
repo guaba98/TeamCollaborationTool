@@ -55,8 +55,8 @@ class ClientController(QtWidgets.QWidget):
     # 메시지 send
     def controller_send_chat_message(self, input_chat):
         self.client_app.client_send_chat_message(input_chat)
-    def controller_send_get_todolist(self, input_chat):
-        self.client_app.client_send_get_todolist(input_chat)
+    def controller_send_get_todolist(self):
+        self.client_app.client_send_get_todolist()
 
     # 데이터가 많아 list로 보낼때
     def controller_send_json_message(self, message):

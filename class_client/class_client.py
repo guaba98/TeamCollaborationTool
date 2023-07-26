@@ -51,7 +51,8 @@ class ClientApp:
             FORMAT)
         self.client_socket.send(message)
 
-    def client_send_get_todolist(self, input_chat):
+    def client_send_get_todolist(self):
+        print('투두 리스트 정보 요청')
         message = f"{f'get_todolist{header_split}{self.user_no}{list_split_1}{self.team_no}':{BUFFER}}".encode(
             FORMAT)
         self.client_socket.send(message)
@@ -122,5 +123,5 @@ class ClientApp:
             result = parsed[1]
             result = eval(result)
             print('recv_get_todolist',result)
-            self.client_controller.emit_recv_get_notice(result)
+            self.client_controller.emit_recv_get_todolist(result)
 
