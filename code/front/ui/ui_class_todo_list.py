@@ -14,14 +14,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TodoForm(object):
     def setupUi(self, TodoForm):
         TodoForm.setObjectName("TodoForm")
-        TodoForm.resize(785, 163)
+        TodoForm.resize(813, 183)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(TodoForm)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setContentsMargins(10, 10, 10, 10)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.main_frame = QtWidgets.QFrame(TodoForm)
         self.main_frame.setMinimumSize(QtCore.QSize(785, 163))
-        self.main_frame.setMaximumSize(QtCore.QSize(785, 163))
+        self.main_frame.setMaximumSize(QtCore.QSize(3421234, 163))
         self.main_frame.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-radius:20px;")
         self.main_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)

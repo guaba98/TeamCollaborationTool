@@ -2,8 +2,8 @@
 import json
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtCore import Qt, pyqtSignal, QSize
+from PyQt5.QtGui import QFontDatabase, QIcon, QColor
 
 # UI
 from code.front.message import YourMsg, MyMsg  # 메세지
@@ -42,7 +42,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         # self.MyMsg = MyMsg()
         self.Warn = DialogWarning()
         self.font = Font()
-        # self.font_ = Font
 
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -52,17 +51,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.set_btn_trigger()
         self.init_func()
 
-
-
-
-
-
-
-
-
-
-
-    #
     # widget 이동 함수=======================================================================
     def mousePressEvent(self, event):
         self.client_controller.mousePressEvent(self, event)
@@ -91,7 +79,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.chat_edit.returnPressed.connect(self.click_send_btn)
 
     def set_font(self):
-
+        """기본 폰트 적용하는 부분"""
         # 로그인 창
         self.login_title_lab.setFont(Font.title(1))
         self.login_id_lab.setFont(Font.text(3))
@@ -107,8 +95,20 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         [lab.setFont(Font.text(3)) for lab in reg_lab]
         [edit.setFont(Font.text(3, False)) for edit in reg_edit]
         self.reg_title_lab.setFont(Font.title(1))
-        self.reg_sub_title.setFont(Font.text(4))
+        self.reg_sub_title.setFont(Font.text(3))
         self.reg_register_btn.setFont(Font.button(1))
+
+        # 메인창
+        # 프로필창
+        profile_lab = self.profile_widget.findChildren(QLabel)
+        [lab.setFont(Font.text(3)) for lab in profile_lab]
+
+
+
+        # 채팅
+        self.chat_edit.setFont(Font.text(2))
+        # self.send_btn.setFont(Font.button(2))
+
 
 
 
@@ -191,7 +191,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         for i in result:
             print('[set_notice]',i)
             notice = Notice(i)
-            print('durlsms')
             self.notice_v_lay.addWidget(notice)
 
     # 공지를 db에서 받아오는 함수
@@ -208,8 +207,23 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         self.ctg_list_show()  # 카테고리 넣어주기
         self.set_font()  # 폰트 설정
+        self.style_init()
         super().show()
 
+    def style_init(self):
+        #  채팅 버튼 넣어주기
+        self.send_btn.setIcon(QIcon('./src_img/send_green.png'))
+        self.send_btn.setIconSize(QSize(35, 35))
+
+        # 카테고리 바 그림자 넣기
+        self.set_background_color(self.category_bar)
+
+    def set_background_color(self, obj):
+        effect = QGraphicsDropShadowEffect()
+        effect.setColor(QColor(0, 0, 0, 150))
+        effect.setBlurRadius(5)
+        effect.setOffset(5, 5)  # 객체와 그림자 사이의 거리 또는 변위
+        obj.setGraphicsEffect(effect)
     # 채팅 =========================================================================================
     # 전송버튼 클릭시 채팅을 서버에 보내는 함수
     def get_chat(self):

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from code.front.ui.ui_class_category_list import Ui_CtgWidget
 # from code.front.ui.ui_class_TEST_ctg import Ui_Form
+from code.front.Font import Font
 from PyQt5.QtGui import *
 import os
 '''
@@ -21,6 +22,9 @@ class CtgList(QWidget, Ui_CtgWidget):
 
         self.img_lab.setPixmap(QPixmap(f"{img_path}"))
         self.ctg_name_lab.setText(c_name)
+        self.ctg_name_lab.setFont(Font.text(2))
+
+
 
 
 

@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 import sys
 from code.front.ui.ui_class_Warning_dialog import Ui_WarnDialog
-# from ui.ui_class_Warning_dialog import Ui_WarnDialog
+from code.front.Font import Font
 
 
 class DialogWarning(QDialog, Ui_WarnDialog):
@@ -35,6 +35,12 @@ class DialogWarning(QDialog, Ui_WarnDialog):
     def set_ui(self):
         self.close_btn.setIcon(QIcon('./src_img/close.png'))
         self.close_btn.setIconSize(QSize(35, 35))
+
+        self.warning_lab.setFont(Font.text(1))
+        self.ok_btn.setFont(Font.button(1))
+        self.accept_btn.setFont(Font.button(1))
+        self.cancel_btn.setFont(Font.button(1))
+
 
 
     # 다이얼로그 타입 설정

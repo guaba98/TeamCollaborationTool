@@ -220,6 +220,11 @@ border-top-left-radius: 20px;
              <height>50</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(20, 200, 113);
 border-radius:5px;
@@ -276,6 +281,11 @@ color:white;</string>
              <height>50</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(20, 200, 113);
 border-radius:5px;
@@ -299,6 +309,11 @@ color:white;</string>
              <width>16777215</width>
              <height>50</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">

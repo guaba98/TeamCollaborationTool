@@ -312,5 +312,5 @@ if __name__ == '__main__':
     # condition = "\"USER_NAME\" = '박소연'"
     # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
 
-    r_ = d.return_team_members(1)
-    # print(r_)
+    r_ = d.insert_chat_log(1, 'test')
+    print(r_)

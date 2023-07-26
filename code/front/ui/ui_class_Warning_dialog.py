@@ -81,6 +81,9 @@ class Ui_WarnDialog(object):
         self.ok_btn = QtWidgets.QPushButton(self.widget_1)
         self.ok_btn.setMinimumSize(QtCore.QSize(132, 50))
         self.ok_btn.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.ok_btn.setFont(font)
         self.ok_btn.setStyleSheet("background-color: rgb(20, 200, 113);\n"
 "border-radius:5px;\n"
 "color:white;")
@@ -98,6 +101,9 @@ class Ui_WarnDialog(object):
         self.accept_btn = QtWidgets.QPushButton(self.widget_2)
         self.accept_btn.setMinimumSize(QtCore.QSize(132, 50))
         self.accept_btn.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.accept_btn.setFont(font)
         self.accept_btn.setStyleSheet("background-color: rgb(20, 200, 113);\n"
 "border-radius:5px;\n"
 "color:white;")
@@ -106,6 +112,9 @@ class Ui_WarnDialog(object):
         self.cancel_btn = QtWidgets.QPushButton(self.widget_2)
         self.cancel_btn.setMinimumSize(QtCore.QSize(132, 50))
         self.cancel_btn.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.cancel_btn.setFont(font)
         self.cancel_btn.setStyleSheet("\n"
 "border-radius:5px;\n"
 "border: 0.5px solid gray;")
