@@ -204,6 +204,11 @@ class DBConnector:
 
     # -- 특정 데이터 저장
     # 프로필
+    def update_profile_message(self,user_no, msg):
+        """프로필 상태메세지를 변경합니다."""
+        condition = f"\"USER_NO\" = '{user_no}'"
+        self.insert_specific_data('TB_USER', 'USER_MESSAGE', msg, condition)
+
     def insert_specific_data(self, table_name, column, data, condition=None):
         """특정 테이블에 조건에 맞는 데이터 1개만 업데이트하기"""
         # db 연결
