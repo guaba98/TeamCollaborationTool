@@ -2,6 +2,7 @@ import random
 import sys
 
 from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QPoint, Qt, pyqtSignal
@@ -11,7 +12,6 @@ from class_client.class_client import ClientApp
 
 # ui 임풜트 예아
 from code.front.main_window import WidgetNoticeBorad
-
 
 
 header_split = chr(1)
@@ -33,7 +33,14 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
 
-
+        # # 폰트
+        # fontDB = QFontDatabase()
+        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-aLt.ttf")
+        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-bRg.ttf")
+        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-cBd.ttf")
+        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
+        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
+        #
 
 
     # 클라이언트에 send메시지 보내기======================================================================
@@ -46,6 +53,7 @@ class ClientController(QtWidgets.QWidget):
 
     # 데이터가 많아 list로 보낼때
     def controller_send_json_message(self, message):
+        print('json 2')
         self.client_app.client_send_json_message(message)
 
     # widget 이동 함수============================================================

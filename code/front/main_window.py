@@ -1,4 +1,5 @@
 # 모듈
+import json
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -133,7 +134,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # window widget show=======================================================================
     def show(self):
-        self.stackedWidget.setCurrentWidget(self.notice_page)
+        self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         self.ctg_list_show()  # 카테고리 넣어주기
         self.set_font()  # 폰트 설정
@@ -150,12 +151,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 서버에서 채팅 메시지 받는 함수
     def recv_my_chat(self, result): # 본인이 보낸 메시지라면
         user_no, team_no, name, chat = result
-        message_widget = MyMsg(name, chat[:-1])
+        message_widget = MyMsg(name, chat)
         self.chat_v_lay.addWidget(message_widget)
 
     def recv_chat(self, result):    # 다른 사람이 보낸 메시지라면
         user_no, team_no, name, chat = result
-        message_widget = YourMsg(name, chat[:-1])
+        message_widget = YourMsg(name, chat)
         self.chat_v_lay.addWidget(message_widget)
 
 
@@ -222,17 +223,22 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         input_reg_pw = self.reg_pw_edit.text()
         input_reg_name = self.reg_name_edit.text()
         input_reg_nn = self.reg_nn_edit.text()
-        result = input_reg_id, input_reg_pw, input_reg_name, input_reg_nn
+        result = [input_reg_id, input_reg_pw, input_reg_name, input_reg_nn]
         print('[widget_notice]-register_user', result)
+        print(result)
 
         user_info = json.dumps(result)
-        message = f"{f'insertuser{header_split}{input_reg_id}':{BUFFER}}".encode(
-            FORMAT)
+        message = f"{f'insertuser{header_split}{user_info}'}"
+        print('json 만들어짐?')
         self.client_controller.controller_send_json_message(message)
 
     def set_reg_id_lab(self, result):
+        print("왜터짐?", result)
+
         if result is True:
+            print('여기서 터짐?')
             self.reg_id_lab.setText('ID 사용가능')
+            print('아니면 여기서?')
             self.click_reg_register_btn2()
         else:
             self.reg_id_lab.setText('ID 사용불가')
@@ -250,21 +256,27 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
 
     def register_check(self):
+        print('register_check')
         self.reg_name_lab.setText('이름')
         self.reg_nn_lab.setText('닉네임')
         self.reg_pw_lab.setText('비밀번호')
+        print('register_check2')
 
-        if len(reg_name_edit) < 2:
+
+        if len(self.reg_name_edit.text()) < 2:
             self.set_reg_name_lab()
             return False
+        print('register_check3')
 
-        if len(reg_nn_edit) < 2:
+        if len(self.reg_nn_edit.text()) < 2:
             self.set_reg_nn_lab()
             return False
+        print('register_check4')
 
-        if self.reg_pw_edit.text() == self.reg_pw_check_edit.text():
+        if self.reg_pw_edit.text() != self.reg_pw_check_edit.text():
             self.set_reg_pw_lab()
             return False
+        print('register_check5')
 
         if self.reg_id_lab.text() != 'ID 사용가능':
             return False

@@ -124,7 +124,10 @@ class Server():
                     self.send_message(client_socket, response_header)
 
             elif header == 'insertuser':  # 회원가입
+                print('회원가입 들어와?')
                 register_user_info = decode_msg.split(header_split)[1]
+                register_user_info =eval(register_user_info)
+                print(register_user_info)
                 result = self.db_conn.insert_user(register_user_info)
 
                 if result is True:
@@ -138,7 +141,7 @@ class Server():
                 send_chat = decode_msg.split(header_split)[1] # 데이터 받아오기
                 send_chat1 = send_chat.split(list_split_1)  #
                 send_chat2 = json.dumps(send_chat1) # 받아온 데이터 json화
-                response_header = f"{f'recv_chat{header_split}{send_chat}'}'"   # 헤더만들기
+                response_header = f"{f'recv_chat{header_split}{send_chat}'}"   # 헤더만들기
                 clients = self.clients.copy()
                 for i in clients:
                     print('[class_server]- recv_send_chat',i)

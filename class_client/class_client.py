@@ -50,6 +50,7 @@ class ClientApp:
         self.client_socket.send(message)
 
     def client_send_json_message(self, message):
+        print('json 보내기')
         self.client_socket.send((bytes(message, "UTF-8")))
 
     def check_server_response(self):
