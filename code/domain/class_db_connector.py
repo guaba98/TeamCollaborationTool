@@ -72,8 +72,6 @@ class DBConnector:
         else:
             raise f"cannot commit database! {self.__name__}"
 
-
-
     # -- 로그인
     def log_in(self, login_id, login_pw):
         """아이디와 비밀번호 조회"""
@@ -96,10 +94,9 @@ class DBConnector:
 
     # -- 로그인 기록 넣기
     def insert_login_log(self, login_id):
-        # TODO 왜 안타는가 피티한테 물어볼것
+        print('타나요')
         # 커서 생성
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-        # c = self.start_conn()
         condition = f'"USER_ID"=\'{login_id}\''
         user_nm = self.return_specific_data(column='USER_NAME', table_name='TB_USER', condition=condition)
         time = self.return_datetime('time')
@@ -112,16 +109,13 @@ class DBConnector:
         conn.commit()
         conn.close()
 
-
-
-
     # -- 회원가입
     def duple_reg_id(self, join_username):
         """아이디 중복 확인"""
 
         # 커서 생성
         c = self.start_conn()
-        # conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+
         # 쿼리문 및 중복 확인
         query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
         c.execute(query)
@@ -133,14 +127,12 @@ class DBConnector:
             return True  # 사용 가능한 아이디일때
         return False  # 사용 불가능한 아이디일때
 
-
-    def insert_user(self, info):
+    def insert_user(self, user_id, join_name, join_pw, join_nickname):
         """회원가입 정보 db에 추가"""
-        user_id, join_name, join_pw, join_nickname = info[0], info[1], info[2], info[3]
-
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
         join_date = self.return_datetime('date')
+
         insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
                        f"VALUES ('{join_name}', '{user_id}', '{join_pw}', '{join_nickname}', '{join_date}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
@@ -149,8 +141,89 @@ class DBConnector:
         cur.close()
         conn.close()
 
+    # -- 채팅
+    def insert_chat_log(self, user_id, chat):
+        """채팅 기록 저장"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+
+        # 데이터 삽입
+        join_table = "TB_USER\" NATURAL JOIN \"TB_TEAM"
+        condition = f"\"USER_ID\" = '{user_id}';"
+        team_no = self.return_specific_data('TEAM_NO', join_table, condition)
+        user_no = self.return_specific_data('USER_NO', join_table, condition)
+        user_name = self.return_specific_data('USER_NAME', join_table, condition)
+        chat_time = self.return_datetime('time')
+
+        insert_query = f"INSERT INTO public.\"TB_CHAT\" " \
+                       f"(\"TEAM_NO\", \"USER_NO\", \"USER_NAME\", \"CHAT_LOG\", \"CHAT_TIME\")" \
+                       f" VALUES ('{team_no}', '{user_no}', '{user_name}', '{chat}', '{str(chat_time)}')"
+        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
+
+        # 저장
+        cur.execute(insert_query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
+
+    # -- 공지
+    def insert_notice_data(self, user_id, title, contents):
+        """공지 작성시 db에 데이터 삽입"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+
+
+        # 데이터 저장
+        insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
+                       f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"USER_ID\", \"UPDATE_DATE\")" \
+                       f" VALUES ('{title}', '{contents}', '{user_id}', '{str(self.return_datetime('time'))}')"
+        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
+
+        # 저장
+        cur.execute(insert_query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
+
+    def delete_notice_data(self, title):
+        """공지 삭제시 데이터에서도 삭제"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+
+        query = f"DELETE FROM \"TB_NOTICE\" WHERE \"NOTICE_TITLE\" = '{title}';"
+        # 저장
+        cur.execute(query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
+
+    # -- 특정 데이터 저장
+    # 프로필
+    def insert_specific_data(self, table_name, column, data, condition=None):
+        """특정 테이블에 조건에 맞는 데이터 1개만 업데이트하기"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+
+        query = f"UPDATE INTO public.\"{table_name}\" SET (\"{column}\") = ('{data}')"
+        if condition is not None:
+            query += f" WHERE {condition}"
+        print('쿼리문', query)
+        cur.execute(query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
+
 
     # -- 특정 데이터 반환하기
+
     def return_datetime(self, type):
         """원하는 날짜/시간 포멧을 반환"""
         now = datetime.now()  # 시간
@@ -171,9 +244,11 @@ class DBConnector:
         query = f"SELECT \"{column}\" FROM public.\"{table_name}\""
         if condition is not None:
             query += f" WHERE {condition}"
+        print(query)
 
         c.execute(query)
         r_data = c.fetchall()
+        print('데이터', r_data)
 
         return r_data[0][0]
 
@@ -193,7 +268,6 @@ class DBConnector:
         self.end_conn()
         sing_up_obj = self.insert_user(user_id, join_name, join_pw, join_nickname)
         return sing_up_obj
-
     # def assert_same_login_id(self, inserted_id):
     #     c = self.start_conn()
     #
@@ -222,8 +296,14 @@ class DBConnector:
     #     return sing_up_obj
 
 
-
-#     d = DBConnector()
-#     # query = '\"USER_NAME\"=\'박소연\''
-#     # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
-#     d.insert_login_log('admin')
+if __name__ == '__main__':
+    pass
+    d = DBConnector()
+    # # query = '\"USER_NAME\"=\'박소연\''
+    # # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
+    # # d.insert_login_log('admin')
+    #
+    # d.insert_user('user_id', 'join_name', 'join_pw', 'join_nickname')
+    # d.insert_notice_data('admin', '테스트 제목제목', '테스트 내용 내용')
+    condition = "\"USER_NAME\" = '박소연'"
+    d.insert_specific_data('TB_USER', 'USER_MESSAGE', '저는 행복합니다...', condition)
