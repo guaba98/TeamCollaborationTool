@@ -165,11 +165,15 @@ class DBConnector:
 
     # -- 공지
     def insert_notice_data(self, user_id, title, contents):
-        """공지 작성시 db에 데이터 삽입"""
+        """
+        공지 작성시 db에 데이터 삽입
+        :param user_id: 유저 아이디
+        :param title: 공지 제목
+        :param contents: 공지 내용
+        """
         # db 연결
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
-
 
         # 데이터 저장
         insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
@@ -216,6 +220,48 @@ class DBConnector:
         conn.commit()
         conn.close()
 
+    # -- 투두리스트
+    def get_todo_list(self, user_no):
+        """
+        투두리스트 목록 반환
+        :param user_no: 유저 고유번호
+        :return: results: 할일목록, 체크여부 반환. 예 - [('프로필 창 만들어야 함', 0), ('공지창도 띄워야 함', 0)]
+        """
+        # db 연결
+        c = self.start_conn()
+
+        # 조건
+        sql_query = f"SELECT \"TODO_LIST\", \"TODO_CHECKED\" FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
+        c.execute(sql_query)
+
+        # 결과 가져오기
+        results = c.fetchall()
+        print('[db_connector.py - get_todo_list]: ', results)
+        # 연결 종료
+        self.end_conn()
+        return results
+
+
+    def return_team_members(self, user_no):
+        """
+        유저 번호를 입력하면 속한 팀원들을 모두 반환함
+        :param user_no: 유저 번호
+        :return: 팀원들을 리스트에 담아 반환
+        """
+        c = self.start_conn()
+        query = f'SELECT \"USER_NAME\" FROM \"TB_USER\" NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" = (SELECT \"TEAM_NAME\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});'
+        print(query)
+
+        # 쿼리 실행
+        c.execute(query)
+
+        # results = c.fetchall()
+        results = [row[0] for row in c.fetchall()]
+        print('[db_connector.py - return_team_members]: ', results)
+
+        # 연결 종료
+        self.end_conn()
+        return results
 
     # -- 특정 데이터 반환하기
 
@@ -243,53 +289,10 @@ class DBConnector:
 
         c.execute(query)
         r_data = c.fetchall()
-        print('데이터', r_data)
+        # print('데이터', r_data)
         if type is None:
             return r_data[0][0]
         return r_data
-
-    # 여기서부터 사용 안함
-
-    def user_sign_up(self, user_data):
-        join_name, join_pw, join_nickname = user_data
-        useable_id = self.assert_same_login_id(join_name)
-        if useable_id is False:
-            return False
-        c = self.start_conn()
-        last_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
-        if last_user_row is None:
-            user_id = 1
-        else:
-            user_id = last_user_row[0] + 1
-        self.end_conn()
-        sing_up_obj = self.insert_user(user_id, join_name, join_pw, join_nickname)
-        return sing_up_obj
-    # def assert_same_login_id(self, inserted_id):
-    #     c = self.start_conn()
-    #
-    #     username_id = c.execute('select * from user where username = ?', (inserted_id,)).fetchone()
-    #     if username_id is None:
-    #         print('사용 가능한 아이디 입니다.')  # 사용 가능 아이디
-    #         return True
-    #     else:tj
-    #         print('사용 불가능한 아이디 입니다.')  # 사용불가
-    #         return False
-    #
-    # # 회원가입용 함수(insert_user함수 호출)
-    # def user_sign_up(self, insert_id, insert_pw, nickname):
-    #     useable_id = self.assert_same_login_id(insert_id)
-    #     if useable_id is False:
-    #         return False
-    #     c = self.start_conn()
-    #     last_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
-    #     if last_user_row is None:
-    #         user_id = 1
-    #     else:
-    #         user_id = last_user_row[0] + 1
-    #     sign_up_user_obj = User(user_id, insert_id, insert_pw, nickname)
-    #     self.end_conn()
-    #     sing_up_obj = self.insert_user(sign_up_user_obj)
-    #     return sing_up_obj
 
 
 if __name__ == '__main__':
@@ -304,10 +307,5 @@ if __name__ == '__main__':
     # condition = "\"USER_NAME\" = '박소연'"
     # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
 
-    '''SELECT * FROM "TB_TODO_LIST" WHERE "USER_NO" = 1;'''
-    c ="\"USER_NO\" = 1"
-    title = d.return_specific_data('TODO_LIST', 'TB_TODO_LIST', c, type=1 )
-    contents = d.return_specific_data('TODO_LIST', 'TB_TODO_LIST', c, type=1 )
-    for i in result:
-        print(i[0])
-    # print(result)
+    r_ = d.return_team_members(1)
+    # print(r_)
