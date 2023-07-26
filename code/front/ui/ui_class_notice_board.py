@@ -298,7 +298,7 @@ class Ui_NoticeBoard(object):
         self.chat_scrollarea.setWidgetResizable(True)
         self.chat_scrollarea.setObjectName("chat_scrollarea")
         self.chat_scrollarea_contents = QtWidgets.QWidget()
-        self.chat_scrollarea_contents.setGeometry(QtCore.QRect(0, 0, 850, 544))
+        self.chat_scrollarea_contents.setGeometry(QtCore.QRect(0, 0, 829, 16))
         self.chat_scrollarea_contents.setObjectName("chat_scrollarea_contents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.chat_scrollarea_contents)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -354,7 +354,7 @@ class Ui_NoticeBoard(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 850, 574))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 753, 367))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
@@ -406,7 +406,7 @@ class Ui_NoticeBoard(object):
         NoticeBoard.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(NoticeBoard)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(NoticeBoard)
 
     def retranslateUi(self, NoticeBoard):
@@ -414,8 +414,10 @@ class Ui_NoticeBoard(object):
         NoticeBoard.setWindowTitle(_translate("NoticeBoard", "MainWindow"))
         self.login_title_lab.setText(_translate("NoticeBoard", "로그인"))
         self.login_id_lab.setText(_translate("NoticeBoard", "ID"))
+        self.login_id_edit.setText(_translate("NoticeBoard", "admin"))
         self.login_id_edit.setPlaceholderText(_translate("NoticeBoard", "아이디를 입력하세요"))
         self.login_pw_lab.setText(_translate("NoticeBoard", "PASSWORD"))
+        self.login_pw_edit.setText(_translate("NoticeBoard", "1234"))
         self.login_pw_edit.setPlaceholderText(_translate("NoticeBoard", "비밀번호를 입력하세요"))
         self.login_btn.setText(_translate("NoticeBoard", "로그인"))
         self.register_btn.setText(_translate("NoticeBoard", "회원가입하러가기"))

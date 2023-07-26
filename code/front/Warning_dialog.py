@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 import sys
-from ui.ui_class_Warning_dialog import Ui_WarnDialog
+from code.front.ui.ui_class_Warning_dialog import Ui_WarnDialog
 
 
 class DialogWarning(QDialog, Ui_WarnDialog):
@@ -10,6 +10,7 @@ class DialogWarning(QDialog, Ui_WarnDialog):
         super().__init__()
         self.setupUi(self)
         self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.connect_event()
         self.set_ui()
 
@@ -73,16 +74,20 @@ class DialogWarning(QDialog, Ui_WarnDialog):
             self.warning_lab.setText('회원만 채팅이 가능합니다.')
         elif t_type == 'register_cmplt':
             self.warning_lab.setText('회원가입이 완료되었습니다.\n로그인 해 주세요!')
-
+        elif t_type == 'loginSuccessfully':
+            self.warning_lab.setText('로그인 성공!')
+        elif t_type == 'loginfailed':
+            self.warning_lab.setText('로그인 실패!')
+        self.show_dialog()
     def show_dialog(self):
         self.exec_()
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    app.setStyle('Fusion')
-    msgbox = DialogWarning()
-    msgbox.set_dialog_type(bt_cnt=1, text='테스트입니다.')
-    msgbox.show_dialog()
+    # app = QApplication(sys.argv)
+    # app.setStyle('Fusion')
+    # msgbox = DialogWarning()
+    # msgbox.set_dialog_type(bt_cnt=1, text='테스트입니다.')
+    # msgbox.show_dialog()
 
     pass

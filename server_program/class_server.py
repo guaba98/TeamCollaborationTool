@@ -134,16 +134,13 @@ class Server():
                     self.send_message(client_socket, response_header)
 
             elif header == 'send_chat':  # 채팅 받기
-                send_chat = decode_msg.split(header_split)[1]
-                print(send_chat)
-                send_chat1 = send_chat.split(list_split_1)
-                print(send_chat1)
-                send_chat2 = json.dumps(send_chat1)
-                print(send_chat2)
-                response_header = f"{f'recv_chat{header_split}{send_chat}'}'"
-                print('222222')
-                client_socket.send(bytes(response_header, "UTF-8"))
-                print('222222')
+                send_chat = decode_msg.split(header_split)[1] # 데이터 받아오기
+                send_chat1 = send_chat.split(list_split_1)  #
+                send_chat2 = json.dumps(send_chat1) # 받아온 데이터 json화
+                response_header = f"{f'recv_chat{header_split}{send_chat}'}'"   # 헤더만들기
+                for i in self.clients:
+                    i.send(bytes(response_header, "UTF-8"))
+                # client_socket.send(bytes(response_header, "UTF-8"))
                 # result = self.db_conn.insert_user(register_user_info) #todo 채팅 내용 저장
 
 

@@ -21,7 +21,7 @@ db_params = {
 engine = create_engine(
     f"postgresql+psycopg2://{db_params['user']}:{db_params['password']}@{db_params['host']}/{db_params['database']}")
 
-host = '192.168.56.1'  # 데이터베이스 호스트 주소
+host = '10.10.20.103'  # 데이터베이스 호스트 주소
 database = 'data'  # 데이터베이스 이름
 user = 'postgres'  # 데이터베이스 사용자 이름
 password = '1234'  # 데이터베이스 비밀번호
@@ -49,7 +49,7 @@ class DBConnector:
         print('서버랑 db연결')
 
         self.conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-
+        print('db 연결된')
         # self.conn = psycopg2.connect(**db_params)
         # 커서 생성
         cur = self.conn.cursor()
