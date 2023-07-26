@@ -135,15 +135,19 @@ class Server():
 
             elif header == 'send_chat':  # 채팅 받기
                 send_chat = decode_msg.split(header_split)[1] # 데이터 받아오기
-                send_chat1 = send_chat.split(list_split_1)  #
-                send_chat2 = json.dumps(send_chat1) # 받아온 데이터 json화
+                send_chat2 = send_chat.split(list_split_1)
+                user_no,_,user_name, message = send_chat2
+                result = self.db_conn.insert_chat_log(user_no, message) #todo 채팅 내용 저장
                 response_header = f"{f'recv_chat{header_split}{send_chat}'}"   # 헤더만들기
+
                 clients = self.clients.copy()
+                print(clients, '클라이언트 확인')
                 for i in clients:
-                    print('[class_server]- recv_send_chat',i)
-                    i.send(bytes(response_header, "UTF-8"))
+                    try:
+                        i.send(bytes(response_header, "UTF-8"))
+                    except:
+                        continue
                 # client_socket.send(bytes(response_header, "UTF-8"))
-                # result = self.db_conn.insert_user(register_user_info) #todo 채팅 내용 저장
 
             elif header == 'get_notice':  # 공지 client에 보내주기
                 # result = db에서 대충 공지 받아오는 함수
@@ -155,15 +159,26 @@ class Server():
 
             elif header == 'get_todolist':  # 공지 client에 보내주기
                 todolist_info = decode_msg.split(header_split)[1] # 데이터 받아오기
-                todolist_info = todolist_info.split(list_split_1)  #
-                print(todolist_info)
-                # result = db에서 대충 공지 받아오는 함수
-                result = [('할일1', '완료여부1', '팀원 목록1'),('할일1', '완료여부1', '팀원 목록1'),('할일1', '완료여부1', '팀원 목록1')]
+                todolist_info = todolist_info.split(list_split_1)
+                user_no, team_no = todolist_info
+                # 투두 리스트 받아오기
+                todo_result = self.db_conn.get_todo_list(user_no)
+                # 멤버 받아오기
+                member_result = self.db_conn.return_team_members(user_no)
+                # 합치기
+                result = todo_result ,member_result
                 result = json.dumps(result)
 
                 response_header = f"{f'recv_get_todolist{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
 
+            elif header == 'update_user_message':
+                proflie_message = decode_msg.split(header_split)[1]
+                proflie_message = proflie_message.split(list_split_1)
+                user_no, user_message = proflie_message
+                self.db_conn.update_profile_message(user_no, user_message)
 
+                response_header = f"{f'update_user_message{header_split}{user_message}':{self.BUFFER}}".encode(self.FORMAT)
+                self.send_message(client_socket, response_header)
         except:
             pass

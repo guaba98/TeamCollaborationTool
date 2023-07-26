@@ -88,6 +88,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.register_btn.clicked.connect(lambda state: self.click_register_btn())  # 회원가입 화면 이동 버튼
         self.reg_register_btn.clicked.connect(lambda state: self.click_reg_register_btn())  # 회원가입 버튼
         self.send_btn.clicked.connect(lambda state: self.click_send_btn())  # 채팅 전송 버튼
+        self.chat_edit.returnPressed.connect(self.click_send_btn)
 
     def set_font(self):
 
@@ -136,15 +137,21 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
         name = self.client_controller.client_app.user_name
         state = self.client_controller.client_app.user_message
+
         for c in self.ctg_list:
             if ctg_name == '프로필 수정':
-                p_ = ProFile(img=None, name= name, state= state)
+                p_ = ProFile(self, img=None, name= name, state= state)
                 p_.show_dialog()
                 break
             elif ctg_name == c:
                 self.clear_layout(self.event_dict[ctg_name][0]) # 레이아웃 비우기
                 self.event_dict[ctg_name][1]()
                 self.inner_stackedWidget.setCurrentWidget(self.ctg_dict[c][1])
+
+    def update_user_message(self,user_message):
+        message = f"{f'update_user_message{header_split}{self.client_controller.client_app.user_no}{list_split_1}{user_message}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
 
 
     # 레이아웃 비우기
@@ -172,9 +179,10 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_todolist(self, result):
         print('투두 내용들 받아오기',result)
-        for i in result:
+        people_lab = result[1]
+        for i in result[0]:
             print('[set_notice]',i)
-            todo = TodoList(i)
+            todo = TodoList(i, people_lab)
             self.notice_v_lay.addWidget(todo)
 
     # 공지 화면 =====================================================================================

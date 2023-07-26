@@ -8,10 +8,10 @@ from PyQt5.QtGui import *
 
 class ProFile(QDialog, Ui_ProfileDialog):
     """프로필 변경 다이얼로그"""
-    def __init__(self, img, name, state):
+    def __init__(self, main_window, img, name, state):
         super().__init__()
         self.setupUi(self)
-
+        self.main_window = main_window
         # 값 넣어주기
         self.profile_img.setPixmap(QPixmap(img))
         self.name_lab.setText(name)
@@ -23,7 +23,9 @@ class ProFile(QDialog, Ui_ProfileDialog):
 
     def change_profile(self):
         """여기에서 프로필 상태메세지를 변경합니다."""
-        self.state_edit.text()
+        profile_message = self.state_edit.text()
+        print(profile_message)
+        self.main_window.update_user_message(profile_message)
         self.close()
 
     def show_dialog(self):

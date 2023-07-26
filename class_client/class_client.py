@@ -76,7 +76,6 @@ class ClientApp:
     def _parse_packet(self, p: str):
         parsed = p.split(header_split)
         header = parsed[0].strip()
-        print('class_client', header)
 
         if header == 'login':
             result = parsed[1]
@@ -90,7 +89,7 @@ class ClientApp:
                 self.user_no, self.user_name, self.user_id, self.user_pw, self.user_nickname, self.user_message, self.user_create_date = result
                 self.client_controller.emit_login(True)
 
-        if header == 'duple':
+        elif header == 'duple':
             result = parsed[1]
             if result == 'False':
                 self.client_controller.emit_duple(False)
@@ -98,7 +97,7 @@ class ClientApp:
                 self.client_controller.emit_duple(True)
                 # self.user_id, self.username, self.user_pw, self.user_nickname = result
 
-        if header == 'insertuser':
+        elif header == 'insertuser':
             result = parsed[1]
             if result == 'False':
                 self.client_controller.emit_insertuser(False)
@@ -109,19 +108,20 @@ class ClientApp:
         if header == 'recv_chat':
             result = parsed[1]
             result = result.split(list_split_1)
-            print('[class_client]-recv_chat')
+            self.client_controller.emit_recv_chat(result)
 
-        if header == 'recv_get_notice':
+        elif header == 'recv_get_notice':
             # print('[class_client]-recv_notice', result)
             result = parsed[1]
             result = eval(result)
-            print('recv_get_notice',result)
             self.client_controller.emit_recv_get_notice(result)
 
-        if header == 'recv_get_todolist':
+        elif header == 'recv_get_todolist':
             # print('[class_client]-recv_notice', result)
             result = parsed[1]
             result = eval(result)
-            print('recv_get_todolist',result)
             self.client_controller.emit_recv_get_todolist(result)
 
+        elif header == 'update_user_message':
+            result = parsed[1]
+            self.user_message = result

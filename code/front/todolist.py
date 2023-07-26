@@ -6,10 +6,11 @@ from code.front.ui.ui_class_todo_list import Ui_TodoForm
 
 
 class TodoList(QWidget, Ui_TodoForm):
-    def __init__(self, result):
+    def __init__(self, result, people_lab):
         super().__init__()
         self.setupUi(self)
-        todo , checked, people_lab = result
+        todo, checked = result
+        people_lab = people_lab
         # self.checkBox.clicked.connect()
         # self.checkBox.clicked(checked)
         self.checkBox.setText(todo)
