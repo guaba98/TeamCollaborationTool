@@ -109,20 +109,6 @@ border-radius:20px;</string>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="detail_lab">
-        <property name="text">
-         <string>할일에 대한 세부사항</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="date_lab">
-        <property name="text">
-         <string>할일 날짜</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="people_lab">
         <property name="text">
          <string>함께하는 사람들</string>

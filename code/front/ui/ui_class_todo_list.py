@@ -52,12 +52,6 @@ class Ui_TodoForm(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
-        self.detail_lab = QtWidgets.QLabel(self.main_frame)
-        self.detail_lab.setObjectName("detail_lab")
-        self.verticalLayout.addWidget(self.detail_lab)
-        self.date_lab = QtWidgets.QLabel(self.main_frame)
-        self.date_lab.setObjectName("date_lab")
-        self.verticalLayout.addWidget(self.date_lab)
         self.people_lab = QtWidgets.QLabel(self.main_frame)
         self.people_lab.setObjectName("people_lab")
         self.verticalLayout.addWidget(self.people_lab)
@@ -71,8 +65,6 @@ class Ui_TodoForm(object):
         TodoForm.setWindowTitle(_translate("TodoForm", "Form"))
         self.checkBox.setText(_translate("TodoForm", "할일이름할일이름"))
         self.del_btn.setText(_translate("TodoForm", "삭제"))
-        self.detail_lab.setText(_translate("TodoForm", "할일에 대한 세부사항"))
-        self.date_lab.setText(_translate("TodoForm", "할일 날짜"))
         self.people_lab.setText(_translate("TodoForm", "함께하는 사람들"))
 
 

@@ -33,6 +33,7 @@ class ClientApp:
         self.user_nickname = None
         self.user_message = None
         self.user_create_date = None
+        self.team_no = 1
     def connect_server(self):
         self.client_socket = socket(AF_INET, SOCK_STREAM)
         self.client_socket.connect(_CONNECT)
@@ -47,6 +48,11 @@ class ClientApp:
     def client_send_chat_message(self, input_chat):
         team_no = 1
         message = f"{f'send_chat{header_split}{self.user_no}{list_split_1}{team_no}{list_split_1}{self.user_name}{list_split_1}{input_chat}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_socket.send(message)
+
+    def client_send_get_todolist(self, input_chat):
+        message = f"{f'get_todolist{header_split}{self.user_no}{list_split_1}{self.team_no}':{BUFFER}}".encode(
             FORMAT)
         self.client_socket.send(message)
 
@@ -109,5 +115,12 @@ class ClientApp:
             result = parsed[1]
             result = eval(result)
             print('recv_get_notice',result)
+            self.client_controller.emit_recv_get_notice(result)
+
+        if header == 'recv_get_todolist':
+            # print('[class_client]-recv_notice', result)
+            result = parsed[1]
+            result = eval(result)
+            print('recv_get_todolist',result)
             self.client_controller.emit_recv_get_notice(result)
 

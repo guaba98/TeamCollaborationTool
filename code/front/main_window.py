@@ -14,7 +14,7 @@ from code.front.category_list import CtgList  # 카테고리 리스트
 from code.front.Warning_dialog import DialogWarning # 경고창
 from code.front.Font import Font # 폰트 클래스
 from code.front.notice import Notice # 공지 캐러셀
-
+from code.front.todolist import TodoList # 투두리스트 캐러셀
 
 
 
@@ -32,6 +32,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     emit_signal_chat = pyqtSignal(list)
     recv_login_signal = pyqtSignal(bool)
     recv_get_notice_signal = pyqtSignal(list)
+    recv_get_todolist_signal = pyqtSignal(list)
 
     def __init__(self, client_controller):
         super().__init__()
@@ -78,6 +79,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.emit_signal_chat.connect(self.recv_chat)
         self.recv_login_signal.connect(self.login)
         self.recv_get_notice_signal.connect(self.set_notice)
+        self.recv_get_todolist_signal.connect(self.set_todolist)
 
     def set_btn_trigger(self):
         """UI 버튼 시그널 연결"""
@@ -121,7 +123,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.ctg_list = list(self.ctg_dict.keys())
         self.event_dict = {'채팅': [None, self.get_chat],
                             '공지': [self.notice_v_lay, self.get_notice],
-                            '투두리스트': [self.notice_v_lay, self.get_todo],
+                            '투두리스트': [self.notice_v_lay, self.get_todolist],
                             '....': [self.team_mem_v_lay,]
                             }
 
@@ -161,8 +163,17 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 else:
                     self.clear_layout(item.layout())
     # 투루리스트==========================================
-    def get_todo(self):
-        print('투두리스트 시작')
+    def get_todolist(self):
+        # 유저가 입력한 로그인 정보 encode
+        self.client_controller.controller_send_get_todolist()
+
+    def set_todolist(self, result):
+        print('투두 내용들 받아오기',result)
+        for i in result:
+            print('[set_notice]',i)
+            todo = TodoList(i)
+            print('durlsms')
+            self.notice_v_lay.addWidget(todo)
 
     # 공지 화면 =====================================================================================
     def set_notice(self, result):
@@ -180,6 +191,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_notice{header_split}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
+
     # window widget show=======================================================================
     def show(self):
         self.stackedWidget.setCurrentWidget(self.login_page)

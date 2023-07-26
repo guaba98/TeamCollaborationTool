@@ -146,12 +146,19 @@ class Server():
                 # result = self.db_conn.insert_user(register_user_info) #todo 채팅 내용 저장
 
             elif header == 'get_notice':  # 공지 client에 보내주기
-                # todo: 제이슨 사용 해야될듯;
                 # result = db에서 대충 공지 받아오는 함수
                 result = [('제목1','내용1'),('제목2','내용2'),('제목3','내용3')]
                 result = json.dumps(result)
 
                 response_header = f"{f'recv_get_notice{header_split}{result}'}"
+                client_socket.send(bytes(response_header, "UTF-8"))
+
+            elif header == 'get_todolist':  # 공지 client에 보내주기
+                # result = db에서 대충 공지 받아오는 함수
+                result = [('할일1','할일 세부사항1','할일 기한1','완료여부1', '완료 시간1'),('할일1','할일 세부사항1','할일 기한1','완료여부1', '완료 시간1'),('할일1','할일 세부사항1','할일 기한1','완료여부1', '완료 시간1')]
+                result = json.dumps(result)
+
+                response_header = f"{f'recv_get_todolist{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
 
 

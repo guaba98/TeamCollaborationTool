@@ -41,6 +41,9 @@ class ClientController(QtWidgets.QWidget):
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
         #
+    # 투두 ==============================
+    def emit_recv_get_todolist(self, p):
+        self.main_window.recv_get_todolist_signal.emit(p)
     # 공지 ==============================
     def emit_recv_get_notice(self, p):
         self.main_window.recv_get_notice_signal.emit(p)
@@ -52,6 +55,8 @@ class ClientController(QtWidgets.QWidget):
     # 메시지 send
     def controller_send_chat_message(self, input_chat):
         self.client_app.client_send_chat_message(input_chat)
+    def controller_send_get_todolist(self, input_chat):
+        self.client_app.client_send_get_todolist(input_chat)
 
     # 데이터가 많아 list로 보낼때
     def controller_send_json_message(self, message):

@@ -21,6 +21,7 @@ class Ui_LeftMessage(object):
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.widget = QtWidgets.QWidget(LeftMessage)
+        self.widget.setMinimumSize(QtCore.QSize(0, 45))
         self.widget.setMaximumSize(QtCore.QSize(400, 16777215))
         self.widget.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "    border-top-right-radius: 20px;\n"
