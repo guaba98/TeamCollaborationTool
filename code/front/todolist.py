@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtWidgets import *
 
 from code.front.ui.ui_class_todo_list import Ui_TodoForm
+from code.front.Font import Font
 
 
 class TodoList(QWidget, Ui_TodoForm):
@@ -13,4 +14,6 @@ class TodoList(QWidget, Ui_TodoForm):
         # self.checkBox.clicked.connect()
         # self.checkBox.clicked(checked)
         self.checkBox.setText(todo)
+        self.checkBox.setFont(Font.button(6))
         self.people_lab.setText(','.join(people_lab))
+        self.people_lab.setFont(Font.contents(4))

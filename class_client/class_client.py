@@ -76,7 +76,7 @@ class ClientApp:
     def _parse_packet(self, p: str):
         parsed = p.split(header_split)
         header = parsed[0].strip()
-        print('class_client', header)
+        print('[_parse_packet] class_client함수 헤더: ', header)
 
         if header == 'login':
             result = parsed[1]
@@ -109,7 +109,7 @@ class ClientApp:
         if header == 'recv_chat':
             result = parsed[1]
             result = result.split(list_split_1)
-            print('[class_client]-recv_chat')
+            print('[class_client]-recv_chat', result)
 
         if header == 'recv_get_notice':
             # print('[class_client]-recv_notice', result)

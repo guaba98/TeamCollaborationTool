@@ -137,6 +137,10 @@ class Server():
                 send_chat = decode_msg.split(header_split)[1] # 데이터 받아오기
                 send_chat1 = send_chat.split(list_split_1)  #
                 send_chat2 = json.dumps(send_chat1) # 받아온 데이터 json화
+                print('###########', send_chat)
+                print('###########',send_chat1)
+                print('###########', send_chat2)
+
                 response_header = f"{f'recv_chat{header_split}{send_chat}'}"   # 헤더만들기
                 clients = self.clients.copy()
                 for i in clients:

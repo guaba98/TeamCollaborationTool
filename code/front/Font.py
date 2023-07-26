@@ -30,6 +30,8 @@ class Font:
             font.setPointSize(9)
         elif t_size == 5:
             font.setPointSize(8)
+        elif t_size == 6:
+            font.setPointSize(15)
 
         font.setFamily("나눔스퀘어 네오 Bold")
         return font

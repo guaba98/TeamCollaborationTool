@@ -137,7 +137,7 @@ class DBConnector:
         conn.close()
 
     # -- 채팅
-    def insert_chat_log(self, user_id, chat):
+    def insert_chat_log(self, user_no, chat):
         """채팅 기록 저장"""
         # db 연결
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
@@ -145,9 +145,9 @@ class DBConnector:
 
         # 데이터 삽입
         join_table = "TB_USER\" NATURAL JOIN \"TB_TEAM"
-        condition = f"\"USER_ID\" = '{user_id}';"
+        condition = f"\"USER_NO\" = '{user_no}';"
         team_no = self.return_specific_data('TEAM_NO', join_table, condition)
-        user_no = self.return_specific_data('USER_NO', join_table, condition)
+        # user_no = self.return_specific_data('USER_NO', join_table, condition)
         user_name = self.return_specific_data('USER_NAME', join_table, condition)
         chat_time = self.return_datetime('time')
 
@@ -312,5 +312,5 @@ if __name__ == '__main__':
     # condition = "\"USER_NAME\" = '박소연'"
     # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
 
-    r_ = d.return_team_members(1)
-    # print(r_)
+    r_ = d.insert_chat_log(1, 'test')
+    print(r_)

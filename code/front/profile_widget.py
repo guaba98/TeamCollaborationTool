@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from code.front.ui.ui_class_profile_dialog import Ui_ProfileDialog
 from PyQt5.QtGui import *
+from code.front.Font import Font
 
 '''
 프로필 변경 다이얼로그
@@ -19,6 +20,11 @@ class ProFile(QDialog, Ui_ProfileDialog):
 
         # 버튼 누를 때 시그널 연결
         self.admit_btn.clicked.connect(self.change_profile)
+
+        # 폰트 적용
+        self.name_lab.setFont(Font.title(3))
+        self.state_edit.setFont(Font.text(4))
+        self.admit_btn.setFont(Font.text(1))
 
 
     def change_profile(self):

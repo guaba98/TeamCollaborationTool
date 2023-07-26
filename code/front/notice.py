@@ -2,6 +2,7 @@ import sys
 
 from PyQt5.QtWidgets import *
 from code.front.ui.ui_class_notice_widget import Ui_Notice_widget
+from code.front.Font import Font
 
 
 class Notice(QWidget, Ui_Notice_widget):
@@ -12,7 +13,9 @@ class Notice(QWidget, Ui_Notice_widget):
         title, contents = result
         print(title, contents)
         self.label.setText(title)
+        self.label.setFont(Font.title(3))
         self.detail_lab.setText(contents)
+        self.detail_lab.setFont(Font.text(3))
         self.del_btn.clicked.connect(lambda state: self.close())
 
     def close(self):

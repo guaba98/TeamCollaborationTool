@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 import sys
 from code.front.ui.ui_class_notice_dialog import Ui_NoticeDialog
-
+from code.front.Font import Font
 class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
     """공지를 추가하는 창"""
     def __init__(self):
@@ -16,6 +16,9 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
 
     def set_ui(self):
         self.close_btn.setIcon(QIcon('./src_img/close.png'))
+        self.title_lab.setFont(Font.title(2))
+        self.title_edit.setFont(Font.text(2))
+        self.contents_edit.setFont(Font.text(2))
 
     def connect_event(self):
         self.ok_btn.clicked.connect(self.add_notice)
@@ -33,6 +36,7 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
 
 
 if __name__ == '__main__':
+    # 폰트
     app = QApplication(sys.argv)
     notice = DialogNoticeAdd()
     notice.exec()
