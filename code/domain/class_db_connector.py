@@ -97,8 +97,6 @@ class DBConnector:
     # -- 로그인 기록 넣기
     def insert_login_log(self, login_id):
         # TODO 왜 안타는가 피티한테 물어볼것
-        print('타나요')
-        print(login_id)
         # 커서 생성
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         # c = self.start_conn()
@@ -138,14 +136,11 @@ class DBConnector:
 
     def insert_user(self, info):
         """회원가입 정보 db에 추가"""
-        print(info[0], info[1], info[2], info[3])
         user_id, join_name, join_pw, join_nickname = info[0], info[1], info[2], info[3]
-        print(user_id, join_name, join_pw, join_nickname)
 
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
         join_date = self.return_datetime('date')
-        print('여기까지는와?')
         insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
                        f"VALUES ('{join_name}', '{user_id}', '{join_pw}', '{join_nickname}', '{join_date}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
@@ -176,11 +171,9 @@ class DBConnector:
         query = f"SELECT \"{column}\" FROM public.\"{table_name}\""
         if condition is not None:
             query += f" WHERE {condition}"
-        print(query)
 
         c.execute(query)
         r_data = c.fetchall()
-        print('데이터', r_data)
 
         return r_data[0][0]
 
@@ -229,8 +222,7 @@ class DBConnector:
     #     return sing_up_obj
 
 
-if __name__ == '__main__':
-    pass
+
 #     d = DBConnector()
 #     # query = '\"USER_NAME\"=\'박소연\''
 #     # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)

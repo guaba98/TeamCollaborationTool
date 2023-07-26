@@ -36,7 +36,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="login_page">
        <property name="styleSheet">
@@ -152,11 +152,6 @@ background-color: white;}</string>
               <height>70</height>
              </size>
             </property>
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
@@ -197,11 +192,6 @@ background-color: white;}</string>
               <width>16777215</width>
               <height>70</height>
              </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-             </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -388,7 +378,7 @@ background-color: white;}</string>
          </spacer>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="reg_v_lay">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <spacer name="v_spacer_reg_top">
             <property name="orientation">

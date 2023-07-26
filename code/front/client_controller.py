@@ -41,7 +41,9 @@ class ClientController(QtWidgets.QWidget):
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
         #
-
+    # 공지 ==============================
+    def emit_recv_get_notice(self, p):
+        self.main_window.recv_get_notice_signal.emit(p)
 
     # 클라이언트에 send메시지 보내기======================================================================
     # main_window에서 만든 구분자 send
@@ -90,9 +92,9 @@ class ClientController(QtWidgets.QWidget):
         print('[client_controller]-emit_duple', result)
         self.main_window.recv_emit_insertuser.emit(result)
 
+
     def send_register_user_info(self):
         pass
-
     # 채팅=====================================================================
 
     # 서버에서 받은 메시지을 누가 보낸것 인지 구분

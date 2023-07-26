@@ -41,6 +41,7 @@ class ClientApp:
         self._connected = True
 
     def client_send_message(self, message):
+        print('[client_send_message]')
         self.client_socket.send(message)
 
     def client_send_chat_message(self, input_chat):
@@ -68,10 +69,11 @@ class ClientApp:
     def _parse_packet(self, p: str):
         parsed = p.split(header_split)
         header = parsed[0].strip()
+        print('class_client', header)
 
         if header == 'login':
             result = parsed[1]
-            print(result)
+            # print(result)
 
             if result == 'False':
                 self.client_controller.emit_login(False)
@@ -102,5 +104,10 @@ class ClientApp:
             result = result.split(list_split_1)
             print('[class_client]-recv_chat')
 
-            self.client_controller.emit_recv_chat(result)
+        if header == 'recv_get_notice':
+            # print('[class_client]-recv_notice', result)
+            result = parsed[1]
+            result = eval(result)
+            print('recv_get_notice',result)
+            self.client_controller.emit_recv_get_notice(result)
 
