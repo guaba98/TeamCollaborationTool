@@ -6,7 +6,7 @@ from code.front.Font import Font
 
 
 class Notice(QWidget, Ui_Notice_widget):
-    def __init__(self, result):
+    def __init__(self, result, user_role):
         super().__init__()
         self.setupUi(self)
         # title, contents = result[0], result[1]
