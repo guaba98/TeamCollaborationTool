@@ -2,13 +2,8 @@ import sqlite3
 
 import pandas as pd
 from datetime import datetime
-# from Code.domain.class_user import User
-# from Code.domain.class_user_talk_room import UserTalkRoom
-# from Code.domain.class_talk_room import TalkRoom
-# from Code.domain.class_message import Message
-# from Code.domain.class_long_contents import LongContents
-import psycopg2
 from sqlalchemy import create_engine
+import psycopg2
 
 # PostgreSQL 데이터베이스 정보
 db_params = {
@@ -211,7 +206,7 @@ class DBConnector:
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
 
-        query = f"UPDATE INTO public.\"{table_name}\" SET (\"{column}\") = ('{data}')"
+        query = f"UPDATE public.\"{table_name}\" SET \"{column}\" = '{data}'"
         if condition is not None:
             query += f" WHERE {condition}"
         print('쿼리문', query)
@@ -237,7 +232,7 @@ class DBConnector:
         # print('[dateimte.py]시간 포멧팅: ', now_format)
         return now_format
 
-    def return_specific_data(self, column, table_name, condition=None):
+    def return_specific_data(self, column, table_name, condition=None, type=None):
         """특정 열 데이터만 반환합니다."""
         c = self.start_conn()
 
@@ -249,8 +244,9 @@ class DBConnector:
         c.execute(query)
         r_data = c.fetchall()
         print('데이터', r_data)
-
-        return r_data[0][0]
+        if type is None:
+            return r_data[0][0]
+        return r_data
 
     # 여기서부터 사용 안함
 
@@ -305,5 +301,13 @@ if __name__ == '__main__':
     #
     # d.insert_user('user_id', 'join_name', 'join_pw', 'join_nickname')
     # d.insert_notice_data('admin', '테스트 제목제목', '테스트 내용 내용')
-    condition = "\"USER_NAME\" = '박소연'"
-    d.insert_specific_data('TB_USER', 'USER_MESSAGE', '저는 행복합니다...', condition)
+    # condition = "\"USER_NAME\" = '박소연'"
+    # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
+
+    '''SELECT * FROM "TB_TODO_LIST" WHERE "USER_NO" = 1;'''
+    c ="\"USER_NO\" = 1"
+    title = d.return_specific_data('TODO_LIST', 'TB_TODO_LIST', c, type=1 )
+    contents = d.return_specific_data('TODO_LIST', 'TB_TODO_LIST', c, type=1 )
+    for i in result:
+        print(i[0])
+    # print(result)
