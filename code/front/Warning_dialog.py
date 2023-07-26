@@ -16,11 +16,11 @@ class DialogWarning(QDialog, Ui_WarnDialog):
         self.set_ui()
 
     def on_ok_btn_clicked(self):
-        print('예')
+        # print('예')
         self.close()
 
     def reject_btn(self):
-        print('아니오')
+        # print('아니오')
         self.close()
 
     # 이벤트 연결
@@ -36,7 +36,7 @@ class DialogWarning(QDialog, Ui_WarnDialog):
         self.close_btn.setIcon(QIcon('./src_img/close.png'))
         self.close_btn.setIconSize(QSize(35, 35))
 
-        self.warning_lab.setFont(Font.text(1))
+        self.warning_lab.setFont(Font.contents(6))
         self.ok_btn.setFont(Font.button(1))
         self.accept_btn.setFont(Font.button(1))
         self.cancel_btn.setFont(Font.button(1))
@@ -79,6 +79,8 @@ class DialogWarning(QDialog, Ui_WarnDialog):
             self.warning_lab.setText('비밀번호를 입력해 주세요.')
         elif t_type == 'unable_chat':
             self.warning_lab.setText('회원만 채팅이 가능합니다.')
+        elif t_type == 'login_cmplt':
+            self.warning_lab.setText('로그인이 완료되었습니다!')
         elif t_type == 'register_cmplt':
             self.warning_lab.setText('회원가입이 완료되었습니다.\n로그인 해 주세요!')
 
@@ -87,10 +89,10 @@ class DialogWarning(QDialog, Ui_WarnDialog):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    app.setStyle('Fusion')
-    msgbox = DialogWarning()
-    msgbox.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
-    msgbox.show_dialog()
+    # app = QApplication(sys.argv)
+    # app.setStyle('Fusion')
+    # msgbox = DialogWarning()
+    # msgbox.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
+    # msgbox.show_dialog()
 
     pass

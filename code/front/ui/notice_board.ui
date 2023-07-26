@@ -901,6 +901,79 @@ background-color: white;}</string>
                  </property>
                 </spacer>
                </item>
+               <item>
+                <widget class="QWidget" name="bottom_widget" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>789</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="plus_button">
+                    <property name="minimumSize">
+                     <size>
+                      <width>40</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>30</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">border-radius:20px;
+background-color: rgb(20, 200, 113);</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../src_img/my_qrc.qrc">
+                      <normaloff>:/newPrefix/plus-icon.png</normaloff>:/newPrefix/plus-icon.png</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
@@ -951,8 +1024,8 @@ background-color: white;}</string>
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>850</width>
-                    <height>544</height>
+                    <width>829</width>
+                    <height>16</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1131,8 +1204,8 @@ QPushButton#send_btn{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>753</width>
-                 <height>367</height>
+                 <width>850</width>
+                 <height>574</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>plus-icon.png</file>
     <file>send_green.png</file>
     <file>누끼 마멧.png</file>
   </qresource>

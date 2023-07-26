@@ -14,10 +14,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_LeftMessage(object):
     def setupUi(self, LeftMessage):
         LeftMessage.setObjectName("LeftMessage")
-        LeftMessage.resize(439, 45)
+        LeftMessage.resize(815, 63)
         LeftMessage.setStyleSheet("background-color: rgba(255, 255, 255, 0);")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(LeftMessage)
-        self.horizontalLayout_2.setContentsMargins(40, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(40, 9, 9, 9)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.widget = QtWidgets.QWidget(LeftMessage)
@@ -34,6 +34,8 @@ class Ui_LeftMessage(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout_2.addWidget(self.widget)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
 
         self.retranslateUi(LeftMessage)
         QtCore.QMetaObject.connectSlotsByName(LeftMessage)

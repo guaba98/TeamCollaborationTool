@@ -12,7 +12,7 @@ class YourMsg(QWidget, Ui_LeftMessage):
         super().__init__()
         self.setupUi(self)
         self.label.setText(f'{name}: {msg}')
-        self.label.setFont(Font.contents(3))
+        self.label.setFont(Font.text(2))
 
 class MyMsg(QWidget, Ui_RightMessage):
     """상대방 메세지가 담기는 클래스입니다."""
@@ -20,4 +20,4 @@ class MyMsg(QWidget, Ui_RightMessage):
         super().__init__()
         self.setupUi(self)
         self.label.setText(f'{name}: {msg}')
-        self.label.setFont(Font.contents(3))
+        self.label.setFont(Font.text(2))

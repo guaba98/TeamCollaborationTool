@@ -11,12 +11,11 @@ from code.front.message import YourMsg, MyMsg  # 메세지
 from code.front.ui.ui_class_notice_board import Ui_NoticeBoard  # 메인 화면
 from code.front.profile_widget import ProFile  # 프로필 변경
 from code.front.category_list import CtgList  # 카테고리 리스트
-from code.front.Warning_dialog import DialogWarning # 경고창
-from code.front.Font import Font # 폰트 클래스
-from code.front.notice import Notice # 공지 캐러셀
-from code.front.todolist import TodoList # 투두리스트 캐러셀
-
-
+from code.front.Warning_dialog import DialogWarning  # 경고창
+from code.front.Font import Font  # 폰트 클래스
+from code.front.notice import Notice  # 공지 캐러셀
+from code.front.todolist import TodoList  # 투두리스트 캐러셀
+from code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd # 공지 다이얼로그, 투두리스트 다이얼로그
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -36,12 +35,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def __init__(self, client_controller):
         super().__init__()
+
+        self.ctg_clicked = None
+        self.is_admin = None
         self.setupUi(self)
         self.client_controller = client_controller
-        # self.YourMsg = YourMsg()
-        # self.MyMsg = MyMsg()
         self.Warn = DialogWarning()
-        self.font = Font()
+        self.Notice_add = DialogNoticeAdd()
+        self.Todo_add = DialogToDoAdd()
 
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -50,6 +51,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         # 버튼 트리거 함수 호출
         self.set_btn_trigger()
         self.init_func()
+
+        # 변수
+        self.init_var()
+
+    # 변수
+    def init_var(self):
+        self.is_admin = False # 관리자인지 확인
+        self.ctg_clicked = None # 카테고리 버튼 클릭 확인(공지, 투두리스트)
 
     # widget 이동 함수=======================================================================
     def mousePressEvent(self, event):
@@ -72,11 +81,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def set_btn_trigger(self):
         """UI 버튼 시그널 연결"""
 
-        self.login_btn.clicked.connect(lambda state: self.click_login_btn())    # 로긴 버튼
+        self.login_btn.clicked.connect(lambda state: self.click_login_btn())  # 로긴 버튼
         self.register_btn.clicked.connect(lambda state: self.click_register_btn())  # 회원가입 화면 이동 버튼
         self.reg_register_btn.clicked.connect(lambda state: self.click_reg_register_btn())  # 회원가입 버튼
         self.send_btn.clicked.connect(lambda state: self.click_send_btn())  # 채팅 전송 버튼
         self.chat_edit.returnPressed.connect(self.click_send_btn)
+        self.plus_button.clicked.connect(lambda state: self.click_plus_button())
 
     def set_font(self):
         """기본 폰트 적용하는 부분"""
@@ -103,15 +113,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         profile_lab = self.profile_widget.findChildren(QLabel)
         [lab.setFont(Font.text(3)) for lab in profile_lab]
 
-
-
         # 채팅
         self.chat_edit.setFont(Font.text(2))
         # self.send_btn.setFont(Font.button(2))
-
-
-
-
 
     def ctg_list_show(self):
         """카테고리 넣어주기"""
@@ -122,37 +126,46 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             '투두리스트': ['heart.png', self.notice_page]
         }
         self.ctg_list = list(self.ctg_dict.keys())
-        self.event_dict = {'채팅': [None, self.get_chat],
-                            '공지': [self.notice_v_lay, self.get_notice],
-                            '투두리스트': [self.notice_v_lay, self.get_todolist],
-                            '....': [self.team_mem_v_lay,]
-                            }
+        self.event_dict = {'채팅': [None, self.get_chat, self.plus_button.hide],
+                           '공지': [self.notice_v_lay, self.get_notice, self.plus_button.show],
+                           '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show],
+                           '....': [self.team_mem_v_lay, self.plus_button.hide ]
+                           }
 
         for ctg in self.ctg_list:  # 카테고리 이미지, 카테고리 이름 넣어주기
             img_name = self.ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self)
             self.category_v_lay.addWidget(ctg_)
+    def click_plus_button(self):
+        print('어라라?')
+        if self.ctg_clicked == '공지':
+            self.Notice_add.exec_()
+        elif self.ctg_clicked == '투두리스트':
+            self.Todo_add.exec_()
+        else:
+            pass
 
     def ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
         name = self.client_controller.client_app.user_name
         state = self.client_controller.client_app.user_message
-
+        self.ctg_clicked = ctg_name
+        print('카테고리 클릭', self.ctg_clicked)
         for c in self.ctg_list:
             if ctg_name == '프로필 수정':
-                p_ = ProFile(self, img=None, name= name, state= state)
+                p_ = ProFile(self, img=None, name=name, state=state)
                 p_.show_dialog()
                 break
             elif ctg_name == c:
-                self.clear_layout(self.event_dict[ctg_name][0]) # 레이아웃 비우기
+                self.clear_layout(self.event_dict[ctg_name][0])  # 레이아웃 비우기
                 self.event_dict[ctg_name][1]()
+                self.event_dict[ctg_name][2]()
                 self.inner_stackedWidget.setCurrentWidget(self.ctg_dict[c][1])
 
-    def update_user_message(self,user_message):
+    def update_user_message(self, user_message):
         message = f"{f'update_user_message{header_split}{self.client_controller.client_app.user_no}{list_split_1}{user_message}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-
 
     # 레이아웃 비우기
     def clear_layout(self, layout: QLayout):
@@ -171,6 +184,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 # 아이템이 레이아웃일 경우 재귀 호출로 레이아웃 내의 위젯 삭제
                 else:
                     self.clear_layout(item.layout())
+
     # 투루리스트==========================================
     def get_todolist(self):
         # 유저가 입력한 로그인 정보 encode
@@ -178,18 +192,18 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
-        print('투두 내용들 받아오기',result)
+        print('투두 내용들 받아오기', result)
         people_lab = result[1]
         for i in result[0]:
-            print('[set_notice]',i)
+            print('[set_notice]', i)
             todo = TodoList(i, people_lab)
             self.notice_v_lay.addWidget(todo)
 
     # 공지 화면 =====================================================================================
     def set_notice(self, result):
-        print('공지 내용들 받아오기',result)
+        print('공지 내용들 받아오기', result)
         for i in result:
-            print('[set_notice]',i)
+            print('[set_notice]', i)
             notice = Notice(i)
             self.notice_v_lay.addWidget(notice)
 
@@ -224,27 +238,28 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         effect.setBlurRadius(5)
         effect.setOffset(5, 5)  # 객체와 그림자 사이의 거리 또는 변위
         obj.setGraphicsEffect(effect)
+
     # 채팅 =========================================================================================
     # 전송버튼 클릭시 채팅을 서버에 보내는 함수
     def get_chat(self):
         print('채팅창 열때 실해')
+
     def click_send_btn(self):
         if len(self.chat_edit.text()) >= 1:
             input_chat = self.chat_edit.text()
             self.chat_edit.clear()  # 채팅바 클리어
-            self.client_controller.controller_send_chat_message(input_chat) # 입력된 채팅 client_controller에 보내기
+            self.client_controller.controller_send_chat_message(input_chat)  # 입력된 채팅 client_controller에 보내기
 
     # 서버에서 채팅 메시지 받는 함수
-    def recv_my_chat(self, result): # 본인이 보낸 메시지라면
+    def recv_my_chat(self, result):  # 본인이 보낸 메시지라면
         user_no, team_no, name, chat = result
         message_widget = MyMsg(name, chat)
         self.chat_v_lay.addWidget(message_widget)
 
-    def recv_chat(self, result):    # 다른 사람이 보낸 메시지라면
+    def recv_chat(self, result):  # 다른 사람이 보낸 메시지라면
         user_no, team_no, name, chat = result
         message_widget = YourMsg(name, chat)
         self.chat_v_lay.addWidget(message_widget)
-
 
     # 채팅방 입장시 db에 저장된 채팅 요청
     def send_det_chat(self):
@@ -254,7 +269,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 로그인 함수=======================================================================
     def click_login_btn(self):
         # test test
-        self.Warn.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
+        self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')
         self.Warn.exec_()
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
         user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
@@ -267,10 +282,11 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 로그인 결과 알림 및 화면 전환
     def login(self, result):
         if result:
-            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully') # 알림창 띄우기
-            self.stackedWidget.setCurrentWidget(self.main_page) # 화면전환
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
+            self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
         else:
-            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed') # 알림창 띄우기
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed')  # 알림창 띄우기
+
     # 회원 가입 함수=======================================================================
 
     def insertuser(self, result):
@@ -319,25 +335,26 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def set_reg_id_lab(self, result):
         if result is True:
             self.reg_id_lab.setText('ID 사용가능')
+            self.reg_id_lab.setStyleSheet('color:blue;')
             self.click_reg_register_btn2()
         else:
             self.reg_id_lab.setText('ID 사용불가')
+            self.reg_id_lab.setStyleSheet('color:red;')
 
     def set_reg_name_lab(self):
-        self.reg_name_lab.setText('이름 정상적으로 적어주세요')
+        self.reg_name_lab.setText('이름은 두 글자 이상이여야 합니다.')
 
     def set_reg_nn_lab(self):
-        self.reg_nn_lab.setText('닉네임 정상적으로 적어주세요')
+        self.reg_nn_lab.setText('닉네임은 두 글자 이상이여야 합니다.')
 
     def set_reg_pw_lab(self):
-        self.reg_pw_lab.setText('비밀번호 다시 확인해주세요')
+        self.reg_pw_lab.setText('비밀번호가 같지 않습니다.')
 
     # 유저가 입력한 회원가입조건 검사
     def register_check(self):
         self.reg_name_lab.setText('이름')
         self.reg_nn_lab.setText('닉네임')
         self.reg_pw_lab.setText('비밀번호')
-
 
         if len(self.reg_name_edit.text()) < 2:
             self.set_reg_name_lab()

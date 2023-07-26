@@ -18,6 +18,7 @@ class Ui_WarnDialog(object):
         WarnDialog.setStyleSheet("QFrame#frame{\n"
 "background-color: rgb(255, 255, 255);\n"
 "border-radius:20px;\n"
+"border: 0.5px solid gray;\n"
 "\n"
 "}\n"
 "QDialog#WarnDialog{\n"

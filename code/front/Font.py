@@ -59,6 +59,7 @@ class Font:
     @staticmethod
     def contents(t_size=1, t_blod=True):
         font = QFont()
+
         if t_size == 1:
             font.setPointSize(12)
         elif t_size == 2:
@@ -69,6 +70,8 @@ class Font:
             font.setPointSize(9)
         elif t_size == 5:
             font.setPointSize(8)
+        elif t_size == 6:
+            font.setPointSize(16)
 
         if t_blod:
             font.setFamily("나눔스퀘어 네오 Regular")

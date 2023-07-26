@@ -14,12 +14,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_RightMessage(object):
     def setupUi(self, RightMessage):
         RightMessage.setObjectName("RightMessage")
-        RightMessage.resize(439, 45)
+        RightMessage.resize(815, 63)
         RightMessage.setStyleSheet("background-color: rgba(255, 255, 255, 0);")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(RightMessage)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 40, 0)
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(RightMessage)
+        self.horizontalLayout.setContentsMargins(-1, 9, -1, -1)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
         self.widget = QtWidgets.QWidget(RightMessage)
         self.widget.setMinimumSize(QtCore.QSize(0, 45))
         self.widget.setMaximumSize(QtCore.QSize(400, 16777215))
@@ -34,7 +35,7 @@ class Ui_RightMessage(object):
         self.label = QtWidgets.QLabel(self.widget)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.horizontalLayout_2.addWidget(self.widget)
+        self.horizontalLayout.addWidget(self.widget)
 
         self.retranslateUi(RightMessage)
         QtCore.QMetaObject.connectSlotsByName(RightMessage)
