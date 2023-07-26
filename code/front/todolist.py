@@ -7,7 +7,7 @@ from code.front.Font import Font
 
 
 class TodoList(QWidget, Ui_TodoForm):
-    def __init__(self, result, people_lab):
+    def __init__(self, result, people_lab, user_role):
         super().__init__()
         self.setupUi(self)
         todo, checked = result

@@ -41,6 +41,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.setupUi(self)
         self.client_controller = client_controller
         self.Warn = DialogWarning()
+        self.font = Font()
+        # 로그인한 유저의 역할
+        self.user_role = None
         self.Notice_add = DialogNoticeAdd()
         self.Todo_add = DialogToDoAdd()
 
@@ -192,19 +195,19 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
-        print('투두 내용들 받아오기', result)
+        print('투두 내용들 받아오기',result)
         people_lab = result[1]
         for i in result[0]:
             print('[set_notice]', i)
-            todo = TodoList(i, people_lab)
+            todo = TodoList(i, people_lab, self.user_role)
             self.notice_v_lay.addWidget(todo)
 
     # 공지 화면 =====================================================================================
     def set_notice(self, result):
-        print('공지 내용들 받아오기', result)
+        print('공지 내용들 받아오기',result)
         for i in result:
             print('[set_notice]', i)
-            notice = Notice(i)
+            notice = Notice(i, self.user_role)
             self.notice_v_lay.addWidget(notice)
 
     # 공지를 db에서 받아오는 함수
@@ -283,10 +286,11 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def login(self, result):
         if result:
             self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
+            self.user_role = self.client_controller.client_app.user_nickname
+            self.login_user_role(user_role)
             self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
         else:
-            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed')  # 알림창 띄우기
-
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed') # 알림창 띄우기
     # 회원 가입 함수=======================================================================
 
     def insertuser(self, result):
