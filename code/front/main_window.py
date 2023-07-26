@@ -138,7 +138,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         state = self.client_controller.client_app.user_message
         for c in self.ctg_list:
             if ctg_name == '프로필 수정':
-                p_ = ProFile(img=None, name='test', state='test')
+                p_ = ProFile(img=None, name= name, state= state)
                 p_.show_dialog()
                 break
             elif ctg_name == c:
