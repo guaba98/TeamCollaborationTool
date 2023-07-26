@@ -31,7 +31,8 @@ class ClientApp:
         self.user_name = None
         self.user_pw = None
         self.user_nickname = None
-
+        self.user_message = None
+        self.user_create_date = None
     def connect_server(self):
         self.client_socket = socket(AF_INET, SOCK_STREAM)
         self.client_socket.connect(_CONNECT)
@@ -40,12 +41,10 @@ class ClientApp:
         self._connected = True
 
     def client_send_message(self, message):
-        print('메세지 잘보내?', message.split())
         self.client_socket.send(message)
 
     def client_send_chat_message(self, input_chat):
         team_no = 1
-        print('클라우드까지와?')
         message = f"{f'send_chat{header_split}{self.user_no}{list_split_1}{team_no}{list_split_1}{self.user_name}{list_split_1}{input_chat}':{BUFFER}}".encode(
             FORMAT)
         self.client_socket.send(message)
@@ -77,9 +76,9 @@ class ClientApp:
                 self.client_controller.emit_login(False)
             else:
                 result = eval(result)
-                print(result)
+                result = result[0]
+                self.user_no, self.user_name, self.user_id, self.user_pw, self.user_nickname, self.user_message, self.user_create_date = result
                 self.client_controller.emit_login(True)
-                self.user_id, self.username, self.user_pw, self.user_nickname, _, _ = result
 
         if header == 'duple':
             result = parsed[1]
@@ -100,10 +99,7 @@ class ClientApp:
         if header == 'recv_chat':
             result = parsed[1]
             result = result.split(list_split_1)
-            # print(result)
-            for i in result:
-                print(i)
-            # result = eval(result)
-            # print(result, '채팅 받아온거')
+            print('[class_client]-recv_chat')
+
             self.client_controller.emit_recv_chat(result)
-                # self.user_id, self.username, self.user_pw, self.user_nickname = result
+

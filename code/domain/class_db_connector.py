@@ -47,16 +47,15 @@ class DBConnector:
 
     def start_conn(self):
         print('서버랑 db연결')
-
         self.conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         print('db 연결된')
         # self.conn = psycopg2.connect(**db_params)
         # 커서 생성
         cur = self.conn.cursor()
-        query = f"SELECT * FROM public.\"TB_USER\""
-        cur.execute(query)
-        results = cur.fetchall()
-        print(results)
+        # query = f"SELECT * FROM public.\"TB_USER\""
+        # cur.execute(query)
+        # results = cur.fetchall()
+        # print(results)
 
         return cur
 

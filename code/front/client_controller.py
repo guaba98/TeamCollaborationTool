@@ -37,10 +37,14 @@ class ClientController(QtWidgets.QWidget):
 
 
     # 클라이언트에 send메시지 보내기======================================================================
+    # main_window에서 만든 구분자 send
     def controller_send_message(self, message):
         self.client_app.client_send_message(message)
+    # 메시지 send
     def controller_send_chat_message(self, input_chat):
         self.client_app.client_send_chat_message(input_chat)
+
+    # 데이터가 많아 list로 보낼때
     def controller_send_json_message(self, message):
         self.client_app.client_send_json_message(message)
 
@@ -63,8 +67,7 @@ class ClientController(QtWidgets.QWidget):
     # 로그인 ===============================================================
 
     def emit_login(self, p):
-        # 로그인 결과 False면 실패창 True면 성공창 main화면 전환
-        print('잉잉')
+        # 로그인 결과값 main에 전달 False면 실패창 True면 성공창 main화면 전환
         if p:
             self.main_window.recv_login_signal.emit(p)
         else:
@@ -74,10 +77,7 @@ class ClientController(QtWidgets.QWidget):
     def emit_duple(self, result):
         print('[client_controller]', result)
         self.main_window.reg_id_lab_signal.emit(result)
-        # if result == False:
-        #     self.main_window.reg_id_lab_signal.emit(False)
-        # else:
-        #     self.main_window.reg_id_lab_signal.emit(True)
+
     def emit_insertuser(self, result):
         print('[client_controller]-emit_duple', result)
         self.main_window.recv_emit_insertuser.emit(result)
@@ -86,6 +86,11 @@ class ClientController(QtWidgets.QWidget):
         pass
 
     # 채팅=====================================================================
+
+    # 서버에서 받은 메시지을 누가 보낸것 인지 구분
     def emit_recv_chat(self, result):
-        self.main_window.emit_recv_chat_signal.emit(result)
-        pass
+        user_no, team_no, name, chat = result
+        if user_no == str(self.client_app.user_no):   # 본인이 보낸 메시지면
+            self.main_window.emit_signal_my_chat.emit(result)
+        else:   # 다른 유저가 보낸 메시지면
+            self.main_window.emit_signal_chat.emit(result)

@@ -80,7 +80,7 @@ class Server():
                 del self.clients[notified_socket]
 
     def send_message(self, client_socket: socket, result):
-        print(f"Server SENDED: ({result})".split())
+        # print(f"Server SENDED: ({result})".split())
         client_socket.send(result)
 
     def receive_message(self, client_socket: socket):
@@ -112,6 +112,7 @@ class Server():
             elif header == 'duple':  # 회원가입 아이디 중복확인
                 substance = decode_msg.split(header_split)[1]
                 join_username = substance
+                print('[server]-중복확인 데이터 확인',join_username)
                 result = self.db_conn.duple_reg_id(join_username) # DB에 연결해 아이디 중복확인
                 if result: # 사용 가능한 아이디일 때
                     response_header = f"{f'duple{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
@@ -138,7 +139,9 @@ class Server():
                 send_chat1 = send_chat.split(list_split_1)  #
                 send_chat2 = json.dumps(send_chat1) # 받아온 데이터 json화
                 response_header = f"{f'recv_chat{header_split}{send_chat}'}'"   # 헤더만들기
-                for i in self.clients:
+                clients = self.clients.copy()
+                for i in clients:
+                    print('[class_server]- recv_send_chat',i)
                     i.send(bytes(response_header, "UTF-8"))
                 # client_socket.send(bytes(response_header, "UTF-8"))
                 # result = self.db_conn.insert_user(register_user_info) #todo 채팅 내용 저장
