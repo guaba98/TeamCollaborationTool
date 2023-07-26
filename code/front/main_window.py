@@ -26,7 +26,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     reg_id_lab_signal = pyqtSignal(bool)
     recv_emit_insertuser = pyqtSignal(bool)
     emit_recv_chat_signal = pyqtSignal(list)
-
+    recv_login_signal = pyqtSignal(bool)
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
@@ -91,6 +91,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.reg_id_lab_signal.connect(self.set_reg_id_lab)
         self.recv_emit_insertuser.connect(self.insertuser)
         self.emit_recv_chat_signal.connect(self.recv_chat)
+        self.recv_login_signal.connect(self.login)
 
     def set_btn_trigger(self):
         """UI 버튼 시그널 연결"""
@@ -168,6 +169,13 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
 
+    def login(self, result):
+        if result:
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')
+            print('로긴 ')
+        else:
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed')
+            print('실패')
     # 회원 가입 함수=======================================================================
 
     def insertuser(self, result):

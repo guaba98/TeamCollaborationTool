@@ -49,7 +49,7 @@ class DBConnector:
         print('서버랑 db연결')
 
         self.conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-
+        print('db 연결된')
         # self.conn = psycopg2.connect(**db_params)
         # 커서 생성
         cur = self.conn.cursor()

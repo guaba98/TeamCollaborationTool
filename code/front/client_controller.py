@@ -12,6 +12,8 @@ from class_client.class_client import ClientApp
 # ui 임풜트 예아
 from code.front.main_window import WidgetNoticeBorad
 
+
+
 header_split = chr(1)
 list_split_1 = chr(2)
 list_split_2 = chr(3)
@@ -30,6 +32,7 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
+
 
 
 
@@ -60,7 +63,12 @@ class ClientController(QtWidgets.QWidget):
     # 로그인 ===============================================================
 
     def emit_login(self, p):
-        print('로그인 결과:',p)
+        # 로그인 결과 False면 실패창 True면 성공창 main화면 전환
+        print('잉잉')
+        if p:
+            self.main_window.recv_login_signal.emit(p)
+        else:
+            self.main_window.recv_login_signal.emit(p)
 
     # 회원가입 ============================================================
     def emit_duple(self, result):

@@ -74,11 +74,11 @@ class ClientApp:
             print(result)
 
             if result == 'False':
-                self.client_controller.emit_login('로긴 실패')
+                self.client_controller.emit_login(False)
             else:
                 result = eval(result)
                 print(result)
-                self.client_controller.emit_login('로긴성공')
+                self.client_controller.emit_login(True)
                 self.user_id, self.username, self.user_pw, self.user_nickname, _, _ = result
 
         if header == 'duple':
