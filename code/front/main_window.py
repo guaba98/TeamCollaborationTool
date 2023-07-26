@@ -48,31 +48,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.set_btn_trigger()
         self.init_func()
 
-        # 폰트
-        fontDB = QFontDatabase()
-        fontDB.addApplicationFont("../front/font/NanumSquareNeo-aLt.ttf")
-        fontDB.addApplicationFont("../front/font/NanumSquareNeo-bRg.ttf")
-        fontDB.addApplicationFont("../front/font/NanumSquareNeo-cBd.ttf")
-        fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
-        fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
 
-        # 로그인 창
-        self.login_title_lab.setFont(Font.title(1))
-        self.login_id_lab.setFont(Font.text(3))
-        self.login_pw_lab.setFont(Font.text(3))
-        self.login_id_edit.setFont(Font.text(3, False))
-        self.login_pw_edit.setFont(Font.text(3, False))
-        self.login_btn.setFont(Font.button(2))
-        self.register_btn.setFont(Font.button(2))
 
-        # 회원가입 창
-        reg_lab = self.register_page.findChildren(QLabel)
-        reg_edit = self.register_page.findChildren(QLineEdit)
-        [lab.setFont(Font.text(3)) for lab in reg_lab]
-        [edit.setFont(Font.text(3, False)) for edit in reg_edit]
-        self.reg_title_lab.setFont(Font.title(1))
-        self.reg_sub_title.setFont(Font.text(4))
-        self.reg_register_btn.setFont(Font.button(1))
+
 
 
 
@@ -99,11 +77,33 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_btn_trigger(self):
         """UI 버튼 시그널 연결"""
-        self.ctg_list_show()  # 카테고리 넣어주기
+
         self.login_btn.clicked.connect(lambda state: self.click_login_btn())    # 로긴 버튼
         self.register_btn.clicked.connect(lambda state: self.click_register_btn())  # 회원가입 화면 이동 버튼
         self.reg_register_btn.clicked.connect(lambda state: self.click_reg_register_btn())  # 회원가입 버튼
         self.send_btn.clicked.connect(lambda state: self.click_send_btn())  # 채팅 전송 버튼
+
+    def set_font(self):
+
+        # 로그인 창
+        self.login_title_lab.setFont(Font.title(1))
+        self.login_id_lab.setFont(Font.text(3))
+        self.login_pw_lab.setFont(Font.text(3))
+        self.login_id_edit.setFont(Font.text(3, False))
+        self.login_pw_edit.setFont(Font.text(3, False))
+        self.login_btn.setFont(Font.button(2))
+        self.register_btn.setFont(Font.button(2))
+
+        # 회원가입 창
+        reg_lab = self.register_page.findChildren(QLabel)
+        reg_edit = self.register_page.findChildren(QLineEdit)
+        [lab.setFont(Font.text(3)) for lab in reg_lab]
+        [edit.setFont(Font.text(3, False)) for edit in reg_edit]
+        self.reg_title_lab.setFont(Font.title(1))
+        self.reg_sub_title.setFont(Font.text(4))
+        self.reg_register_btn.setFont(Font.button(1))
+
+
 
 
     def ctg_list_show(self):
@@ -135,6 +135,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def show(self):
         self.stackedWidget.setCurrentWidget(self.notice_page)
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
+        self.ctg_list_show()  # 카테고리 넣어주기
+        self.set_font()  # 폰트 설정
         super().show()
 
     # 채팅 =========================================================================================
