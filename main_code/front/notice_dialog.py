@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 import sys
-from code.front.ui.ui_class_notice_dialog import Ui_NoticeDialog
-from code.front.Font import Font
+from main_code.front.ui.ui_class_notice_dialog import Ui_NoticeDialog
+from main_code.front.Font import Font
 class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
     """공지를 추가하는 창"""
     def __init__(self):

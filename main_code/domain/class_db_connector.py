@@ -236,7 +236,7 @@ class DBConnector:
         c = self.start_conn()
 
         # 조건
-        sql_query = f"SELECT \"TODO_LIST\", \"TODO_CHECKED\" FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
+        sql_query = f"SELECT \"TODO_ID\", \"TODO_LIST\", \"TODO_CHECKED\" FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
         c.execute(sql_query)
 
         # 결과 가져오기
@@ -312,5 +312,5 @@ if __name__ == '__main__':
     # condition = "\"USER_NAME\" = '박소연'"
     # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
 
-    r_ = d.insert_chat_log(1, 'test')
+    r_ = d.get_todo_list(1)
     print(r_)

@@ -1,8 +1,8 @@
 import sys
 
 from PyQt5.QtWidgets import *
-from code.front.ui.ui_class_notice_widget import Ui_Notice_widget
-from code.front.Font import Font
+from main_code.front.ui.ui_class_notice_widget import Ui_Notice_widget
+from main_code.front.Font import Font
 
 
 class Notice(QWidget, Ui_Notice_widget):

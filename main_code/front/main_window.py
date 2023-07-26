@@ -6,16 +6,16 @@ from PyQt5.QtCore import Qt, pyqtSignal, QSize
 from PyQt5.QtGui import QFontDatabase, QIcon, QColor
 
 # UI
-from code.front.message import YourMsg, MyMsg  # 메세지
-# from code.front.client_controller import ClientController
-from code.front.ui.ui_class_notice_board import Ui_NoticeBoard  # 메인 화면
-from code.front.profile_widget import ProFile  # 프로필 변경
-from code.front.category_list import CtgList  # 카테고리 리스트
-from code.front.Warning_dialog import DialogWarning  # 경고창
-from code.front.Font import Font  # 폰트 클래스
-from code.front.notice import Notice  # 공지 캐러셀
-from code.front.todolist import TodoList  # 투두리스트 캐러셀
-from code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd # 공지 다이얼로그, 투두리스트 다이얼로그
+from main_code.front.message import YourMsg, MyMsg  # 메세지
+# from main_code.front.client_controller import ClientController
+from main_code.front.ui.ui_class_notice_board import Ui_NoticeBoard  # 메인 화면
+from main_code.front.profile_widget import ProFile  # 프로필 변경
+from main_code.front.category_list import CtgList  # 카테고리 리스트
+from main_code.front.Warning_dialog import DialogWarning  # 경고창
+from main_code.front.Font import Font  # 폰트 클래스
+from main_code.front.notice import Notice  # 공지 캐러셀
+from main_code.front.todolist import TodoList  # 투두리스트 캐러셀
+from main_code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd # 공지 다이얼로그, 투두리스트 다이얼로그
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -287,7 +287,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         if result:
             self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
             self.user_role = self.client_controller.client_app.user_nickname
-            self.login_user_role(user_role)
+            # self.login_user_role(user_role)
             self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
         else:
             self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed') # 알림창 띄우기

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
-from code.front.ui.ui_class_profile_dialog import Ui_ProfileDialog
+from main_code.front.ui.ui_class_profile_dialog import Ui_ProfileDialog
 from PyQt5.QtGui import *
-from code.front.Font import Font
+from main_code.front.Font import Font
 
 '''
 프로필 변경 다이얼로그

@@ -2,8 +2,8 @@ import sys
 
 from PyQt5.QtWidgets import *
 
-from code.front.ui.ui_class_todo_list import Ui_TodoForm
-from code.front.Font import Font
+from main_code.front.ui.ui_class_todo_list import Ui_TodoForm
+from main_code.front.Font import Font
 
 
 class TodoList(QWidget, Ui_TodoForm):

@@ -485,7 +485,7 @@ class Ui_NoticeBoard(object):
         self.chat_edit.setPlaceholderText(_translate("NoticeBoard", "메세지를 작성하세요."))
         self.team_process_lab.setText(_translate("NoticeBoard", "팀업무진행도"))
         self.team_todo_label.setText(_translate("NoticeBoard", "팀원별 투두리스트"))
-from code.front.ui import my_qrc_rc
+from main_code.front.ui import my_qrc_rc
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ from PyQt5.QtGui import QFontDatabase, QFont
 
 
 from class_client.class_client import ClientApp
-from code.front.client_controller import ClientController
+from main_code.front.client_controller import ClientController
 
 def main():
     app = QApplication(sys.argv)
@@ -14,11 +14,15 @@ def main():
 
     # 폰트
     fontDB = QFontDatabase()
-    fontDB.addApplicationFont("../code/front/font/NanumSquareNeo-aLt.ttf")
-    fontDB.addApplicationFont("../code/front/font/NanumSquareNeo-bRg.ttf")
-    fontDB.addApplicationFont("../code/front/font/NanumSquareNeo-cBd.ttf")
-    fontDB.addApplicationFont("../code/front/font/NanumSquareNeo-dEb.ttf")
-    fontDB.addApplicationFont("../code/front/font/NanumSquareNeo-eHv.ttf")
+    fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-aLt.ttf")
+    fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-bRg.ttf")
+    fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-cBd.ttf")
+    fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-dEb.ttf")
+    fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-eHv.ttf")
+
+    available_families = fontDB.families()
+    for family in available_families:
+        print(family)
 
     client_object = ClientApp()
     client_controller = ClientController(client_object)

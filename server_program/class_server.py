@@ -3,9 +3,9 @@ import sqlite3
 import select
 from socket import *
 from threading import *
-from code.domain.class_db_connector import DBConnector
+from main_code.domain.class_db_connector import DBConnector
 
-from code.domain.class_db_connector import DBConnector
+from main_code.domain.class_db_connector import DBConnector
 
 # 사용할 구분자
 header_split = chr(1)

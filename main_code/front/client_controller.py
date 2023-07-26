@@ -8,10 +8,10 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 
 from class_client.class_client import ClientApp
-# from code.front.class_custom_message_box import NoFrameMessageBox
+# from main_code.front.class_custom_message_box import NoFrameMessageBox
 
 # ui 임풜트 예아
-from code.front.main_window import WidgetNoticeBorad
+from main_code.front.main_window import WidgetNoticeBorad
 
 
 header_split = chr(1)

@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 import sys
-from code.front.ui.ui_class_Warning_dialog import Ui_WarnDialog
-from code.front.Font import Font
+from main_code.front.ui.ui_class_Warning_dialog import Ui_WarnDialog
+from main_code.front.Font import Font
 
 
 class DialogWarning(QDialog, Ui_WarnDialog):

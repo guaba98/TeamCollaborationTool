@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
-from code.front.ui.ui_class_message_label_left import Ui_LeftMessage
-from code.front.ui.ui_class_message_label_right import Ui_RightMessage
-from code.front.Font import Font
+from main_code.front.ui.ui_class_message_label_left import Ui_LeftMessage
+from main_code.front.ui.ui_class_message_label_right import Ui_RightMessage
+from main_code.front.Font import Font
 '''
 나의 메세지, 상대방 메세지
 '''

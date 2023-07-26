@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
-from code.front.ui.ui_class_category_list import Ui_CtgWidget
-# from code.front.ui.ui_class_TEST_ctg import Ui_Form
-from code.front.Font import Font
+from main_code.front.ui.ui_class_category_list import Ui_CtgWidget
+# from main_code.front.ui.ui_class_TEST_ctg import Ui_Form
+from main_code.front.Font import Font
 from PyQt5.QtGui import *
 import os
 '''
