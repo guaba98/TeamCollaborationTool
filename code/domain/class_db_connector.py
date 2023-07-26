@@ -98,29 +98,21 @@ class DBConnector:
     def insert_login_log(self, login_id):
         # TODO 왜 안타는가 피티한테 물어볼것
         print('타나요')
+        print(login_id)
         # 커서 생성
-        # conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-        c = self.start_conn()
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        # c = self.start_conn()
         condition = f'"USER_ID"=\'{login_id}\''
         user_nm = self.return_specific_data(column='USER_NAME', table_name='TB_USER', condition=condition)
         time = self.return_datetime('time')
         insert_query = f"INSERT INTO public.\"TB_LOG\" (\"USER_ID\", \"USER_NAME\", \"USER_LOGIN_TIME\") " \
                        f"VALUES ('{login_id}', '{user_nm}', '{time}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
-        # cur = conn.cursor()
-        try:
-            c.execute(insert_query)
-            self.commit_db()
-        except psycopg2.DatabaseError as e:
-            print(f"Database error occurred: {e}")
-        except psycopg2.ProgrammingError as e:
-            print(f"Programming error occurred: {e}")
-        finally:
-            self.end_conn()
+        cur = conn.cursor()
 
-        # c.execute(insert_query)
-        # self.commit_db()
-        # self.end_conn()
+        cur.execute(insert_query)
+        conn.commit()
+        conn.close()
 
 
 
@@ -131,7 +123,7 @@ class DBConnector:
 
         # 커서 생성
         c = self.start_conn()
-
+        # conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         # 쿼리문 및 중복 확인
         query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{join_username}';"
         c.execute(query)
@@ -143,17 +135,24 @@ class DBConnector:
             return True  # 사용 가능한 아이디일때
         return False  # 사용 불가능한 아이디일때
 
-    def insert_user(self, user_id, join_name, join_pw, join_nickname):
-        """회원가입 정보 db에 추가"""
-        c = self.start_conn()
-        join_date = self.return_datetime('date')
 
+    def insert_user(self, info):
+        """회원가입 정보 db에 추가"""
+        print(info[0], info[1], info[2], info[3])
+        user_id, join_name, join_pw, join_nickname = info[0], info[1], info[2], info[3]
+        print(user_id, join_name, join_pw, join_nickname)
+
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+        join_date = self.return_datetime('date')
+        print('여기까지는와?')
         insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
-                       f"VALUES ('{join_name}, {user_id}', '{join_pw}', '{join_nickname}, {join_date}')"
+                       f"VALUES ('{join_name}', '{user_id}', '{join_pw}', '{join_nickname}', '{join_date}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
-        c.execute(insert_query)
+        cur.execute(insert_query)
         conn.commit()
-        self.end_conn()
+        cur.close()
+        conn.close()
 
 
     # -- 특정 데이터 반환하기
@@ -231,7 +230,8 @@ class DBConnector:
 
 
 if __name__ == '__main__':
-    d = DBConnector()
-    # query = '\"USER_NAME\"=\'박소연\''
-    # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
-    d.insert_login_log('admin')
+    pass
+#     d = DBConnector()
+#     # query = '\"USER_NAME\"=\'박소연\''
+#     # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
+#     d.insert_login_log('admin')
