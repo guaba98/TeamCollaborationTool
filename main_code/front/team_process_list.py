@@ -14,6 +14,7 @@ class MemberList(QWidget, Ui_MemberWidget):
         self.name = name
         self.main_window = main_window
         self.role = role
+        self.user_id = user_id
 
         # 화면 설정
         self.setWindowFlags(Qt.FramelessWindowHint)

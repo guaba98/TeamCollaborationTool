@@ -42,6 +42,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     admin_login_signal = pyqtSignal(list)
     set_combobox_signal = pyqtSignal(list)
     update_user_message_signal = pyqtSignal()
+    get_team_member_signal = pyqtSignal(list)
 
     def __init__(self, client_controller):
         super().__init__()
@@ -105,6 +106,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.update_timer.timeout.connect(self.set_scrollbar)
         self.set_combobox_signal.connect(self.set_combobox)
         self.update_user_message_signal.connect(self.set_user_message)
+        self.get_team_member_signal.connect(self.set_team_member)
         self.update_timer.start()
     def set_main_page_profil(self):
         user_team = self.client_controller.client_app.user_name
@@ -244,7 +246,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 p_ = ProFile(self, img=None, name=name, state=state)
                 p_.show_dialog()
                 break
-
+            # 클릭한 카테고리의 이름이 팀이름중 하나이면
+            if ctg_name in self.team_list:
+                self.get_team_member(ctg_name)
             elif ctg_name == c:
                 self.clear_layout(self.adminevent_dict[ctg_name][0])  # 레이아웃 비우기
                 self.adminevent_dict[ctg_name][1]()
@@ -279,9 +283,15 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             else:
                 self.clear_layout(item.layout())
 
-    # 팀 화면
-    def get_team_member(self):
+    # 팀 화면===
+    # 팀이름을 인자로 멤버들 반환요청
+    def get_team_member(self, ctg_name):
+        message = f"{f'get_team_member{header_split}{ctg_name}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
         print('팀에 속한 멤버들 받아와')
+    def set_team_member(self, result):
+        print(result, 'main에서 멤버 받아오는지 확인')
 
     # 투루리스트==========================================
     def insert_todo_list(self, title, contents):
