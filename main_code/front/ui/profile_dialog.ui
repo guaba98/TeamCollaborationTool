@@ -20,112 +20,152 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">
+QFrame#frame{
+background-color: rgb(255, 255, 255);
+border-radius:20px;
+border: 0.5px solid gray;
+
+}
+QDialog#ProfileDialog{
+background-color:rgb(255, 255, 255, 0)
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
-    <number>15</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>70</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>15</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>70</number>
+    <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="main_frame">
+    <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>6</number>
+      </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>15</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>70</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>15</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>50</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="h_lay">
-        <item>
-         <widget class="QLabel" name="profile_img">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>150</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>158</width>
-            <height>158</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(213, 213, 213);</string>
-          </property>
-          <property name="text">
-           <string>여기에 프로필 사진</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="name_lab">
-        <property name="text">
-         <string>이름이름</string>
+       <widget class="QFrame" name="main_frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="state_edit">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="placeholderText">
-         <string>상태메세지를 입력하세요.</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="admit_btn">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>56</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border-radius:5px;
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="h_lay">
+           <item>
+            <widget class="QLabel" name="profile_img">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>150</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>158</width>
+               <height>158</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">
+border-radius:75px;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="name_lab">
+           <property name="text">
+            <string>이름이름</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="state_edit">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="placeholderText">
+            <string>상태메세지를 입력하세요.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="admit_btn">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>56</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius:5px;
 background-color: rgb(20, 200, 113);
 color:white;</string>
-        </property>
-        <property name="text">
-         <string>확인</string>
-        </property>
+           </property>
+           <property name="text">
+            <string>확인</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -133,6 +173,8 @@ color:white;</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../src_img/my_qrc.qrc"/>
+ </resources>
  <connections/>
 </ui>

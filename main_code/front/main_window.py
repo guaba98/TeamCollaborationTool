@@ -1,8 +1,8 @@
 # 모듈
 import json
 import sys
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSignal, QSize
+from PyQt5.QtWidgets import QMainWindow, QLayout, QLabel, QPushButton, QLineEdit, QTextEdit, QGraphicsDropShadowEffect, QApplication
+from PyQt5.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt5.QtGui import QFontDatabase, QIcon, QColor, QPixmap
 
 # UI
@@ -15,7 +15,7 @@ from main_code.front.Warning_dialog import DialogWarning  # 경고창
 from main_code.front.Font import Font  # 폰트 클래스
 from main_code.front.notice import Notice  # 공지 캐러셀
 from main_code.front.todolist import TodoList  # 투두리스트 캐러셀
-from main_code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd # 공지 다이얼로그, 투두리스트 다이얼로그
+from main_code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd  # 공지 다이얼로그, 투두리스트 다이얼로그
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -39,31 +39,33 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         super().__init__()
 
         self.ctg_clicked = None
-        self.is_admin = None
+        self.user_role = None  # 로그인한 유저의 역할
+
         self.setupUi(self)
         self.client_controller = client_controller
         self.Warn = DialogWarning()
         self.font = Font()
-        # 로그인한 유저의 역할
-        self.user_role = None
+
         self.Notice_add = DialogNoticeAdd(self)
         self.Todo_add = DialogToDoAdd(self)
 
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
+        # 변수
+        self.init_var()
 
         # 버튼 트리거 함수 호출
         self.set_btn_trigger()
         self.init_func()
 
-        # 변수
-        self.init_var()
 
     # 변수
     def init_var(self):
-        self.is_admin = False # 관리자인지 확인
-        self.ctg_clicked = None # 카테고리 버튼 클릭 확인(공지, 투두리스트)
+        self.ctg_clicked = None  # 카테고리 버튼 클릭 확인(공지, 투두리스트)
+        self.update_timer = QTimer(self)
+        self.update_timer.setInterval(10)
+        self.vsb = self.chat_scrollarea.verticalScrollBar()
 
     # widget 이동 함수=======================================================================
     def mousePressEvent(self, event):
@@ -84,6 +86,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.recv_get_todolist_signal.connect(self.set_todolist)
         self.refresh_todolist_signal.connect(self.get_todolist)
         self.refresh_notice_signal.connect(self.get_notice)
+        self.update_timer.timeout.connect(self.set_scrollbar)
+        self.update_timer.start()
+
+    def set_scrollbar(self):
+        if self.vsb.value() != self.vsb.maximum():
+            self.vsb.setValue(self.vsb.maximum())
 
     def set_btn_trigger(self):
         """UI 버튼 시그널 연결"""
@@ -115,14 +123,13 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.reg_sub_title.setFont(Font.text(3))
         self.reg_register_btn.setFont(Font.button(1))
 
-        # 메인창
+        # -- 메인창
         # 프로필창
         profile_lab = self.profile_widget.findChildren(QLabel)
         [lab.setFont(Font.text(3)) for lab in profile_lab]
 
         # 채팅
         self.chat_edit.setFont(Font.text(2))
-        # self.send_btn.setFont(Font.button(2))
 
     def ctg_list_show(self):
         """카테고리 넣어주기"""
@@ -180,7 +187,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         print('카테고리 클릭', self.ctg_clicked)
         for c in self.ctg_list:
             if ctg_name == '프로필 수정':
-                p_ = ProFile(self, img=None, name=name, state=state)
+                img_path = 'user_green.png'
+                p_ = ProFile(self, img=img_path, name=name, state=state)
                 p_.show_dialog()
                 break
             elif ctg_name == c:
@@ -252,7 +260,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
-        print('투두 내용들 받아오기',result)
+        print('투두 내용들 받아오기', result)
         people_lab = result[1]
         for i in result[0]:
             print('[set_notice]', i)
@@ -272,7 +280,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
     def set_notice(self, result):
-        print('공지 내용들 받아오기',result)
+        print('공지 내용들 받아오기', result)
         for i in result:
             print('[set_notice]', i)
             notice = Notice(i, self.user_role)
@@ -317,10 +325,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         print('채팅창 열때 실해')
 
     def click_send_btn(self):
+
         if len(self.chat_edit.text()) >= 1:
             input_chat = self.chat_edit.text()
             self.chat_edit.clear()  # 채팅바 클리어
             self.client_controller.controller_send_chat_message(input_chat)  # 입력된 채팅 client_controller에 보내기
+
 
     # 서버에서 채팅 메시지 받는 함수
     def recv_my_chat(self, result):  # 본인이 보낸 메시지라면
@@ -361,9 +371,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.ctg_list_show()  # 카테고리 넣어주기
 
             self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
+            self.user_role = self.client_controller.client_app.user_nickname
+            # self.login_user_role(user_role)
             self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
         else:
-            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed') # 알림창 띄우기
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed')  # 알림창 띄우기
+
     # 회원 가입 함수=======================================================================
 
     def insertuser(self, result):
@@ -451,3 +464,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         if self.reg_id_lab.text() != 'ID 사용가능':
             return False
         return True
+
+    def log_out(self):
+        """로그아웃 함수"""
+        self.user_role = None
+        self.stackedWidget.setCurrentWidget(self.login_page)

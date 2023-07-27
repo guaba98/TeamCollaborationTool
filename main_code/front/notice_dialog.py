@@ -25,6 +25,7 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
         self.contents_edit.setFont(Font.text(2))
         self.ok_btn.setFont(Font.button(1))
 
+
     def connect_event(self):
         self.ok_btn.clicked.connect(self.add_notice)
         self.close_btn.clicked.connect(self.close)
@@ -61,6 +62,7 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
         self.title_edit.setFont(Font.text(2))
         self.contents_edit.setFont(Font.text(2))
         self.ok_btn.setFont(Font.button(1))
+        self.team.setVisible(False) # 투두리스트는 팀명 안보임
 
     def connect_event(self):
         self.ok_btn.clicked.connect(self.add_todo)
