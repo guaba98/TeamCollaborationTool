@@ -33,6 +33,7 @@ class ClientApp:
         self.user_nickname = None
         self.user_message = None
         self.user_create_date = None
+        self.user_team = None
         self.team_no = 1
     def connect_server(self):
         self.client_socket = socket(AF_INET, SOCK_STREAM)
@@ -52,7 +53,7 @@ class ClientApp:
         self.client_socket.send(message)
 
     def client_send_get_todolist(self):
-        print('투두 리스트 정보 요청')
+        print('투두 리스트 정보 요청',self.user_no,self.team_no)
         message = f"{f'get_todolist{header_split}{self.user_no}{list_split_1}{self.team_no}':{BUFFER}}".encode(
             FORMAT)
         self.client_socket.send(message)
@@ -87,7 +88,7 @@ class ClientApp:
             else:
                 result = eval(result)
                 result = result[0]
-                self.user_no, self.user_name, self.user_id, self.user_pw, self.user_nickname, self.user_message, self.user_create_date = result
+                self.user_no, self.user_name, self.user_id, self.user_pw, self.user_nickname, self.user_message, self.user_create_date, self.user_team = result
                 self.client_controller.emit_login(True)
 
         elif header == 'duple':

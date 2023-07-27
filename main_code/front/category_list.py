@@ -28,7 +28,7 @@ class CtgList(QWidget, Ui_CtgWidget):
         self.ctg_name_lab.setFont(Font.text(2))
 
     def mousePressEvent(self, event):
-        if self.role == '관리자':
+        if '관리자' in self.role:
             self.parent.admin_ctg_list_trigger(self.category_name)
         else:
             self.parent.ctg_list_trigger(self.category_name)

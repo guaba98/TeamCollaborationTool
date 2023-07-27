@@ -18,11 +18,11 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.connect_event()
         self.set_ui()
-        # self.set_combobox()
+        self.set_combobox()
 
-    # def set_combobox(self):
-    #     for i in self.team_list:
-    #         self.team.addItem(i)
+    def set_combobox(self):
+        for i in self.team_list:
+            self.team.addItem(i)
 
     def set_ui(self):
         self.title_lab.setText('공지작성창')
@@ -75,11 +75,11 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
         self.contents_edit.setFont(Font.text(2))
         self.ok_btn.setFont(Font.button(1))
         self.team.setVisible(False)  # 투두리스트는 팀명 안보임
-    #     self.set_combobox()
-    #
-    # def set_combobox(self):
-    #     for i in self.team_list:
-    #         self.team.addItem(i)
+        self.set_combobox()
+
+    def set_combobox(self):
+        for i in self.team_list:
+            self.team.addItem(i)
 
     def connect_event(self):
         self.ok_btn.clicked.connect(self.add_todo)
@@ -93,10 +93,9 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
         '''
         title = self.title_edit.text()
         contents = self.contents_edit.toPlainText()
-        team = self.team.currentText()
-        print('[notice_dialog] 제목: ', title, '내용', contents)
+        print('[todo_dialog] 제목: ', title, '내용', contents)
         plus_todo = title, contents
-        self.main_window.insert_todo_list(title, contents, team)
+        self.main_window.insert_todo_list(title, contents)
 
 
 if __name__ == '__main__':

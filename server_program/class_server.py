@@ -150,8 +150,9 @@ class Server():
                 # client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'get_notice':  # 공지 client에 보내주기
-                result = self.db_conn.get_notice()
-                result = [('제목1','내용1'),('제목2','내용2'),('제목3','내용3')]
+                user_no = decode_msg.split(header_split)[1]
+                print('[recv-get_notice]',user_no)
+                result = self.db_conn.get_notice_list(user_no)
                 result = json.dumps(result)
 
                 response_header = f"{f'recv_get_notice{header_split}{result}'}"
@@ -189,7 +190,8 @@ class Server():
             elif header == 'insert_todo':
                 proflie_message = decode_msg.split(header_split)[1]
                 proflie_message = eval(proflie_message)
-                title, contents, user_no, team = proflie_message
+
+                title, contents, user_no = proflie_message
                 self.db_conn.insert_todo_list(user_no, title, contents)
                 response_header = f"{f'recv_insert_todo{header_split}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
@@ -198,8 +200,11 @@ class Server():
                 proflie_message = decode_msg.split(header_split)[1]
                 proflie_message = eval(proflie_message)
                 title, contents, team = proflie_message
+                print(title, contents, team)
+                title_no = self.db_conn.return_team_num(team)
 
-                self.db_conn.insert_notice_data(team, title, contents)
+                self.db_conn.insert_notice_data(title_no, title, contents)
+
                 response_header = f"{f'recv_insert_notice{header_split}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
 

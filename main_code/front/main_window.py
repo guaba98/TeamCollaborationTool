@@ -50,8 +50,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.team_list = None
         self.Notice_add = None
         self.Todo_add = None
-        self.Notice_add = DialogNoticeAdd(self, self.team_list)
-        self.Todo_add = DialogToDoAdd(self, self.team_list)
+        # self.Notice_add = DialogNoticeAdd(self, self.team_list)
+        # self.Todo_add = DialogToDoAdd(self, self.team_list)
+
 
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -169,8 +170,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         if action:
             action()
 
-
-
     def ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
         name = self.client_controller.client_app.user_name
@@ -268,13 +267,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
+        print(result, '투두리스트 정보 받아온거')
         people_lab = result[1]
 
         if len(people_lab) == 0:
             people_lab = None
         else:
             pass
-
+        print('투두리스트 확인1')
         for i in result[0]:
             todo = TodoList(self, i, people_lab, self.user_role)
             self.notice_v_lay.addWidget(todo)
@@ -291,6 +291,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
     def set_notice(self, result):
+        print(result,'set_notice')
+        # people_lab = result[1]
+        #
+        # if len(people_lab) == 0:
+        #     people_lab = None
+        # else:
+        #     pass
+
         for i in result:
             notice = Notice(i, self.user_role)
             self.notice_v_lay.addWidget(notice)
@@ -299,7 +307,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def get_notice(self):
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
         # 유저가 입력한 로그인 정보 encode
-        message = f"{f'get_notice{header_split}':{BUFFER}}".encode(
+        user_no = self.client_controller.client_app.user_no
+        message = f"{f'get_notice{header_split}{user_no}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
 
@@ -405,6 +414,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.Warn.show_dialog()
     def set_combobox(self, result):
         self.team_list = result
+        self.Notice_add = DialogNoticeAdd(self, self.team_list)
+        self.Todo_add = DialogToDoAdd(self, self.team_list)
         for i in result:
             self.comboBox.addItem(i)
 

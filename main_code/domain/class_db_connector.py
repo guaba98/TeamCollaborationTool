@@ -76,7 +76,7 @@ class DBConnector:
         user_no = self.return_specific_data(column='USER_NO', table_name='TB_USER', condition=con1)
         con2 = f"\"USER_NO\" = '{user_no}'"
         team_name = self.return_specific_data(column='TEAM_NAME', table_name='TB_TEAM', condition=con2)
-
+        print('여기서 막히나요?')
         # 결과 가져오기
         results = c.fetchall()
         results_ = [results[0] + (team_name,)]
@@ -194,15 +194,15 @@ class DBConnector:
 
     def get_notice_list(self, user_no):
         """공지에서 유저가 속한 팀 기준으로 공지 제목, 내용을 가져옴"""
+        print('공지 가지러 들어와? 1')
         c = self.start_conn()
         query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" " \
                 "FROM \"TB_NOTICE\" NATURAL JOIN \"TB_TEAM\" " \
                 f"WHERE \"TEAM_NO\" = (SELECT \"TEAM_NO\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});"
-        print(query)
         c.execute(query)
         result = c.fetchall()
+        print('공지 가지러 들어와? 2')
         print('[db_connector.py - get_notice_list]: ', result)
-        print(result)
 
         self.end_conn()  # 커서 닫기
         return result
@@ -361,7 +361,6 @@ class DBConnector:
         if condition is not None:
             query += f" WHERE {condition}"
         print(query)
-
         c.execute(query)
         r_data = c.fetchall()
         # print('데이터', r_data)
