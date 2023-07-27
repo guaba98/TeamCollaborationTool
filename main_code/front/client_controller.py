@@ -41,17 +41,24 @@ class ClientController(QtWidgets.QWidget):
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
 
+
+
     # 투두 ==============================
     def emit_recv_get_todolist(self, p):
         self.main_window.recv_get_todolist_signal.emit(p)
+    def emit_refresh_todolist(self):
+        self.main_window.refresh_todolist_signal.emit()
+
     # 공지 ==============================
     def emit_recv_get_notice(self, p):
         self.main_window.recv_get_notice_signal.emit(p)
-
+    def emit_refresh_notice(self):
+        self.main_window.refresh_notice_signal.emit()
     # 클라이언트에 send메시지 보내기======================================================================
     # main_window에서 만든 구분자 send
     def controller_send_message(self, message):
         self.client_app.client_send_message(message)
+
     # 메시지 send
     def controller_send_chat_message(self, input_chat):
         self.client_app.client_send_chat_message(input_chat)

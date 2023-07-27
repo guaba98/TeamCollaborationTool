@@ -2,7 +2,7 @@ from threading import *
 from socket import *
 
 # import socket
-# _SERVER_IP = '10.10.20.109'
+# _SERVER_IP = '10.10.20.103'
 _SERVER_IP = gethostbyname(gethostname())
 _SERVER_PORT = 5050
 BUFFER = 50000
@@ -125,3 +125,11 @@ class ClientApp:
         elif header == 'update_user_message':
             result = parsed[1]
             self.user_message = result
+
+        elif header == 'recv_insert_todo':
+            result = parsed[1]
+            self.client_controller.emit_refresh_todolist()
+
+        elif header == 'recv_insert_notice':
+            result = parsed[1]
+            self.client_controller.emit_refresh_notice()

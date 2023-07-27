@@ -6,9 +6,10 @@ from main_code.front.ui.ui_class_notice_dialog import Ui_NoticeDialog
 from main_code.front.Font import Font
 class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
     """공지를 추가하는 창"""
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
         self.setupUi(self)
+        self.main_window = main_window
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.connect_event()
@@ -37,12 +38,15 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
         title = self.title_edit.text()
         contents = self.contents_edit.toPlainText()
         print('[notice_dialog] 제목: ', title, '내용', contents)
+        self.main_window.insert_notice(title, contents)
+        print('[notice_dialog] 제목: ', title, '내용', contents)
 
 class DialogToDoAdd(QDialog, Ui_NoticeDialog):
     """투두리스트 추가하는 다이얼로그"""
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
         self.setupUi(self)
+        self.main_window = main_window
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.connect_event()
@@ -71,6 +75,8 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
         title = self.title_edit.text()
         contents = self.contents_edit.toPlainText()
         print('[notice_dialog] 제목: ', title, '내용', contents)
+        plus_todo = title, contents
+        self.main_window.insert_todo_list(title,contents)
 
 
 if __name__ == '__main__':

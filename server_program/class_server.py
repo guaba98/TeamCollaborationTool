@@ -150,7 +150,7 @@ class Server():
                 # client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'get_notice':  # 공지 client에 보내주기
-                # result = db에서 대충 공지 받아오는 함수
+                result = self.db_conn.get_notice()
                 result = [('제목1','내용1'),('제목2','내용2'),('제목3','내용3')]
                 result = json.dumps(result)
 
@@ -160,7 +160,7 @@ class Server():
             elif header == 'get_todolist':  # 공지 client에 보내주기
                 todolist_info = decode_msg.split(header_split)[1] # 데이터 받아오기
                 todolist_info = todolist_info.split(list_split_1)
-                user_no, team_no = todolist_info
+                user_no, team_name = todolist_info
                 # 투두 리스트 받아오기
                 todo_result = self.db_conn.get_todo_list(user_no)
                 # 멤버 받아오기
@@ -177,8 +177,32 @@ class Server():
                 proflie_message = proflie_message.split(list_split_1)
                 user_no, user_message = proflie_message
                 self.db_conn.update_profile_message(user_no, user_message)
-
                 response_header = f"{f'update_user_message{header_split}{user_message}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
+
+            elif header == 'update_todo_checked':
+                proflie_message = decode_msg.split(header_split)[1]
+                proflie_message = proflie_message.split(list_split_1)
+                todo_id, checked = proflie_message
+                self.db_conn.update_todo_list(todo_id, int(checked))
+
+            elif header == 'insert_todo':
+                proflie_message = decode_msg.split(header_split)[1]
+                proflie_message = eval(proflie_message)
+                title, contents, team_no = proflie_message
+                # todo: 투두 리스트 db에 저장
+                print('서버에서 받은 투두리스트 정보', title, contents, team_no)
+                response_header = f"{f'recv_insert_todo{header_split}':{self.BUFFER}}".encode(self.FORMAT)
+                self.send_message(client_socket, response_header)
+
+            elif header == 'insert_notice':
+                proflie_message = decode_msg.split(header_split)[1]
+                proflie_message = eval(proflie_message)
+                title, contents, team_no = proflie_message
+                self.db_conn.insert_notice_data(team_no, title, contents)
+                print('서버에서 받은 공지 정보', title, contents, team_no)
+                response_header = f"{f'recv_insert_notice{header_split}':{self.BUFFER}}".encode(self.FORMAT)
+                self.send_message(client_socket, response_header)
+
         except:
             pass

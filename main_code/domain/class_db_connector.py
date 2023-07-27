@@ -164,7 +164,26 @@ class DBConnector:
         conn.close()
 
     # -- 공지
-    def insert_notice_data(self, user_id, title, contents):
+    def get_notice(self, user_no):
+        """
+        공지 목록 반환
+        :param user_no: 유저 고유번호
+        :return: results: 제목, 공지내용 반환. 예 - [('행정반에서 알려드립니다', 오늘까지 ---까지 작업 완료해 주세요), ('공지제목', '공지내용')]
+        """
+        # db 연결
+        c = self.start_conn()
+
+        # 조건
+        sql_query = f"SELECT \"NOTICE_ID\", \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" FROM \"TB_NOTICE\" WHERE \"USER_NO\" = {user_no}"
+        c.execute(sql_query)
+
+        # 결과 가져오기
+        results = c.fetchall()
+        print('[db_connector.py - get_todo_list]: ', results)
+        # 연결 종료
+        self.end_conn()
+        return results
+    def insert_notice_data(self, team_no, title, contents):
         """
         공지 작성시 db에 데이터 삽입
         :param user_id: 유저 아이디
@@ -178,7 +197,7 @@ class DBConnector:
         # 데이터 저장
         insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
                        f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"USER_ID\", \"UPDATE_DATE\")" \
-                       f" VALUES ('{title}', '{contents}', '{user_id}', '{str(self.return_datetime('time'))}')"
+                       f" VALUES ('{title}', '{contents}', '{team_no}', '{str(self.return_datetime('time'))}')"
         print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
