@@ -164,10 +164,10 @@ class DBConnector:
         conn.close()
 
     # -- 공지
-    def insert_notice_data(self, user_no, title, contents): # TODO user_no -> team_no 로 변경해야 함
+    def insert_notice_data(self, team_no, title, contents):
         """
         공지 작성시 db에 데이터 삽입
-        :param user_no: 유저 고유번호
+        :param team_no: 팀 번호
         :param title: 공지 제목
         :param contents: 공지 내용
         """
@@ -177,8 +177,8 @@ class DBConnector:
 
         # 데이터 저장
         insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
-                       f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"USER_NO\", \"UPDATE_DATE\")" \
-                       f" VALUES ('{title}', '{contents}', '{user_no}', '{str(self.return_datetime('time'))}')"
+                       f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"TEAM_NO\", \"UPDATE_DATE\")" \
+                       f" VALUES ('{title}', '{contents}', '{team_no}', '{str(self.return_datetime('time'))}')"
         print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
@@ -288,6 +288,18 @@ class DBConnector:
         self.end_conn()
         return results
 
+    def return_team_name(self):
+        c = self.start_conn()
+        query = "SELECT \"TEAM_NAME\" FROM \"TB_TEAM\" GROUP BY \"TEAM_NAME\";"
+        c.execute(query)
+
+        # 결과 가져오기
+        results = c.fetchall()
+        print('[db_connector.py - return_team_name]: ', results)
+
+        # 연결 종료 및 반환
+        self.end_conn()
+        return results
 
     def return_team_members(self, user_no):
         """
@@ -296,7 +308,9 @@ class DBConnector:
         :return: 팀원들을 리스트에 담아 반환
         """
         c = self.start_conn()
-        query = f'SELECT \"USER_NAME\" FROM \"TB_USER\" NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" = (SELECT \"TEAM_NAME\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});'
+        query = f'SELECT \"USER_NAME\" FROM \"TB_USER\" ' \
+                f'NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" ' \
+                f'= (SELECT \"TEAM_NAME\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});'
         print(query)
 
         # 쿼리 실행
@@ -354,5 +368,8 @@ if __name__ == '__main__':
     # # condition = "\"USER_NAME\" = '박소연'"
     # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
     #
-    d.get_notice_list(1)
+    # d.get_notice_list(7)
+    result = d.return_team_name()
+    print(result)
     # print(r_)
+
