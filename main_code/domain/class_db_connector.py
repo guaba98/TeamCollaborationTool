@@ -207,9 +207,9 @@ class DBConnector:
     def update_profile_message(self,user_no, msg):
         """프로필 상태메세지를 변경합니다."""
         condition = f"\"USER_NO\" = '{user_no}'"
-        self.insert_specific_data('TB_USER', 'USER_MESSAGE', msg, condition)
+        self.update_specific_data('TB_USER', 'USER_MESSAGE', msg, condition)
 
-    def insert_specific_data(self, table_name, column, data, condition=None):
+    def update_specific_data(self, table_name, column, data, condition=None):
         """특정 테이블에 조건에 맞는 데이터 1개만 업데이트하기"""
         # db 연결
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
@@ -226,6 +226,15 @@ class DBConnector:
         conn.close()
 
     # -- 투두리스트
+
+    def update_todo_list(self, todo_id, checked):
+        """투두리스트 체크시 DB 업데이트"""
+
+        condition = f"\"TODO_ID\" = '{todo_id}'"
+        self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CHECKED', data=checked, condition=condition)
+
+
+
     def get_todo_list(self, user_no):
         """
         투두리스트 목록 반환
@@ -302,15 +311,15 @@ class DBConnector:
 
 if __name__ == '__main__':
     pass
-    d = DBConnector()
-    # # query = '\"USER_NAME\"=\'박소연\''
-    # # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
-    # # d.insert_login_log('admin')
+    # d = DBConnector()
+    # # # query = '\"USER_NAME\"=\'박소연\''
+    # # # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
+    # # # d.insert_login_log('admin')
+    # #
+    # # d.insert_user('user_id', 'join_name', 'join_pw', 'join_nickname')
+    # # d.insert_notice_data('admin', '테스트 제목제목', '테스트 내용 내용')
+    # # condition = "\"USER_NAME\" = '박소연'"
+    # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
     #
-    # d.insert_user('user_id', 'join_name', 'join_pw', 'join_nickname')
-    # d.insert_notice_data('admin', '테스트 제목제목', '테스트 내용 내용')
-    # condition = "\"USER_NAME\" = '박소연'"
-    # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
-
-    r_ = d.get_todo_list(1)
-    print(r_)
+    # d.update_todo_list(todo_id=1, checked=1)
+    # print(r_)

@@ -10,7 +10,7 @@ class TodoList(QWidget, Ui_TodoForm):
     def __init__(self, result, people_lab, user_role):
         super().__init__()
         self.setupUi(self)
-        todo, checked = result
+        todo_id, todo, checked = result
         people_lab = people_lab
         # self.checkBox.clicked.connect()
         # self.checkBox.clicked(checked)
