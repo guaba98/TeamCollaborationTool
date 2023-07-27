@@ -199,8 +199,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         people_lab = result[1]
         for i in result[0]:
             print('[set_notice]', i)
-            todo = TodoList(i, people_lab, self.user_role)
+            todo = TodoList(self, i, people_lab, self.user_role)
             self.notice_v_lay.addWidget(todo)
+    def send_todo_list_checked(self,todo_id, btn_checked):
+        message = f"{f'login{header_split}{todo_id}{list_split_1}{btn_checked}':{BUFFER}}".encode(
+            FORMAT)
+        # message =
+        self.controller_send_message()
+        print('체크체크 확인', btn_checked, '아디아디 확인', todo_id)
 
     # 공지 화면 =====================================================================================
     def set_notice(self, result):
