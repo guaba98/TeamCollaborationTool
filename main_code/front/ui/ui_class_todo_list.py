@@ -43,6 +43,11 @@ class Ui_TodoForm(object):
         self.h_lay.addWidget(self.checkBox)
         self.del_btn = QtWidgets.QPushButton(self.main_frame)
         self.del_btn.setMaximumSize(QtCore.QSize(50, 50))
+        self.del_btn.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/newPrefix/close.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.del_btn.setIcon(icon)
+        self.del_btn.setIconSize(QtCore.QSize(20, 20))
         self.del_btn.setObjectName("del_btn")
         self.h_lay.addWidget(self.del_btn)
         self.verticalLayout.addLayout(self.h_lay)
@@ -52,6 +57,9 @@ class Ui_TodoForm(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
+        self.pushButton = QtWidgets.QPushButton(self.main_frame)
+        self.pushButton.setObjectName("pushButton")
+        self.verticalLayout.addWidget(self.pushButton)
         self.people_lab = QtWidgets.QLabel(self.main_frame)
         self.people_lab.setObjectName("people_lab")
         self.verticalLayout.addWidget(self.people_lab)
@@ -64,8 +72,9 @@ class Ui_TodoForm(object):
         _translate = QtCore.QCoreApplication.translate
         TodoForm.setWindowTitle(_translate("TodoForm", "Form"))
         self.checkBox.setText(_translate("TodoForm", "할일이름할일이름"))
-        self.del_btn.setText(_translate("TodoForm", "삭제"))
+        self.pushButton.setText(_translate("TodoForm", "PushButton"))
         self.people_lab.setText(_translate("TodoForm", "함께하는 사람들"))
+from main_code.front.ui import my_qrc_rc
 
 
 if __name__ == "__main__":

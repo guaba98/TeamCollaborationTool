@@ -71,7 +71,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
         '''테스트 중'''
         for i in range(5):
-            user = MemberList(self, '이름', '역할')
+            user = MemberList(self, '이름', '역할', 'admin')
             self.team_mem_v_lay.addWidget(user)
 
     # 변수
@@ -338,8 +338,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-        self.stackedWidget.setCurrentWidget(self.main_page)
-        self.inner_stackedWidget.setCurrentWidget(self.team_page)
+        self.stackedWidget.setCurrentWidget(self.login_page)
+        self.inner_stackedWidget.setCurrentWidget(self.notice_page)
         self.set_font()  # 폰트 설정
         self.style_init() # ui 설정
         super().show()

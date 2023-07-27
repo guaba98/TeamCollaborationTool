@@ -15,14 +15,37 @@ class Ui_AdminTodoDialog(object):
     def setupUi(self, AdminTodoDialog):
         AdminTodoDialog.setObjectName("AdminTodoDialog")
         AdminTodoDialog.resize(430, 510)
-        AdminTodoDialog.setStyleSheet("background-color: rgb(255, 255, 255);")
+        AdminTodoDialog.setStyleSheet("\n"
+"QWidget#profile_widget{\n"
+"background-color: rgb(228, 234, 238);\n"
+"border-top-left-radius: 20px;\n"
+"    border-top-right-radius: 20px;\n"
+"}\n"
+"QWidget#scrollAreaWidgetContents{\n"
+"    background-color: rgb(255, 255, 255);\n"
+"}\n"
+"QDialog#AdminTodoDialog{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"}\n"
+"QFrame#frame{\n"
+"border: 0.5px solid gray;\n"
+"border-radius: 20px;\n"
+"background-color: rgb(255, 255, 255);}")
         self.verticalLayout = QtWidgets.QVBoxLayout(AdminTodoDialog)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 20)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.profile_widget = QtWidgets.QWidget(AdminTodoDialog)
+        self.frame = QtWidgets.QFrame(AdminTodoDialog)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 20)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.profile_widget = QtWidgets.QWidget(self.frame)
         self.profile_widget.setMinimumSize(QtCore.QSize(0, 100))
         self.profile_widget.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.profile_widget.setStyleSheet("background-color: rgb(228, 234, 238);")
+        self.profile_widget.setStyleSheet("")
         self.profile_widget.setObjectName("profile_widget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.profile_widget)
         self.horizontalLayout.setContentsMargins(25, 30, 25, 30)
@@ -41,17 +64,23 @@ class Ui_AdminTodoDialog(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.cancel_lab = QtWidgets.QPushButton(self.profile_widget)
-        self.cancel_lab.setMinimumSize(QtCore.QSize(24, 45))
+        self.cancel_lab.setMinimumSize(QtCore.QSize(30, 30))
         self.cancel_lab.setMaximumSize(QtCore.QSize(24, 16777215))
+        self.cancel_lab.setStyleSheet("background-color: rgba(255, 255, 255, 0);")
+        self.cancel_lab.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/newPrefix/close.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.cancel_lab.setIcon(icon)
+        self.cancel_lab.setIconSize(QtCore.QSize(20, 20))
         self.cancel_lab.setObjectName("cancel_lab")
         self.horizontalLayout.addWidget(self.cancel_lab)
-        self.verticalLayout.addWidget(self.profile_widget)
-        self.scrollArea = QtWidgets.QScrollArea(AdminTodoDialog)
+        self.verticalLayout_2.addWidget(self.profile_widget)
+        self.scrollArea = QtWidgets.QScrollArea(self.frame)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 430, 326))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 428, 336))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -73,12 +102,12 @@ class Ui_AdminTodoDialog(object):
         self.horizontalLayout_2.addWidget(self.pushButton)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.verticalLayout.addWidget(self.scrollArea)
+        self.verticalLayout_2.addWidget(self.scrollArea)
         self.h_bottom_lay = QtWidgets.QHBoxLayout()
         self.h_bottom_lay.setObjectName("h_bottom_lay")
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.h_bottom_lay.addItem(spacerItem2)
-        self.admit_btn = QtWidgets.QPushButton(AdminTodoDialog)
+        self.admit_btn = QtWidgets.QPushButton(self.frame)
         self.admit_btn.setMinimumSize(QtCore.QSize(132, 50))
         self.admit_btn.setMaximumSize(QtCore.QSize(16777215, 50))
         self.admit_btn.setStyleSheet("background-color: rgb(20, 200, 113);\n"
@@ -86,7 +115,7 @@ class Ui_AdminTodoDialog(object):
 "color:white;")
         self.admit_btn.setObjectName("admit_btn")
         self.h_bottom_lay.addWidget(self.admit_btn)
-        self.cancel_btn = QtWidgets.QPushButton(AdminTodoDialog)
+        self.cancel_btn = QtWidgets.QPushButton(self.frame)
         self.cancel_btn.setMinimumSize(QtCore.QSize(132, 50))
         self.cancel_btn.setMaximumSize(QtCore.QSize(16777215, 50))
         self.cancel_btn.setStyleSheet("\n"
@@ -96,7 +125,8 @@ class Ui_AdminTodoDialog(object):
         self.h_bottom_lay.addWidget(self.cancel_btn)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.h_bottom_lay.addItem(spacerItem3)
-        self.verticalLayout.addLayout(self.h_bottom_lay)
+        self.verticalLayout_2.addLayout(self.h_bottom_lay)
+        self.verticalLayout.addWidget(self.frame)
 
         self.retranslateUi(AdminTodoDialog)
         QtCore.QMetaObject.connectSlotsByName(AdminTodoDialog)
@@ -106,10 +136,10 @@ class Ui_AdminTodoDialog(object):
         AdminTodoDialog.setWindowTitle(_translate("AdminTodoDialog", "Dialog"))
         self.photo_lab.setText(_translate("AdminTodoDialog", "사진"))
         self.name_lab.setText(_translate("AdminTodoDialog", "이름"))
-        self.cancel_lab.setText(_translate("AdminTodoDialog", "PushButton"))
         self.pushButton.setText(_translate("AdminTodoDialog", "추가"))
         self.admit_btn.setText(_translate("AdminTodoDialog", "확인"))
         self.cancel_btn.setText(_translate("AdminTodoDialog", "취소"))
+from main_code.front.ui import my_qrc_rc
 
 
 if __name__ == "__main__":

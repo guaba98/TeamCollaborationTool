@@ -8,7 +8,7 @@ from main_code.front.Font import Font
 class MemberList(QWidget, Ui_MemberWidget):
     """관리자 창에서 멤버들을 보여주는 창"""
 
-    def __init__(self, main_window, name, role):
+    def __init__(self, main_window, name, role, user_id):
         super().__init__()
         self.setupUi(self)
         self.name = name
