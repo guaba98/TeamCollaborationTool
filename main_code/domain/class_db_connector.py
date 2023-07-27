@@ -124,7 +124,7 @@ class DBConnector:
 
     def insert_user(self, list_):
         """회원가입 정보 db에 추가"""
-        user_id, join_pw, join_name,  join_nickname = list_
+        user_id, join_pw, join_name,  join_nickname, input_reg_team= list_
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
         join_date = self.return_datetime('date')

@@ -48,8 +48,10 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.Warn = DialogWarning()
         self.font = Font()
         self.team_list = None
-        self.Notice_add = DialogNoticeAdd(self)
-        self.Todo_add = DialogToDoAdd(self)
+        self.Notice_add = None
+        self.Todo_add = None
+        self.Notice_add = DialogNoticeAdd(self, self.team_list)
+        self.Todo_add = DialogToDoAdd(self, self.team_list)
 
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -283,8 +285,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
 
     # 공지 화면 =====================================================================================
-    def insert_notice(self, title, contents):
-        msg = title, contents, self.client_controller.client_app.team_no
+    def insert_notice(self, title, contents, team):
+        msg = title, contents, team
         message = f"{f'insert_notice{header_split}{msg}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
@@ -303,6 +305,10 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # window widget show=======================================================================
     def show(self):
+        message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
+
         self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         self.set_font()  # 폰트 설정
@@ -398,15 +404,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.Warn.set_dialog_type(bt_cnt=1, text='회원가입 실패')
             self.Warn.show_dialog()
     def set_combobox(self, result):
-        # for i in result:
-            # self.c
-        print(result)
+        self.team_list = result
+        for i in result:
+            self.comboBox.addItem(i)
 
     # 회원 가입 화면 으로 이동 하는 함수
     def click_register_btn(self):
-        message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
-            FORMAT)
-        self.client_controller.controller_send_message(message)
         self.stackedWidget.setCurrentWidget(self.register_page)
 
     # 아이디 중복 검사
@@ -431,7 +434,11 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         input_reg_pw = self.reg_pw_edit.text()
         input_reg_name = self.reg_name_edit.text()
         input_reg_nn = self.reg_nn_edit.text()
-        result = [input_reg_id, input_reg_pw, input_reg_name, input_reg_nn]
+        input_reg_team = self.comboBox.currentText()
+        # self.comboBox:QComboBox
+        # self.comboBox.currentText()
+        print(input_reg_team)
+        result = [input_reg_id, input_reg_pw, input_reg_name, input_reg_nn, input_reg_team]
 
         user_info = json.dumps(result)
         message = f"{f'insertuser{header_split}{user_info}'}"

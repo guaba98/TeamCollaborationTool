@@ -189,7 +189,7 @@ class Server():
             elif header == 'insert_todo':
                 proflie_message = decode_msg.split(header_split)[1]
                 proflie_message = eval(proflie_message)
-                title, contents, user_no = proflie_message
+                title, contents, user_no, team = proflie_message
                 self.db_conn.insert_todo_list(user_no, title, contents)
                 response_header = f"{f'recv_insert_todo{header_split}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
@@ -197,8 +197,9 @@ class Server():
             elif header == 'insert_notice':
                 proflie_message = decode_msg.split(header_split)[1]
                 proflie_message = eval(proflie_message)
-                title, contents, team_no = proflie_message
-                self.db_conn.insert_notice_data(team_no, title, contents)
+                title, contents, team = proflie_message
+
+                self.db_conn.insert_notice_data(team, title, contents)
                 response_header = f"{f'recv_insert_notice{header_split}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
 
