@@ -298,19 +298,45 @@ class Ui_NoticeBoard(object):
         self.verticalLayout_5.setSpacing(7)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.notice_scrollarea = QtWidgets.QScrollArea(self.notice_widget)
+        self.notice_scrollarea.setStyleSheet("\n"
+"            QScrollBar:vertical {\n"
+"                border: none;\n"
+"                background: #E4EAEE;\n"
+"                width: 10px;\n"
+"                margin: 0px;\n"
+"            }\n"
+"\n"
+"            QScrollBar::handle:vertical {\n"
+"                background: #14C871;\n"
+"                min-height: 20px;\n"
+"                border-radius: 5px;\n"
+"            }\n"
+"\n"
+"            QScrollBar::handle:vertical:hover {\n"
+"                background: #0F9B58;\n"
+"            }\n"
+"\n"
+"            QScrollBar::sub-line:vertical,\n"
+"            QScrollBar::add-line:vertical {\n"
+"                border: none;\n"
+"                height: 0px;\n"
+"            }\n"
+"")
         self.notice_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.notice_scrollarea.setWidgetResizable(True)
         self.notice_scrollarea.setObjectName("notice_scrollarea")
         self.notice_scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.notice_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 832, 565))
+        self.notice_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 828, 561))
+        self.notice_scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(826, 0))
         self.notice_scrollAreaWidgetContents.setObjectName("notice_scrollAreaWidgetContents")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.notice_scrollAreaWidgetContents)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setSpacing(5)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.notice_v_lay = QtWidgets.QVBoxLayout()
         self.notice_v_lay.setObjectName("notice_v_lay")
         self.verticalLayout_4.addLayout(self.notice_v_lay)
-        spacerItem13 = QtWidgets.QSpacerItem(829, 483, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem13 = QtWidgets.QSpacerItem(825, 483, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem13)
         self.notice_scrollarea.setWidget(self.notice_scrollAreaWidgetContents)
         self.verticalLayout_5.addWidget(self.notice_scrollarea)
@@ -354,7 +380,7 @@ class Ui_NoticeBoard(object):
         self.chat_scrollarea.setWidgetResizable(True)
         self.chat_scrollarea.setObjectName("chat_scrollarea")
         self.chat_scrollarea_contents = QtWidgets.QWidget()
-        self.chat_scrollarea_contents.setGeometry(QtCore.QRect(0, 0, 850, 544))
+        self.chat_scrollarea_contents.setGeometry(QtCore.QRect(0, 0, 829, 16))
         self.chat_scrollarea_contents.setObjectName("chat_scrollarea_contents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.chat_scrollarea_contents)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -422,6 +448,7 @@ class Ui_NoticeBoard(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.team_title_widget)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label = QtWidgets.QLabel(self.team_title_widget)
+        self.label.setText("")
         self.label.setObjectName("label")
         self.horizontalLayout_4.addWidget(self.label)
         spacerItem16 = QtWidgets.QSpacerItem(819, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -456,7 +483,7 @@ class Ui_NoticeBoard(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 850, 574))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 850, 573))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
@@ -484,6 +511,11 @@ class Ui_NoticeBoard(object):
         self.team_process_widget_2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-radius:10px;")
         self.team_process_widget_2.setObjectName("team_process_widget_2")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.team_process_widget_2)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.v_lay_graph = QtWidgets.QVBoxLayout()
+        self.v_lay_graph.setObjectName("v_lay_graph")
+        self.verticalLayout_11.addLayout(self.v_lay_graph)
         self.verticalLayout_10.addWidget(self.team_process_widget_2)
         self.team_v_lay.addWidget(self.team_process_widget)
         self.team_todo_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
@@ -543,7 +575,6 @@ class Ui_NoticeBoard(object):
         self.user_team.setText(_translate("NoticeBoard", "팀이름"))
         self.user_state.setText(_translate("NoticeBoard", "상태메세지"))
         self.chat_edit.setPlaceholderText(_translate("NoticeBoard", "메세지를 작성하세요."))
-        self.label.setText(_translate("NoticeBoard", " "))
         self.team_process_lab.setText(_translate("NoticeBoard", "팀업무진행도"))
         self.team_todo_label.setText(_translate("NoticeBoard", "팀원별 투두리스트"))
 from main_code.front.ui import my_qrc_rc

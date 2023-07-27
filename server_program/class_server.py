@@ -14,6 +14,11 @@ list_split_2 = chr(3)
 
 
 class Server():
+    '''
+    실습실 소연: 10.10.20.103
+    실습실 종혁: 10.10.20.109
+    기숙사 독서실 : 192.168.0.88
+    '''
     # HOST = '10.10.20.103'#gethostbyname(gethostname())
     HOST = gethostbyname(gethostname())
     PORT = 5050

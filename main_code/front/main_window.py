@@ -1,6 +1,8 @@
 # 모듈
 import json
 import sys
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtWidgets import QMainWindow, QLayout, QLabel, QPushButton, QLineEdit, QTextEdit, QGraphicsDropShadowEffect, \
     QApplication
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QTimer
@@ -74,6 +76,35 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         for i in range(5):
             user = MemberList(self, '이름', '역할', 'admin')
             self.team_mem_v_lay.addWidget(user)
+
+        for i in range(5):
+            notice = Notice(['test', 'test'], 'test')
+            self.notice_v_lay.addWidget(notice)
+
+        canvas = FigureCanvas(plt.figure())
+        self.v_lay_graph.addWidget(canvas)
+        self.create_donut_chart()
+    '''테스트 테스트 그래프 그리기'''
+
+    def create_donut_chart(self):
+        sizes = [10, 6, 8, 4, 7]  # 투두리스트 갯수가 들어가야 함.
+        labels = ['A', 'B', 'C', 'D', 'E']  # 이름이 들어가야 함
+        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0']
+        colors_ = ['#0F9B58', '#0FBC74', '#53B83A', '#3EC56B', '#1AA867', '#0FAF52', '#0FAF6B', '#53AF37']
+
+        # Create the pie chart with wedge properties to create a donut shape
+        plt.pie(sizes, labels=labels, colors=colors_, autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.4))
+
+        # 도넛 모양으로 그래프 그리기
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        fig = plt.gcf()
+        fig.gca().add_artist(centre_circle)
+
+        # Equal aspect ratio ensures that pie is drawn as a circle
+        plt.axis('equal')
+        plt.tight_layout()
+
+
 
     # 변수
     def init_var(self):
@@ -348,7 +379,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-        self.stackedWidget.setCurrentWidget(self.login_page)
+        self.stackedWidget.setCurrentWidget(self.main_page)
         self.inner_stackedWidget.setCurrentWidget(self.team_page)
         self.set_font()  # 폰트 설정
         self.style_init() # ui 설정
