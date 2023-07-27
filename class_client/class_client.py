@@ -79,7 +79,8 @@ class ClientApp:
 
         if header == 'login':
             result = parsed[1]
-            # print(result)
+            print('로그인 리시브')
+
 
             if result == 'False':
                 self.client_controller.emit_login(False)
@@ -133,3 +134,15 @@ class ClientApp:
         elif header == 'recv_insert_notice':
             result = parsed[1]
             self.client_controller.emit_refresh_notice()
+
+        elif header == 'recv_get_team_name_list':
+            result = parsed[1]
+            result = eval(result)
+            print(result)
+            self.client_controller.emit_admin_login(result)
+
+        elif header == 'recv_get_team_name_list2':
+            result = parsed[1]
+            result = eval(result)
+            print(result)
+            self.client_controller.emit_set_combobox(result)

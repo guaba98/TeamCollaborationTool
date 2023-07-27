@@ -14,7 +14,8 @@ list_split_2 = chr(3)
 
 
 class Server():
-    HOST = '10.10.20.103'#gethostbyname(gethostname())
+    # HOST = '10.10.20.103'#gethostbyname(gethostname())
+    HOST = gethostbyname(gethostname())
     PORT = 5050
     BUFFER = 50000
     FORMAT = 'utf-8'
@@ -93,7 +94,6 @@ class Server():
                 substance = decode_msg.split(header_split)[1]
                 data = substance.split(list_split_1)
                 id, pw = data
-
                 result = self.db_conn.log_in(id, pw)
                 if result is False:  # 아이디와 비밀번호가 없으면 False를 보낸다
                     response_header = f"{f'login{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
@@ -124,6 +124,7 @@ class Server():
             elif header == 'insertuser':  # 회원가입
                 register_user_info = decode_msg.split(header_split)[1]
                 register_user_info =eval(register_user_info)
+                print(register_user_info)
                 result = self.db_conn.insert_user(register_user_info)
 
                 if result is True:
@@ -141,7 +142,6 @@ class Server():
                 response_header = f"{f'recv_chat{header_split}{send_chat}'}"   # 헤더만들기
 
                 clients = self.clients.copy()
-                print(clients, '클라이언트 확인')
                 for i in clients:
                     try:
                         i.send(bytes(response_header, "UTF-8"))
@@ -157,7 +157,7 @@ class Server():
                 response_header = f"{f'recv_get_notice{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
 
-            elif header == 'get_todolist':  # 공지 client에 보내주기
+            elif header == 'get_todolist':  #
                 todolist_info = decode_msg.split(header_split)[1] # 데이터 받아오기
                 todolist_info = todolist_info.split(list_split_1)
                 user_no, team_name = todolist_info
@@ -189,9 +189,8 @@ class Server():
             elif header == 'insert_todo':
                 proflie_message = decode_msg.split(header_split)[1]
                 proflie_message = eval(proflie_message)
-                title, contents, team_no = proflie_message
-                # todo: 투두 리스트 db에 저장
-                print('서버에서 받은 투두리스트 정보', title, contents, team_no)
+                title, contents, user_no = proflie_message
+                self.db_conn.insert_todo_list(user_no, title, contents)
                 response_header = f"{f'recv_insert_todo{header_split}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
 
@@ -200,8 +199,18 @@ class Server():
                 proflie_message = eval(proflie_message)
                 title, contents, team_no = proflie_message
                 self.db_conn.insert_notice_data(team_no, title, contents)
-                print('서버에서 받은 공지 정보', title, contents, team_no)
                 response_header = f"{f'recv_insert_notice{header_split}':{self.BUFFER}}".encode(self.FORMAT)
+                self.send_message(client_socket, response_header)
+
+            # 팀목록 요청받음
+            elif header == 'get_team_name_list':
+                result = self.db_conn.return_team_name()
+                response_header = f"{f'recv_get_team_name_list{header_split}{result}':{self.BUFFER}}".encode(self.FORMAT)
+                self.send_message(client_socket, response_header)
+
+            elif header == 'get_team_name_list2':
+                result = self.db_conn.return_team_name()
+                response_header = f"{f'recv_get_team_name_list2{header_split}{result}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
 
         except:

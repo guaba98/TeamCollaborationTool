@@ -13,12 +13,12 @@ from class_client.class_client import ClientApp
 # ui 임풜트 예아
 from main_code.front.main_window import WidgetNoticeBorad
 
-
 header_split = chr(1)
 list_split_1 = chr(2)
 list_split_2 = chr(3)
 BUFFER = 50000
 FORMAT = "utf-8"
+
 
 class ClientController(QtWidgets.QWidget):
 
@@ -41,19 +41,20 @@ class ClientController(QtWidgets.QWidget):
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
 
-
-
     # 투두 ==============================
     def emit_recv_get_todolist(self, p):
         self.main_window.recv_get_todolist_signal.emit(p)
+
     def emit_refresh_todolist(self):
         self.main_window.refresh_todolist_signal.emit()
 
     # 공지 ==============================
     def emit_recv_get_notice(self, p):
         self.main_window.recv_get_notice_signal.emit(p)
+
     def emit_refresh_notice(self):
         self.main_window.refresh_notice_signal.emit()
+
     # 클라이언트에 send메시지 보내기======================================================================
     # main_window에서 만든 구분자 send
     def controller_send_message(self, message):
@@ -82,8 +83,8 @@ class ClientController(QtWidgets.QWidget):
             widget.move(event.globalPos() - self.drag_start_position)
             event.accept()
 
-    #런처 실행시 나오는 window ===========================================================================
-    def run(self): # 시작화면 show
+    # 런처 실행시 나오는 window ===========================================================================
+    def run(self):  # 시작화면 show
         self.main_window.show()
 
     # 로그인 ===============================================================
@@ -95,21 +96,27 @@ class ClientController(QtWidgets.QWidget):
         else:
             self.main_window.recv_login_signal.emit(p)
 
+    def emit_admin_login(self, p):
+        self.main_window.admin_login_signal.emit(p)
+
     # 회원가입 ============================================================
-    def emit_duple(self, result):   # 아이디 중복 확인 결과 보내기
+    def emit_duple(self, result):  # 아이디 중복 확인 결과 보내기
         self.main_window.reg_id_lab_signal.emit(result)
+    def emit_set_combobox(self, result):
+        self.main_window.set_combobox_signal.emit(result)
 
     def emit_insertuser(self, result):  # 회원가입 성공 결과 보내기
         self.main_window.recv_emit_insertuser.emit(result)
 
     def send_register_user_info(self):
         pass
+
     # 채팅=====================================================================
 
     # 서버에서 받은 메시지을 누가 보낸것 인지 구분
     def emit_recv_chat(self, result):
         user_no, team_no, name, chat = result
-        if user_no == str(self.client_app.user_no):   # 본인이 보낸 메시지면
+        if user_no == str(self.client_app.user_no):  # 본인이 보낸 메시지면
             self.main_window.emit_signal_my_chat.emit(result)
-        else:   # 다른 유저가 보낸 메시지면
+        else:  # 다른 유저가 보낸 메시지면
             self.main_window.emit_signal_chat.emit(result)

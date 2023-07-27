@@ -11,13 +11,14 @@ class TodoList(QWidget, Ui_TodoForm):
         super().__init__()
         self.setupUi(self)
         self.main_window = main_window
-        self.todo_id, todo, checked = result
+        self.todo_id, todo, todo_list, checked = result
         people_lab = people_lab
         # self.checkBox.clicked.connect()
         # self.checkBox.clicked(checked)
+        if people_lab != None:
+            self.people_lab.setText('함께하는 사람들 ', ','.join(people_lab))
         self.checkBox.setText(todo)
         self.checkBox.setFont(Font.button(6))
-        self.people_lab.setText(','.join(people_lab))
         self.people_lab.setFont(Font.contents(4))
         self.set_btn_trigger()
         self.set_checked(checked)
