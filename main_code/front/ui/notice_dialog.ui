@@ -181,6 +181,12 @@ border: 0.5px solid gray;</string>
          </item>
          <item>
           <widget class="QComboBox" name="team">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);</string>
            </property>

@@ -76,6 +76,7 @@ class Ui_NoticeDialog(object):
         self.title_edit.setObjectName("title_edit")
         self.verticalLayout_2.addWidget(self.title_edit)
         self.team = QtWidgets.QComboBox(self.contents)
+        self.team.setMinimumSize(QtCore.QSize(0, 30))
         self.team.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.team.setObjectName("team")
         self.verticalLayout_2.addWidget(self.team)
