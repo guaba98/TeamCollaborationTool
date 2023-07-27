@@ -41,6 +41,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     refresh_notice_signal = pyqtSignal()
     admin_login_signal = pyqtSignal(list)
     set_combobox_signal = pyqtSignal(list)
+    update_user_message_signal = pyqtSignal()
 
     def __init__(self, client_controller):
         super().__init__()
@@ -103,7 +104,16 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.admin_login_signal.connect(self.set_admin_ctg)
         self.update_timer.timeout.connect(self.set_scrollbar)
         self.set_combobox_signal.connect(self.set_combobox)
+        self.update_user_message_signal.connect(self.set_user_message)
         self.update_timer.start()
+    def set_main_page_profil(self):
+        user_team = self.client_controller.client_app.user_name
+        user_name = self.client_controller.client_app.user_team
+        self.user_team.setText(user_team)
+        self.user_name.setText(user_name)
+    def set_user_message(self):
+        state = self.client_controller.client_app.user_message
+        self.user_state.setText(state)
 
     def set_scrollbar(self):
         if self.vsb.value() != self.vsb.maximum():
@@ -338,7 +348,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-        self.stackedWidget.setCurrentWidget(self.main_page)
+        self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.team_page)
         self.set_font()  # 폰트 설정
         self.style_init() # ui 설정
@@ -408,7 +418,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.client_controller.controller_send_message(message)
             else:
                 self.ctg_list_show()  # 카테고리 넣어주기
-
+            self.set_main_page_profil()
+            self.set_user_message()
             self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
             self.user_role = self.client_controller.client_app.user_nickname
             # self.login_user_role(user_role)

@@ -40,6 +40,9 @@ class ClientController(QtWidgets.QWidget):
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-cBd.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
+    # 좌상단 프로필
+    def emit_update_user_message(self):
+        self.main_window.update_user_message_signal.emit()
 
     # 투두 ==============================
     def emit_recv_get_todolist(self, p):

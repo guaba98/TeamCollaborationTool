@@ -127,6 +127,8 @@ class ClientApp:
         elif header == 'update_user_message':
             result = parsed[1]
             self.user_message = result
+            self.client_controller.emit_update_user_message()
+
 
         elif header == 'recv_insert_todo':
             result = parsed[1]

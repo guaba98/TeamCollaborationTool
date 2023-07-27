@@ -11,10 +11,16 @@ class TodoList(QWidget, Ui_TodoForm):
         super().__init__()
         self.setupUi(self)
         self.main_window = main_window
+        self.user_role = user_role
         self.todo_id, todo, todo_list, checked, time = result
         people_lab = people_lab
         # self.checkBox.clicked.connect()
         # self.checkBox.clicked(checked)
+        if '관리자' in self.user_role:
+            self.del_btn.show()
+        else:
+            self.del_btn.hide()
+
         if people_lab != None:
             self.people_lab.setText('함께하는 사람들 ' + ','.join(people_lab))
         self.checkBox.setText(todo)
