@@ -164,10 +164,10 @@ class DBConnector:
         conn.close()
 
     # -- 공지
-    def insert_notice_data(self, user_id, title, contents):
+    def insert_notice_data(self, user_no, title, contents): # TODO user_no -> team_no 로 변경해야 함
         """
         공지 작성시 db에 데이터 삽입
-        :param user_id: 유저 아이디
+        :param user_no: 유저 고유번호
         :param title: 공지 제목
         :param contents: 공지 내용
         """
@@ -177,8 +177,8 @@ class DBConnector:
 
         # 데이터 저장
         insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
-                       f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"USER_ID\", \"UPDATE_DATE\")" \
-                       f" VALUES ('{title}', '{contents}', '{user_id}', '{str(self.return_datetime('time'))}')"
+                       f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"USER_NO\", \"UPDATE_DATE\")" \
+                       f" VALUES ('{title}', '{contents}', '{user_no}', '{str(self.return_datetime('time'))}')"
         print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
@@ -187,6 +187,20 @@ class DBConnector:
         # 데이터 저장 및 닫기
         conn.commit()
         conn.close()
+    def get_notice_list(self, user_no):
+        """공지에서 유저가 속한 팀 기준으로 공지 제목, 내용을 가져옴"""
+        c = self.start_conn()
+        query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" " \
+                "FROM \"TB_NOTICE\" NATURAL JOIN \"TB_TEAM\" " \
+                f"WHERE \"TEAM_NO\" = (SELECT \"TEAM_NO\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});"
+        print(query)
+        c.execute(query)
+        result = c.fetchall()
+        print('[db_connector.py - get_notice_list]: ', result)
+        print(result)
+
+        self.end_conn()  # 커서 닫기
+        return result
 
     def delete_notice_data(self, title):
         """공지 삭제시 데이터에서도 삭제"""
@@ -340,5 +354,5 @@ if __name__ == '__main__':
     # # condition = "\"USER_NAME\" = '박소연'"
     # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
     #
-    d.insert_todo_list('admin', 'title', 'contents')
+    d.get_notice_list(1)
     # print(r_)

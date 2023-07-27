@@ -180,6 +180,13 @@ border: 0.5px solid gray;</string>
           </widget>
          </item>
          <item>
+          <widget class="QComboBox" name="team">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QTextEdit" name="contents_edit">
            <property name="minimumSize">
             <size>

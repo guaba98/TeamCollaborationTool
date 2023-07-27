@@ -36,7 +36,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="login_page">
        <property name="styleSheet">
@@ -395,7 +395,7 @@ background-color: white;}</string>
              <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -550,6 +550,36 @@ background-color: white;}</string>
             </property>
             <property name="placeholderText">
              <string>닉네임을 입력하세요</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="reg_nn_lab_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>팀명</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(242, 245, 253);
+border-radius:5px;</string>
             </property>
            </widget>
           </item>
@@ -1033,8 +1063,8 @@ background-color: rgb(20, 200, 113);</string>
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>850</width>
-                    <height>544</height>
+                    <width>829</width>
+                    <height>16</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1213,8 +1243,8 @@ QPushButton#send_btn{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>753</width>
-                 <height>367</height>
+                 <width>850</width>
+                 <height>574</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1379,6 +1409,7 @@ border-radius:10px;</string>
  </widget>
  <resources>
   <include location="../src_img/my_qrc.qrc"/>
+  <include location="../../../../../../../../.designer/src_img/my_qrc.qrc"/>
  </resources>
  <connections/>
 </ui>

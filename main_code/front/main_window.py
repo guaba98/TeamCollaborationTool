@@ -36,6 +36,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def __init__(self, client_controller):
         super().__init__()
 
+        self.is_admin = False
         self.ctg_dict_admin = None # 관리자 카테고리
         self.ctg_dict_user = None # 유저 카테고리
         self.event_dict = None
@@ -122,31 +123,32 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.reg_sub_title.setFont(Font.text(3))
         self.reg_register_btn.setFont(Font.button(1))
 
-        # 메인창
+        # -- 메인창
         # 프로필창
         profile_lab = self.profile_widget.findChildren(QLabel)
         [lab.setFont(Font.text(3)) for lab in profile_lab]
 
         # 채팅
         self.chat_edit.setFont(Font.text(2))
-        # self.send_btn.setFont(Font.button(2))
 
     def ctg_list_show(self):
         """카테고리 넣어주기"""
-        self.ctg_dict_user = {
-            '프로필 수정': ['user.png', None],
-            '채팅': ['send_black.png', self.chat_page],
-            '공지': ['bell.png', self.notice_page],
-            '투두리스트': ['heart.png', self.notice_page],
-            '로그아웃': ['out.png', None]
-        }
-        self.ctg_dict_admin = {
-            '프로필 수정': ['user.png', None],
-            '공지': ['bell.png', self.notice_page],
-            '채팅': ['send_black.png', self.chat_page],
-        }
-
-        self.ctg_list = list(self.ctg_dict_user.keys())
+        if self.is_admin:
+            self.ctg_dict_admin = {
+                '프로필 수정': ['user.png', None],
+                '공지': ['bell.png', self.notice_page],
+                '채팅': ['send_black.png', self.chat_page],
+            }
+            self.ctg_list = list(self.ctg_dict_admin.keys())
+        else:
+            self.ctg_dict_user = {
+                '프로필 수정': ['user.png', None],
+                '채팅': ['send_black.png', self.chat_page],
+                '공지': ['bell.png', self.notice_page],
+                '투두리스트': ['heart.png', self.notice_page],
+                '로그아웃': ['out.png', None]
+            }
+            self.ctg_list = list(self.ctg_dict_user.keys())
 
         for ctg in self.ctg_list:  # 카테고리 이미지, 카테고리 이름 넣어주기
             img_name = self.ctg_dict_user[ctg][0]
@@ -245,7 +247,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def show(self):
         self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.chat_page)
-        self.ctg_list_show()  # 카테고리 넣어주기
+        # self.ctg_list_show()  # 카테고리 넣어주기
         self.set_font()  # 폰트 설정
         self.style_init()
         super().show()
@@ -310,6 +312,12 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.user_role = self.client_controller.client_app.user_nickname
             # self.login_user_role(user_role)
             self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
+            if self.user_role == '관리자':
+                self.is_admin = True
+
+            print('유저의 역할은:', self.user_role)
+            self.ctg_list_show()
+            # 여기서 화면 보여주는 부분 추가123412341234
         else:
             self.Warn.set_dialog_type(bt_cnt=1, t_type='loginfailed')  # 알림창 띄우기
 
