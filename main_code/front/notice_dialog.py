@@ -22,6 +22,7 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
         self.title_lab.setFont(Font.title(2))
         self.title_edit.setFont(Font.text(2))
         self.contents_edit.setFont(Font.text(2))
+        self.ok_btn.setFont(Font.button(1))
 
     def connect_event(self):
         self.ok_btn.clicked.connect(self.add_notice)
@@ -55,6 +56,7 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
         self.title_lab.setFont(Font.title(2))
         self.title_edit.setFont(Font.text(2))
         self.contents_edit.setFont(Font.text(2))
+        self.ok_btn.setFont(Font.button(1))
 
     def connect_event(self):
         self.ok_btn.clicked.connect(self.add_todo)

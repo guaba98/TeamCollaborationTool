@@ -3,7 +3,7 @@ import json
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSignal, QSize
-from PyQt5.QtGui import QFontDatabase, QIcon, QColor
+from PyQt5.QtGui import QFontDatabase, QIcon, QColor, QPixmap
 
 # UI
 from main_code.front.message import YourMsg, MyMsg  # 메세지
@@ -139,14 +139,15 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             img_name = self.ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self)
             self.category_v_lay.addWidget(ctg_)
+
     def click_plus_button(self):
-        print('어라라?')
-        if self.ctg_clicked == '공지':
-            self.Notice_add.exec_()
-        elif self.ctg_clicked == '투두리스트':
-            self.Todo_add.exec_()
-        else:
-            pass
+        actions = {
+            '공지': self.Notice_add.exec_,
+            '투두리스트': self.Todo_add.exec_
+        }
+        action = actions.get(self.ctg_clicked)
+        if action:
+            action()
 
     def ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
@@ -235,8 +236,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def style_init(self):
         #  채팅 버튼 넣어주기
-        self.send_btn.setIcon(QIcon('./src_img/send_green.png'))
-        self.send_btn.setIconSize(QSize(35, 35))
+        # self.send_btn.setIcon(QIcon('./src_img/send_green.png'))
+        # self.send_btn.setIconSize(QSize(35, 35))
+        # self.profile_img.setPixmap(QPixmap('./../front/src_img/user_green.png'))
 
         # 카테고리 바 그림자 넣기
         self.set_background_color(self.category_bar)
@@ -353,12 +355,15 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_reg_name_lab(self):
         self.reg_name_lab.setText('이름은 두 글자 이상이여야 합니다.')
+        self.reg_id_lab.setStyleSheet('color:red;')
 
     def set_reg_nn_lab(self):
         self.reg_nn_lab.setText('닉네임은 두 글자 이상이여야 합니다.')
+        self.reg_id_lab.setStyleSheet('color:red;')
 
     def set_reg_pw_lab(self):
         self.reg_pw_lab.setText('비밀번호가 같지 않습니다.')
+        self.reg_id_lab.setStyleSheet('color:red;')
 
     # 유저가 입력한 회원가입조건 검사
     def register_check(self):
