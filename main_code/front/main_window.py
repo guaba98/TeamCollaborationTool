@@ -72,7 +72,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
         '''테스트 중'''
         for i in range(5):
-            user = MemberList(self, '이름', '역할')
+            user = MemberList(self, '이름', '역할', 'admin')
             self.team_mem_v_lay.addWidget(user)
 
     # 변수

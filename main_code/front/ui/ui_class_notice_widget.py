@@ -41,6 +41,11 @@ class Ui_Notice_widget(object):
         self.h_lay.addWidget(self.label)
         self.del_btn = QtWidgets.QPushButton(self.main_frame)
         self.del_btn.setMaximumSize(QtCore.QSize(50, 50))
+        self.del_btn.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/newPrefix/close.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.del_btn.setIcon(icon)
+        self.del_btn.setIconSize(QtCore.QSize(20, 20))
         self.del_btn.setObjectName("del_btn")
         self.h_lay.addWidget(self.del_btn)
         self.verticalLayout.addLayout(self.h_lay)
@@ -71,8 +76,8 @@ class Ui_Notice_widget(object):
         _translate = QtCore.QCoreApplication.translate
         Notice_widget.setWindowTitle(_translate("Notice_widget", "Form"))
         self.label.setText(_translate("Notice_widget", "공지 제목 공지 제목"))
-        self.del_btn.setText(_translate("Notice_widget", "삭제"))
         self.detail_lab.setText(_translate("Notice_widget", "공지 내용이 이러쿵 저러쿵"))
+from main_code.front.ui import my_qrc_rc
 
 
 if __name__ == "__main__":
