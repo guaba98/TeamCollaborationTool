@@ -21,8 +21,8 @@ def main():
     fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-eHv.ttf")
 
     available_families = fontDB.families()
-    for family in available_families:
-        print(family)
+    # for family in available_families:
+    #     print(family)
 
     client_object = ClientApp()
     client_controller = ClientController(client_object)

@@ -34,6 +34,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     recv_get_todolist_signal = pyqtSignal(list)
     refresh_todolist_signal = pyqtSignal()
     refresh_notice_signal = pyqtSignal()
+    admin_login_signal = pyqtSignal(list)
+    set_combobox_signal = pyqtSignal(list)
 
     def __init__(self, client_controller):
         super().__init__()
@@ -45,7 +47,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller = client_controller
         self.Warn = DialogWarning()
         self.font = Font()
-
+        self.team_list = None
         self.Notice_add = DialogNoticeAdd(self)
         self.Todo_add = DialogToDoAdd(self)
 
@@ -86,7 +88,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.recv_get_todolist_signal.connect(self.set_todolist)
         self.refresh_todolist_signal.connect(self.get_todolist)
         self.refresh_notice_signal.connect(self.get_notice)
+        self.admin_login_signal.connect(self.set_admin_ctg)
         self.update_timer.timeout.connect(self.set_scrollbar)
+        self.set_combobox_signal.connect(self.set_combobox)
         self.update_timer.start()
 
     def set_scrollbar(self):
@@ -131,6 +135,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         # 채팅
         self.chat_edit.setFont(Font.text(2))
 
+
     def ctg_list_show(self):
         """카테고리 넣어주기"""
         self.ctg_dict = {
@@ -139,6 +144,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             '공지': ['bell.png', self.notice_page],
             '투두리스트': ['heart.png', self.notice_page]
         }
+
         self.ctg_list = list(self.ctg_dict.keys())
         self.event_dict = {'채팅': [None, self.get_chat, self.plus_button.hide],
                            '공지': [self.notice_v_lay, self.get_notice, self.plus_button.hide],
@@ -150,25 +156,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             img_name = self.ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role= self.user_role)
             self.category_v_lay.addWidget(ctg_)
-    def admin_ctg_list_show(self):
-        """카테고리 넣어주기"""
-        self.admin_ctg_dict = {
-            '프로필 수정': ['user.png', None],
-            '채팅': ['send_black.png', self.chat_page],
-            '공지': ['bell.png', self.notice_page],
-        }
 
-        self.admin_ctg_list = list(self.admin_ctg_dict.keys())
-        self.adminevent_dict = {'채팅': [None, self.get_chat, self.plus_button.hide],
-                           '공지': [self.notice_v_lay, self.get_notice, self.plus_button.show],
-                           '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show],
-                           '....': [self.team_mem_v_lay, self.plus_button.hide ]
-                           }
-
-        for ctg in self.admin_ctg_list:  # 카테고리 이미지, 카테고리 이름 넣어주기
-            img_name = self.admin_ctg_dict[ctg][0]
-            ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role= self.user_role)
-            self.category_v_lay.addWidget(ctg_)
 
     def click_plus_button(self):
         actions = {
@@ -179,12 +167,13 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         if action:
             action()
 
+
+
     def ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
         name = self.client_controller.client_app.user_name
         state = self.client_controller.client_app.user_message
         self.ctg_clicked = ctg_name
-        print('카테고리 클릭', self.ctg_clicked)
         for c in self.ctg_list:
             if ctg_name == '프로필 수정':
                 img_path = 'user_green.png'
@@ -196,31 +185,50 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.event_dict[ctg_name][1]()
                 self.event_dict[ctg_name][2]()
                 self.inner_stackedWidget.setCurrentWidget(self.ctg_dict[c][1])
+
+    def admin_ctg_list_show(self, result):
+        """카테고리 넣어주기"""
+        self.admin_ctg_dict = {
+            '프로필 수정': ['user.png', None],
+            '채팅': ['send_black.png', self.chat_page],
+            '공지': ['bell.png', self.notice_page],
+        }
+        # 팀카테고리 이미지, 화면 딕셔너리에 저장
+        for i in result:
+            self.admin_ctg_dict[i] = ['user.png', self.team_page]
+
+        self.admin_ctg_list = list(self.admin_ctg_dict.keys())
+        self.adminevent_dict = {'채팅': [None, self.get_chat, self.plus_button.hide],
+                                '공지': [self.notice_v_lay, self.get_notice, self.plus_button.show],
+                                '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show]
+                                }
+        # 팀카테고리별 클릭 이벤트 설정
+        for i in result:
+            self.adminevent_dict[i] = [None, self.get_team_member, self.plus_button.hide]
+
+        for ctg in self.admin_ctg_list:  # 카테고리 이미지, 카테고리 이름 넣어주기
+            img_name = self.admin_ctg_dict[ctg][0]
+            ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role=self.user_role)
+            self.category_v_lay.addWidget(ctg_)
     def admin_ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기"""
         name = self.client_controller.client_app.user_name
         state = self.client_controller.client_app.user_message
+
         self.ctg_clicked = ctg_name
-        print('어드민 카테고리 클릭', self.ctg_clicked)
-        print(self.admin_ctg_list)
         for c in self.admin_ctg_list:
             if ctg_name == '프로필 수정':
                 p_ = ProFile(self, img=None, name=name, state=state)
                 p_.show_dialog()
                 break
-            elif ctg_name == '채팅':
-                self.inner_stackedWidget.setCurrentWidget(self.admin_ctg_dict[c][1])
 
             elif ctg_name == c:
-                print('1')
-                self.clear_layout(self.event_dict[ctg_name][0])  # 레이아웃 비우기
-                print('2')
-                self.event_dict[ctg_name][1]()
-                print('3')
-                self.event_dict[ctg_name][2]()
-                print('4')
+                self.clear_layout(self.adminevent_dict[ctg_name][0])  # 레이아웃 비우기
+                self.adminevent_dict[ctg_name][1]()
+                self.adminevent_dict[ctg_name][2]()
                 self.inner_stackedWidget.setCurrentWidget(self.admin_ctg_dict[c][1])
-
+    def set_admin_ctg(self, result):
+        self.admin_ctg_list_show(result)
     # 유저 프로필 상메 업데이트
     def update_user_message(self, user_message):
         message = f"{f'update_user_message{header_split}{self.client_controller.client_app.user_no}{list_split_1}{user_message}':{BUFFER}}".encode(
@@ -230,24 +238,23 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 레이아웃 비우기
     def clear_layout(self, layout: QLayout):
         """레이아웃 안의 모든 객체를 지웁니다."""
-        if layout == None:
-            pass
-        else:
-            if layout is None or not layout.count():
-                return
-            while layout.count():
-                item = layout.takeAt(0)
-                widget = item.widget()
+        if layout is None or not layout.count():
+            return
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
 
-                if widget is not None:
-                    widget.setParent(None)
-                # 아이템이 레이아웃일 경우 재귀 호출로 레이아웃 내의 위젯 삭제
-                else:
-                    self.clear_layout(item.layout())
-
+            if widget is not None:
+                widget.setParent(None)
+            # 아이템이 레이아웃일 경우 재귀 호출로 레이아웃 내의 위젯 삭제
+            else:
+                self.clear_layout(item.layout())
+    # 팀 화면
+    def get_team_member(self):
+        print('팀에 속한 멤버들 받아와')
     # 투루리스트==========================================
     def insert_todo_list(self, title, contents):
-        msg = title, contents, self.client_controller.client_app.team_no
+        msg = title, contents, self.client_controller.client_app.user_no
         print(msg)
         message = f"{f'insert_todo{header_split}{msg}':{BUFFER}}".encode(
             FORMAT)
@@ -255,15 +262,18 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def get_todolist(self):
         # 유저가 입력한 로그인 정보 encode
-        print('투드리스트 클릭')
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
-        print('투두 내용들 받아오기', result)
         people_lab = result[1]
+
+        if len(people_lab) == 0:
+            people_lab = None
+        else:
+            pass
+
         for i in result[0]:
-            print('[set_notice]', i)
             todo = TodoList(self, i, people_lab, self.user_role)
             self.notice_v_lay.addWidget(todo)
     def send_todo_list_checked(self,todo_id, btn_checked):
@@ -275,20 +285,16 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 공지 화면 =====================================================================================
     def insert_notice(self, title, contents):
         msg = title, contents, self.client_controller.client_app.team_no
-        print(msg)
         message = f"{f'insert_notice{header_split}{msg}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
     def set_notice(self, result):
-        print('공지 내용들 받아오기', result)
         for i in result:
-            print('[set_notice]', i)
             notice = Notice(i, self.user_role)
             self.notice_v_lay.addWidget(notice)
 
     # 공지를 db에서 받아오는 함수
     def get_notice(self):
-        print('테스트')
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
         # 유저가 입력한 로그인 정보 encode
         message = f"{f'get_notice{header_split}':{BUFFER}}".encode(
@@ -366,7 +372,11 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.user_role = self.client_controller.client_app.user_nickname
         if result:
             if '관리자' in self.client_controller.client_app.user_nickname:
-                self.admin_ctg_list_show()
+                # db에 있는 팀명 리스트 요청 리스트 받아올때 카테고리 집어넣기
+                # 유저가 입력한 로그인 정보 encode
+                message = f"{f'get_team_name_list{header_split}':{BUFFER}}".encode(
+                    FORMAT)
+                self.client_controller.controller_send_message(message)
             else:
                 self.ctg_list_show()  # 카테고리 넣어주기
 
@@ -383,14 +393,20 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         if result:
             self.Warn.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
             self.Warn.show_dialog()
-            print('회원가입 성공')
+            self.stackedWidget.setCurrentWidget(self.login_page)
         else:
             self.Warn.set_dialog_type(bt_cnt=1, text='회원가입 실패')
             self.Warn.show_dialog()
-            print('회원가입 실패')
+    def set_combobox(self, result):
+        # for i in result:
+            # self.c
+        print(result)
 
     # 회원 가입 화면 으로 이동 하는 함수
     def click_register_btn(self):
+        message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
         self.stackedWidget.setCurrentWidget(self.register_page)
 
     # 아이디 중복 검사
