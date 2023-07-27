@@ -287,7 +287,8 @@ class DBConnector:
         c = self.start_conn()
 
         # 조건
-        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\" FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
+        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\" " \
+                    f"FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
         c.execute(sql_query)
 
         # 결과 가져오기
