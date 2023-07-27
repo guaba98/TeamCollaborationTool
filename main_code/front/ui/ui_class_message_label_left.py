@@ -17,7 +17,7 @@ class Ui_LeftMessage(object):
         LeftMessage.resize(815, 63)
         LeftMessage.setStyleSheet("background-color: rgba(255, 255, 255, 0);")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(LeftMessage)
-        self.horizontalLayout_2.setContentsMargins(40, 9, 9, 9)
+        self.horizontalLayout_2.setContentsMargins(9, 9, 9, 9)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.widget = QtWidgets.QWidget(LeftMessage)

@@ -16,11 +16,28 @@ class Ui_ProfileDialog(object):
         ProfileDialog.setObjectName("ProfileDialog")
         ProfileDialog.resize(430, 460)
         ProfileDialog.setMinimumSize(QtCore.QSize(430, 460))
-        ProfileDialog.setStyleSheet("background-color: rgb(255, 255, 255);")
+        ProfileDialog.setStyleSheet("\n"
+"QFrame#frame{\n"
+"background-color: rgb(255, 255, 255);\n"
+"border-radius:20px;\n"
+"border: 0.5px solid gray;\n"
+"\n"
+"}\n"
+"QDialog#ProfileDialog{\n"
+"background-color:rgb(255, 255, 255, 0)\n"
+"}")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(ProfileDialog)
-        self.verticalLayout_2.setContentsMargins(15, 70, 15, 70)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.main_frame = QtWidgets.QFrame(ProfileDialog)
+        self.frame = QtWidgets.QFrame(ProfileDialog)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.frame)
+        self.verticalLayout_3.setContentsMargins(15, 70, 15, 50)
+        self.verticalLayout_3.setSpacing(6)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.main_frame = QtWidgets.QFrame(self.frame)
         self.main_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.main_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.main_frame.setObjectName("main_frame")
@@ -32,7 +49,10 @@ class Ui_ProfileDialog(object):
         self.profile_img = QtWidgets.QLabel(self.main_frame)
         self.profile_img.setMinimumSize(QtCore.QSize(150, 150))
         self.profile_img.setMaximumSize(QtCore.QSize(158, 158))
-        self.profile_img.setStyleSheet("background-color: rgb(213, 213, 213);")
+        self.profile_img.setStyleSheet("\n"
+"border-radius:75px;")
+        self.profile_img.setText("")
+        self.profile_img.setScaledContents(True)
         self.profile_img.setObjectName("profile_img")
         self.h_lay.addWidget(self.profile_img)
         self.verticalLayout.addLayout(self.h_lay)
@@ -41,7 +61,7 @@ class Ui_ProfileDialog(object):
         self.name_lab.setObjectName("name_lab")
         self.verticalLayout.addWidget(self.name_lab)
         self.state_edit = QtWidgets.QLineEdit(self.main_frame)
-        self.state_edit.setMinimumSize(QtCore.QSize(0, 30))
+        self.state_edit.setMinimumSize(QtCore.QSize(0, 40))
         self.state_edit.setObjectName("state_edit")
         self.verticalLayout.addWidget(self.state_edit)
         self.admit_btn = QtWidgets.QPushButton(self.main_frame)
@@ -54,7 +74,8 @@ class Ui_ProfileDialog(object):
 "color:white;")
         self.admit_btn.setObjectName("admit_btn")
         self.verticalLayout.addWidget(self.admit_btn)
-        self.verticalLayout_2.addWidget(self.main_frame)
+        self.verticalLayout_3.addWidget(self.main_frame)
+        self.verticalLayout_2.addWidget(self.frame)
 
         self.retranslateUi(ProfileDialog)
         QtCore.QMetaObject.connectSlotsByName(ProfileDialog)
@@ -62,10 +83,10 @@ class Ui_ProfileDialog(object):
     def retranslateUi(self, ProfileDialog):
         _translate = QtCore.QCoreApplication.translate
         ProfileDialog.setWindowTitle(_translate("ProfileDialog", "Dialog"))
-        self.profile_img.setText(_translate("ProfileDialog", "여기에 프로필 사진"))
         self.name_lab.setText(_translate("ProfileDialog", "이름이름"))
         self.state_edit.setPlaceholderText(_translate("ProfileDialog", "상태메세지를 입력하세요."))
         self.admit_btn.setText(_translate("ProfileDialog", "확인"))
+from main_code.front.ui import my_qrc_rc
 
 
 if __name__ == "__main__":

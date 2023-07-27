@@ -14,7 +14,7 @@ list_split_2 = chr(3)
 
 
 class Server():
-    HOST = gethostbyname(gethostname())
+    HOST = '10.10.20.103'#gethostbyname(gethostname())
     PORT = 5050
     BUFFER = 50000
     FORMAT = 'utf-8'

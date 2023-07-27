@@ -233,7 +233,26 @@ class DBConnector:
         condition = f"\"TODO_ID\" = '{todo_id}'"
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CHECKED', data=checked, condition=condition)
 
+    def insert_todo_list(self, user_id, title, contents):
+        """투두리스트에 값 넣어주기"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
 
+        condition = f"\"USER_ID\" = '{user_id}';"
+        user_no = self.return_specific_data('USER_NO', 'TB_USER', condition)
+        # 데이터 저장
+        insert_query = f"INSERT INTO public.\"TB_TODO_LIST\" " \
+                       f"(\"USER_NO\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_TIME\")" \
+                       f" VALUES ('{user_no}', '{title}', '{contents}', '{str(self.return_datetime('time'))}')"
+        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
+
+        # 저장
+        cur.execute(insert_query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
 
     def get_todo_list(self, user_no):
         """
@@ -245,7 +264,7 @@ class DBConnector:
         c = self.start_conn()
 
         # 조건
-        sql_query = f"SELECT \"TODO_ID\", \"TODO_LIST\", \"TODO_CHECKED\" FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
+        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\" FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
         c.execute(sql_query)
 
         # 결과 가져오기
@@ -311,7 +330,7 @@ class DBConnector:
 
 if __name__ == '__main__':
     pass
-    # d = DBConnector()
+    d = DBConnector()
     # # # query = '\"USER_NAME\"=\'박소연\''
     # # # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
     # # # d.insert_login_log('admin')
@@ -321,5 +340,5 @@ if __name__ == '__main__':
     # # condition = "\"USER_NAME\" = '박소연'"
     # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
     #
-    # d.update_todo_list(todo_id=1, checked=1)
+    d.insert_todo_list('admin', 'title', 'contents')
     # print(r_)

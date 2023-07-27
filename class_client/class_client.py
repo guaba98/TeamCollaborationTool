@@ -2,8 +2,8 @@ from threading import *
 from socket import *
 
 # import socket
-# _SERVER_IP = '10.10.20.109'
-_SERVER_IP = gethostbyname(gethostname())
+_SERVER_IP = '10.10.20.103'
+# _SERVER_IP = gethostbyname(gethostname())
 _SERVER_PORT = 5050
 BUFFER = 50000
 FORMAT = "utf-8"
