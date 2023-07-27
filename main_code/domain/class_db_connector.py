@@ -76,15 +76,22 @@ class DBConnector:
         sql_query = f"SELECT * FROM public.\"TB_USER\" WHERE \"USER_ID\" = '{login_id}' AND \"USER_PW\" = '{login_pw}';"
         c.execute(sql_query)
 
+        # 팀명 가져오기
+        con1 = f"\"USER_ID\" = '{login_id}'"
+        user_no = self.return_specific_data(column='USER_NO', table_name='TB_USER', condition=con1)
+        con2 = f"\"USER_NO\" = '{user_no}'"
+        team_name = self.return_specific_data(column='TEAM_NAME', table_name='TB_TEAM', condition=con2)
+
         # 결과 가져오기
         results = c.fetchall()
-        print('[db_connector.py - log_in]결과값: ', results)
+        results_ = [results[0] + (team_name, )]
+        print('[db_connector.py - log_in]결과값: ', results_)
         # 연결 종료
         self.end_conn()
 
         # 결과값 리턴
         if len(results) > 0:
-            return results
+            return results_
         return False
 
     # -- 로그인 기록 넣기
@@ -371,7 +378,7 @@ if __name__ == '__main__':
     # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
     #
     # d.get_notice_list(7)
-    result = d.return_team_name()
+    result = d.log_in('admin', '1234')
     print(result)
     # print(r_)
 
