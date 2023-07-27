@@ -130,6 +130,7 @@ class DBConnector:
 
         insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
                        f"VALUES ('{join_name}', '{user_id}', '{join_pw}', '{join_nickname}', '{join_date}')"
+
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
         cur.execute(insert_query)
         conn.commit()
@@ -295,7 +296,7 @@ class DBConnector:
 
         # 결과 가져오기
         results = c.fetchall()
-        print('[db_connector.py - return_team_name]: ', results)
+        # print('[db_connector.py - return_team_name]: ', results)
 
         # 연결 종료 및 반환
         self.end_conn()
@@ -370,6 +371,6 @@ if __name__ == '__main__':
     #
     # d.get_notice_list(7)
     result = d.return_team_name()
-    print(result)
+    # print(result)
     # print(r_)
 
