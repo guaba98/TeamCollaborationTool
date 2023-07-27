@@ -41,16 +41,11 @@ class DBConnector:
         self.test_option = test_option
 
     def start_conn(self):
-        print('서버랑 db연결')
         self.conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-        print('db 연결된')
+
         # self.conn = psycopg2.connect(**db_params)
         # 커서 생성
         cur = self.conn.cursor()
-        # query = f"SELECT * FROM public.\"TB_USER\""
-        # cur.execute(query)
-        # results = cur.fetchall()
-        # print(results)
 
         return cur
 
@@ -84,7 +79,7 @@ class DBConnector:
 
         # 결과 가져오기
         results = c.fetchall()
-        results_ = [results[0] + (team_name, )]
+        results_ = [results[0] + (team_name,)]
         print('[db_connector.py - log_in]결과값: ', results_)
         # 연결 종료
         self.end_conn()
@@ -131,7 +126,7 @@ class DBConnector:
 
     def insert_user(self, list_):
         """회원가입 정보 db에 추가"""
-        user_id, join_pw, join_name,  join_nickname = list_
+        user_id, join_pw, join_name, join_nickname = list_
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
         join_date = self.return_datetime('date')
@@ -196,6 +191,7 @@ class DBConnector:
         # 데이터 저장 및 닫기
         conn.commit()
         conn.close()
+
     def get_notice_list(self, user_no):
         """공지에서 유저가 속한 팀 기준으로 공지 제목, 내용을 가져옴"""
         c = self.start_conn()
@@ -227,7 +223,7 @@ class DBConnector:
 
     # -- 특정 데이터 저장
     # 프로필
-    def update_profile_message(self,user_no, msg):
+    def update_profile_message(self, user_no, msg):
         """프로필 상태메세지를 변경합니다."""
         condition = f"\"USER_NO\" = '{user_no}'"
         self.update_specific_data('TB_USER', 'USER_MESSAGE', msg, condition)
@@ -311,6 +307,14 @@ class DBConnector:
         self.end_conn()
         return results
 
+    def return_team_num(self, team_name):
+        """팀 이름을 넣으면 팀 번호를 반환함"""
+        self.start_conn()
+        con = f"\"TEAM_NAME\" = '{team_name}'"
+        team_no = self.return_specific_data(column='TEAM_NO', table_name='TB_TEAM', condition=con)
+        print("팀 번호:", team_no)
+        return team_no
+
     def return_team_members(self, user_no):
         """
         유저 번호를 입력하면 속한 팀원들을 모두 반환함
@@ -368,7 +372,7 @@ class DBConnector:
 
 if __name__ == '__main__':
     pass
-    d = DBConnector()
+    # d = DBConnector()
     # # # query = '\"USER_NAME\"=\'박소연\''
     # # # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
     # # # d.insert_login_log('admin')
@@ -379,7 +383,6 @@ if __name__ == '__main__':
     # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
     #
     # d.get_notice_list(7)
-    result = d.log_in('admin', '1234')
-    print(result)
+    # result = d.return_team_num('개발부')
+    # print(result)
     # print(r_)
-

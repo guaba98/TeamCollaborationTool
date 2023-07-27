@@ -38,10 +38,12 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
 
         # TODO DB에서 시간값 가져와야 함
         todo_list_ = self.data.get_todo_list(user_no)
+        print('투두리스트====')
         print(todo_list_)
         for todo in todo_list_:
-            title, contents, checked = todo[1], todo[2], todo[3]
-            self.add_todo_form(checked, contents, '시간')
+            print(todo)
+            title, contents, checked, todo_time = todo[1], todo[2], todo[3], todo[4]
+            self.add_todo_form(checked, contents, todo_time)
 
     def style_init(self):
         # 이름 적용 및 폰트 적용
