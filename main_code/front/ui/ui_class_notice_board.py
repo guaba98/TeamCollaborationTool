@@ -409,6 +409,30 @@ class Ui_NoticeBoard(object):
         self.team_title_widget.setObjectName("team_title_widget")
         self.verticalLayout_3.addWidget(self.team_title_widget)
         self.scrollArea = QtWidgets.QScrollArea(self.team_page)
+        self.scrollArea.setStyleSheet("\n"
+"            QScrollBar:vertical {\n"
+"                border: none;\n"
+"                background: #E4EAEE;\n"
+"                width: 10px;\n"
+"                margin: 0px;\n"
+"            }\n"
+"\n"
+"            QScrollBar::handle:vertical {\n"
+"                background: #14C871;\n"
+"                min-height: 20px;\n"
+"                border-radius: 5px;\n"
+"            }\n"
+"\n"
+"            QScrollBar::handle:vertical:hover {\n"
+"                background: #0F9B58;\n"
+"            }\n"
+"\n"
+"            QScrollBar::sub-line:vertical,\n"
+"            QScrollBar::add-line:vertical {\n"
+"                border: none;\n"
+"                height: 0px;\n"
+"            }\n"
+"")
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
@@ -433,6 +457,7 @@ class Ui_NoticeBoard(object):
         self.team_process_lab = QtWidgets.QLabel(self.team_process_widget)
         self.team_process_lab.setMinimumSize(QtCore.QSize(0, 25))
         self.team_process_lab.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.team_process_lab.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.team_process_lab.setObjectName("team_process_lab")
         self.verticalLayout_10.addWidget(self.team_process_lab)
         self.team_process_widget_2 = QtWidgets.QWidget(self.team_process_widget)
@@ -445,6 +470,7 @@ class Ui_NoticeBoard(object):
         self.team_todo_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.team_todo_label.setMinimumSize(QtCore.QSize(0, 25))
         self.team_todo_label.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.team_todo_label.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.team_todo_label.setObjectName("team_todo_label")
         self.team_v_lay.addWidget(self.team_todo_label)
         self.team_mem_v_lay = QtWidgets.QVBoxLayout()
@@ -465,7 +491,7 @@ class Ui_NoticeBoard(object):
         NoticeBoard.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(NoticeBoard)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(NoticeBoard)
 
     def retranslateUi(self, NoticeBoard):

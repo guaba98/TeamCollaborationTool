@@ -76,7 +76,7 @@ class DBConnector:
         user_no = self.return_specific_data(column='USER_NO', table_name='TB_USER', condition=con1)
         con2 = f"\"USER_NO\" = '{user_no}'"
         team_name = self.return_specific_data(column='TEAM_NAME', table_name='TB_TEAM', condition=con2)
-        print('여기서 막히나요?')
+
         # 결과 가져오기
         results = c.fetchall()
         results_ = [results[0] + (team_name,)]
@@ -134,11 +134,29 @@ class DBConnector:
         insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
                        f"VALUES ('{join_name}', '{user_id}', '{join_pw}', '{join_nickname}', '{join_date}')"
         print('[db_connector - insert_login_log]: 쿼리문', insert_query)
+
         cur.execute(insert_query)
+
         conn.commit()
         cur.close()
         conn.close()
+        self.insert_team_member(user_id, input_reg_team)
         return True
+
+    def insert_team_member(self, user_id, team_name):
+        """회원가입과 동시에 팀에 정보를 넣어줍니다."""
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+        user_no = self.return_specific_data('USER_NO', 'TB_USER', f"\"USER_ID\" = '{user_id}'")
+        team_no = self.return_team_num(team_name)
+
+        insert_query_2 = "INSERT INTO public.\"TB_TEAM\" (\"TEAM_NO\", \"TEAM_NAME\", \"TEAM_ROLE\", \"USER_NO\")" \
+                         f" VALUES ('{team_no}', '{team_name}', '{'팀원'}', '{user_no}')"
+        print('[db_connector - insert_login_log]: 쿼리문2', insert_query_2)
+        cur.execute(insert_query_2)
+        conn.commit()
+        cur.close()
+        conn.close()
 
     # -- 채팅
     def insert_chat_log(self, user_no, chat):
@@ -194,15 +212,18 @@ class DBConnector:
 
     def get_notice_list(self, user_no):
         """공지에서 유저가 속한 팀 기준으로 공지 제목, 내용을 가져옴"""
-        print('공지 가지러 들어와? 1')
         c = self.start_conn()
+        # query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" " \
+        #         "FROM \"TB_NOTICE\" NATURAL JOIN \"TB_TEAM\" " \
+        #         f"WHERE \"TEAM_NO\" = (SELECT \"TEAM_NO\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});"
         query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" " \
-                "FROM \"TB_NOTICE\" NATURAL JOIN \"TB_TEAM\" " \
-                f"WHERE \"TEAM_NO\" = (SELECT \"TEAM_NO\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});"
+                "FROM \"TB_NOTICE\" WHERE \"TEAM_NO\" = " \
+                f"(SELECT \"TEAM_NO\" FROM \"TB_TEAM\" NATURAL JOIN \"TB_USER\" WHERE \"USER_NO\" = {user_no});"
+        print(query)
         c.execute(query)
         result = c.fetchall()
-        print('공지 가지러 들어와? 2')
-        print('[db_connector.py - get_notice_list]: ', result)
+        # print('[db_connector.py - get_notice_list]: ', result)
+        print(result)
 
         self.end_conn()  # 커서 닫기
         return result
@@ -361,6 +382,7 @@ class DBConnector:
         if condition is not None:
             query += f" WHERE {condition}"
         print(query)
+
         c.execute(query)
         r_data = c.fetchall()
         # print('데이터', r_data)
@@ -369,20 +391,9 @@ class DBConnector:
         return r_data
 
 
-if __name__ == '__main__':
-    pass
-    # d = DBConnector()
-    # # # query = '\"USER_NAME\"=\'박소연\''
-    # # # a = d.return_specific_data(table_name='TB_USER', column='USER_NAME', condition=query)
-    # # # d.insert_login_log('admin')
-    # #
-    # # d.insert_user('user_id', 'join_name', 'join_pw', 'join_nickname')
-    # # d.insert_notice_data('admin', '테스트 제목제목', '테스트 내용 내용')
-    # # condition = "\"USER_NAME\" = '박소연'"
-    # # d.insert_specific_data('TB_USER', 'USER_MESSAGE', '관리자는 바빠요', condition)
-    #
-    # d.get_notice_list(7)
-    # result = d.return_team_num('개발부')
-    # print(result)
-    # print(r_)
-
+# if __name__ == '__main__':
+#     pass
+#     d = DBConnector()
+#
+#     d.insert_user(['asdf', '1234', '강이지', '이지', '영업부'])
+#

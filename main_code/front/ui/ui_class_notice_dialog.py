@@ -18,6 +18,7 @@ class Ui_NoticeDialog(object):
         NoticeDialog.setStyleSheet("QFrame#frame{\n"
 "background-color: rgb(255, 255, 255);\n"
 "border-radius: 20px;\n"
+"border: 0.5px solid gray;\n"
 "\n"
 "}\n"
 "QDialog#Dialog{\n"

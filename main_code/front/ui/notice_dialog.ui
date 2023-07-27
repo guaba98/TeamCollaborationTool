@@ -17,6 +17,7 @@
    <string notr="true">QFrame#frame{
 background-color: rgb(255, 255, 255);
 border-radius: 20px;
+border: 0.5px solid gray;
 
 }
 QDialog#Dialog{
