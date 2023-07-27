@@ -10,7 +10,7 @@ from main_code.domain.class_db_connector import DBConnector
 from main_code.front.Font import Font
 
 '''
-관리자가 개인별 투두리스트 추가하는 창 
+관리자가 개인별 투두리스트 조회 및 추가하는 창 
 
 '''
 
@@ -24,6 +24,8 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
         self.event_init()  # 버튼 연결 이벤트
         self.table_init()  # 투두리스트 값 넣어주기
         self.style_init()  # 값 넣어주기
+
+
 
     def table_init(self):
         # user id를 username으로 변경시켜준다.

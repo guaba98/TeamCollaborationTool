@@ -36,7 +36,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="login_page">
        <property name="styleSheet">
@@ -1232,6 +1232,32 @@ QPushButton#send_btn{
             </item>
             <item>
              <widget class="QScrollArea" name="scrollArea">
+              <property name="styleSheet">
+               <string notr="true">
+            QScrollBar:vertical {
+                border: none;
+                background: #E4EAEE;
+                width: 10px;
+                margin: 0px;
+            }
+
+            QScrollBar::handle:vertical {
+                background: #14C871;
+                min-height: 20px;
+                border-radius: 5px;
+            }
+
+            QScrollBar::handle:vertical:hover {
+                background: #0F9B58;
+            }
+
+            QScrollBar::sub-line:vertical,
+            QScrollBar::add-line:vertical {
+                border: none;
+                height: 0px;
+            }
+</string>
+              </property>
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
               </property>
@@ -1318,6 +1344,9 @@ QPushButton#send_btn{
                          <property name="text">
                           <string>팀업무진행도</string>
                          </property>
+                         <property name="alignment">
+                          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                         </property>
                         </widget>
                        </item>
                        <item>
@@ -1353,6 +1382,9 @@ border-radius:10px;</string>
                       </property>
                       <property name="text">
                        <string>팀원별 투두리스트</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                       </property>
                      </widget>
                     </item>
@@ -1409,7 +1441,6 @@ border-radius:10px;</string>
  </widget>
  <resources>
   <include location="../src_img/my_qrc.qrc"/>
-  <include location="../../../../../../../../.designer/src_img/my_qrc.qrc"/>
  </resources>
  <connections/>
 </ui>

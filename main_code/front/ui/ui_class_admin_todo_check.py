@@ -14,10 +14,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MemberWidget(object):
     def setupUi(self, MemberWidget):
         MemberWidget.setObjectName("MemberWidget")
-        MemberWidget.resize(737, 60)
+        MemberWidget.resize(723, 58)
         MemberWidget.setStyleSheet("")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(MemberWidget)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 10)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.frame = QtWidgets.QFrame(MemberWidget)
         self.frame.setStyleSheet("background-color: rgb(255, 255, 255);\n"
@@ -28,19 +28,23 @@ class Ui_MemberWidget(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame)
         self.horizontalLayout.setContentsMargins(35, -1, 35, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout.addWidget(self.label_2)
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
+        self.name_lab = QtWidgets.QLabel(self.frame)
+        self.name_lab.setObjectName("name_lab")
+        self.horizontalLayout.addWidget(self.name_lab)
+        self.role_lab = QtWidgets.QLabel(self.frame)
+        self.role_lab.setObjectName("role_lab")
+        self.horizontalLayout.addWidget(self.role_lab)
         spacerItem = QtWidgets.QSpacerItem(574, 19, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setMinimumSize(QtCore.QSize(20, 30))
-        self.pushButton.setIconSize(QtCore.QSize(27, 16))
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout.addWidget(self.pushButton)
+        self.show_btn = QtWidgets.QPushButton(self.frame)
+        self.show_btn.setMinimumSize(QtCore.QSize(20, 30))
+        self.show_btn.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/newPrefix/right_green.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.show_btn.setIcon(icon)
+        self.show_btn.setIconSize(QtCore.QSize(20, 30))
+        self.show_btn.setObjectName("show_btn")
+        self.horizontalLayout.addWidget(self.show_btn)
         self.horizontalLayout_2.addWidget(self.frame)
 
         self.retranslateUi(MemberWidget)
@@ -49,9 +53,9 @@ class Ui_MemberWidget(object):
     def retranslateUi(self, MemberWidget):
         _translate = QtCore.QCoreApplication.translate
         MemberWidget.setWindowTitle(_translate("MemberWidget", "Form"))
-        self.label_2.setText(_translate("MemberWidget", "이름"))
-        self.label.setText(_translate("MemberWidget", "직급"))
-        self.pushButton.setText(_translate("MemberWidget", "보기"))
+        self.name_lab.setText(_translate("MemberWidget", "이름"))
+        self.role_lab.setText(_translate("MemberWidget", "직급"))
+from main_code.front.ui import my_qrc_rc
 
 
 if __name__ == "__main__":
