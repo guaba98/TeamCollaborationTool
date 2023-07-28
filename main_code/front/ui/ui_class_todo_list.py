@@ -72,7 +72,7 @@ class Ui_TodoForm(object):
         _translate = QtCore.QCoreApplication.translate
         TodoForm.setWindowTitle(_translate("TodoForm", "Form"))
         self.checkBox.setText(_translate("TodoForm", "할일이름할일이름"))
-        self.label.setText(_translate("TodoForm", "TextLabel"))
+        self.label.setText(_translate("TodoForm", "할일 세부사항"))
         self.people_lab.setText(_translate("TodoForm", "함께하는 사람들"))
 from main_code.front.ui import my_qrc_rc
 
