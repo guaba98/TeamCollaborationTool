@@ -1,8 +1,8 @@
 # 모듈
 import json
 import sys
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+# import matplotlib.pyplot as plt
+# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtWidgets import QMainWindow, QLayout, QLabel, QPushButton, QLineEdit, QTextEdit, QGraphicsDropShadowEffect, \
     QApplication
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QTimer
@@ -73,10 +73,10 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.set_btn_trigger()
         self.init_func()
 
-        '''테스트 중'''
-        for i in range(5):
-            user = MemberList(self, '이름', '역할', 'admin')
-            self.team_mem_v_lay.addWidget(user)
+        # '''테스트 중'''
+        # for i in range(5):
+        #     user = MemberList(self, '이름', '역할', 'admin')
+        #     self.team_mem_v_lay.addWidget(user)
 
         for i in range(5):
             notice = Notice(['test', 'test'], 'test')
@@ -314,15 +314,21 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             else:
                 self.clear_layout(item.layout())
 
-    # 팀 화면===
+    # 팀 화면============================================
     # 팀이름을 인자로 멤버들 반환요청
     def get_team_member(self, ctg_name):
         message = f"{f'get_team_member{header_split}{ctg_name}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
         print('팀에 속한 멤버들 받아와')
+    # 팀원 목록 반환받음
     def set_team_member(self, result):
+        self.clear_layout(team_mem_v_lay)
+        members = result
         print(result, 'main에서 멤버 받아오는지 확인')
+        for i in members:
+            user = MemberList(self, i)
+            self.team_mem_v_lay.addWidget(user)
 
     # 투루리스트==========================================
     def insert_todo_list(self, title, contents):

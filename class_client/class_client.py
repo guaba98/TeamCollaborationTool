@@ -151,8 +151,7 @@ class ClientApp:
             self.client_controller.emit_set_combobox(result)
 
         elif header == 'recv_get_team_member':
-            print('멤버들을 반환할게오')
             result = parsed[1]
             result = eval(result)
-            print(result)
+            print('[class_client-recv_get_team_member]',result)
             self.client_controller.emit_get_team_member(result)
