@@ -85,11 +85,11 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         #     self.notice_v_lay.addWidget(notice)
 
 
-        # 캔버스 만들어서 그래프 그리기
-        canvas = FigureCanvas(plt.figure())
-        self.v_lay_graph.addWidget(canvas)
-        people, cnt = self.data.return_todo_list_dict('개발부') # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
-        self.create_donut_chart(people, cnt)
+        # # 캔버스 만들어서 그래프 그리기
+        # canvas = FigureCanvas(plt.figure())
+        # self.v_lay_graph.addWidget(canvas)
+        # people, cnt = self.data.return_todo_list_dict('개발부') # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
+        # self.create_donut_chart(people, cnt)
 
 
     def create_donut_chart(self, todo_people:list, todo_cnt:list):

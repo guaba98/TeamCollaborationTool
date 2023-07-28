@@ -19,7 +19,9 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
         super().__init__()
         self.setupUi(self)
         self.main_window = main_window
+        print(info)
         self.todo_list, self.user_id, self.user_name = info
+        print(self.todo_list)
         self.checkbox_list = []
 
         # self.user_name = user_name
@@ -33,8 +35,8 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
     def table_init(self):
         self.name_lab.setText(self.user_name)
         for todo in self.todo_list:
-            title, contents, checked, cplt_time = todo[1], todo[2], todo[3], todo[5]
-            self.add_todo_form(checked, contents, cplt_time)
+            todo_id , title, contents, checked, cplt_time = todo[0], todo[1], todo[2], todo[3], todo[5]
+            self.add_todo_form(todo_id ,checked, contents, cplt_time)
         print(self.checkbox_list)
     def style_init(self):
         # 이름 적용 및 폰트 적용
@@ -44,25 +46,26 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
 
     def event_init(self):
         # 다이얼로그 안에 체크박스가 클릭될때마다 신호보냄
-        for i in self.checkbox_list:
-            print(i.findChildren())
-            # i.checkbox.clicked.connect(self.todo_checked_send)
+        # for i in self.checkbox_list:
+            # i[1].clicked.connect(self.todo_checked_send)
+            # print(i.findChildren(QCheckBox))
+            # print(i.findChild(QCheckBox).objectName())
+            # print(i.findChild(user_id).objectName())
+            # print(i.user_id)
         # self.findChild
         self.cancel_btn.clicked.connect(self.close)
 
     def todo_checked_send(self):
-        print()
         print('암튼 눌림')
 
-    def add_todo_form(self, checked, todo, cplt_time):
-        todo_form = self.create_todo_form(checked, todo, cplt_time, self.user_id)
+    def add_todo_form(self, todo_id, checked, todo, cplt_time):
+        todo_form = self.create_todo_form(checked, todo, cplt_time)
         # self.checkbox_list.append(todo_form.findChildren(QCheckBox)[0])
-        self.checkbox_list.append(todo_form)
+        self.checkbox_list.append(list(zip([todo_id], [todo_form])))
         self.admin_todo_lay.addWidget(todo_form)
 
-    def create_todo_form(self, checked, todo_, cplt_time, user_id):
+    def create_todo_form(self, checked, todo_, cplt_time):
         """체크박스 폼 만들어주는 함수"""
-        user_id = user_id
         todo_form = QWidget()
         layout = QHBoxLayout(todo_form)
         layout.setContentsMargins(0, 0, 0, 0)
