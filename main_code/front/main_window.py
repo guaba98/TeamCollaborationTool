@@ -3,6 +3,7 @@ import json
 import sys
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.font_manager as fm
 from PyQt5.QtWidgets import QMainWindow, QLayout, QLabel, QPushButton, QLineEdit, QTextEdit, QGraphicsDropShadowEffect, \
     QApplication
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QTimer
@@ -83,26 +84,29 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         #     notice = Notice(['test', 'test'], 'test')
         #     self.notice_v_lay.addWidget(notice)
 
+
+        # 캔버스 만들어서 그래프 그리기
         canvas = FigureCanvas(plt.figure())
         self.v_lay_graph.addWidget(canvas)
-        self.create_donut_chart()
-    '''테스트 테스트 그래프 그리기'''
+        people, cnt = self.data.return_todo_list_dict('개발부') # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
+        self.create_donut_chart(people, cnt)
 
-    def create_donut_chart(self):
-        sizes = [10, 6, 8, 4, 7]  # 투두리스트 갯수가 들어가야 함.
-        labels = ['A', 'B', 'C', 'D', 'E']  # 이름이 들어가야 함
-        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0']
-        colors_ = ['#0F9B58', '#0FBC74', '#53B83A', '#3EC56B', '#1AA867', '#0FAF52', '#0FAF6B', '#53AF37']
 
-        # Create the pie chart with wedge properties to create a donut shape
-        plt.pie(sizes, labels=labels, colors=colors_, autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.4))
+    def create_donut_chart(self, todo_people:list, todo_cnt:list):
+        sizes = todo_cnt
+        labels = todo_people
+
+        colors = ['#0F9B58', '#0FBC74', '#53B83A', '#3EC56B', '#1AA867', '#0FAF52', '#0FAF6B', '#53AF37']
+
+        # 비율에 따라 도넛 모양으로 그래프 그리기
+        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.4))
 
         # 도넛 모양으로 그래프 그리기
         centre_circle = plt.Circle((0, 0), 0.70, fc='white')
         fig = plt.gcf()
         fig.gca().add_artist(centre_circle)
 
-        # Equal aspect ratio ensures that pie is drawn as a circle
+        # 모두 동일한 비율로 그리기
         plt.axis('equal')
         plt.tight_layout()
 
@@ -195,6 +199,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         # 관리자 페이지창
         self.team_process_lab.setFont(Font.text(1))
         self.team_todo_label.setFont(Font.text(1))
+        self.label.setFont(Font.title(3))
 
     def ctg_list_show(self):
         """카테고리 넣어주기"""
@@ -386,6 +391,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
     def set_notice(self, result):
+        print(result,'set_notice')
+
         for i in result:
             notice = Notice(self, i, self.user_role)
             self.notice_v_lay.addWidget(notice)
@@ -456,8 +463,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 로그인 함수=======================================================================
     def click_login_btn(self):
         # test test
-        self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')
-        self.Warn.exec_()
+        # self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')
+        # self.Warn.exec_()
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
         user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
 
@@ -480,7 +487,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.ctg_list_show()  # 카테고리 넣어주기
             self.set_main_page_profil()
             self.set_user_message()
-            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')  # 알림창 띄우기
+            self.Warn.show_dialog()
             self.user_role = self.client_controller.client_app.user_nickname
             # self.login_user_role(user_role)
             self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
@@ -495,7 +503,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.Warn.show_dialog()
             self.stackedWidget.setCurrentWidget(self.login_page)
         else:
-            self.Warn.set_dialog_type(bt_cnt=1, text='회원가입 실패')
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='register_failed')
             self.Warn.show_dialog()
 
     def set_combobox(self, result):

@@ -18,10 +18,12 @@ class DialogWarning(QDialog, Ui_WarnDialog):
     def on_ok_btn_clicked(self):
         # print('예')
         self.close()
+        return True
 
     def reject_btn(self):
         # print('아니오')
         self.close()
+        return False
 
     # 이벤트 연결
     def connect_event(self):
@@ -81,8 +83,14 @@ class DialogWarning(QDialog, Ui_WarnDialog):
             self.warning_lab.setText('회원만 채팅이 가능합니다.')
         elif t_type == 'login_cmplt':
             self.warning_lab.setText('로그인이 완료되었습니다!')
+        elif t_type == 'loginfailed':
+            self.warning_lab.setText('로그인에 실패했습니다.\n회원정보를 다시 확인해주세요.')
         elif t_type == 'register_cmplt':
             self.warning_lab.setText('회원가입이 완료되었습니다.\n로그인 해 주세요!')
+        elif t_type == 'register_failed':
+            self.warning_lab.setText('회원가임에 실패했습니다.\n정보를 다시 확인해 주세요!')
+        elif t_type == 'log_out':
+            self.warning_lab.setText('로그아웃 하시겠습니까?')
 
     def show_dialog(self):
         self.exec_()

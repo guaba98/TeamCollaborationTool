@@ -121,7 +121,7 @@ border-radius:20px;</string>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>TextLabel</string>
+         <string>할일 세부사항</string>
         </property>
        </widget>
       </item>

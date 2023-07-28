@@ -448,6 +448,7 @@ class Ui_NoticeBoard(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.team_title_widget)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label = QtWidgets.QLabel(self.team_title_widget)
+        self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.label.setText("")
         self.label.setObjectName("label")
         self.horizontalLayout_4.addWidget(self.label)
@@ -508,6 +509,7 @@ class Ui_NoticeBoard(object):
         self.verticalLayout_10.addWidget(self.team_process_lab)
         self.team_process_widget_2 = QtWidgets.QWidget(self.team_process_widget)
         self.team_process_widget_2.setMinimumSize(QtCore.QSize(737, 287))
+        self.team_process_widget_2.setMaximumSize(QtCore.QSize(16777215, 287))
         self.team_process_widget_2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-radius:10px;")
         self.team_process_widget_2.setObjectName("team_process_widget_2")

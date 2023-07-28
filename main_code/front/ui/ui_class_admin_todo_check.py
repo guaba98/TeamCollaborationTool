@@ -14,7 +14,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MemberWidget(object):
     def setupUi(self, MemberWidget):
         MemberWidget.setObjectName("MemberWidget")
-        MemberWidget.resize(723, 58)
+        MemberWidget.resize(737, 58)
+        MemberWidget.setMinimumSize(QtCore.QSize(737, 0))
+        MemberWidget.setMaximumSize(QtCore.QSize(737, 16777215))
         MemberWidget.setStyleSheet("")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(MemberWidget)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 10)

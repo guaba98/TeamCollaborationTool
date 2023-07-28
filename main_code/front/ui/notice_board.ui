@@ -963,8 +963,8 @@ border-radius:5px;</string>
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>828</width>
-                    <height>561</height>
+                    <width>832</width>
+                    <height>565</height>
                    </rect>
                   </property>
                   <property name="minimumSize">
@@ -1303,6 +1303,9 @@ QPushButton#send_btn{
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
                 <widget class="QLabel" name="label">
+                 <property name="styleSheet">
+                  <string notr="true">color: rgb(255, 255, 255);</string>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -1364,7 +1367,7 @@ QPushButton#send_btn{
                  <x>0</x>
                  <y>0</y>
                  <width>850</width>
-                 <height>573</height>
+                 <height>574</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1448,6 +1451,12 @@ QPushButton#send_btn{
                          <property name="minimumSize">
                           <size>
                            <width>737</width>
+                           <height>287</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
                            <height>287</height>
                           </size>
                          </property>
