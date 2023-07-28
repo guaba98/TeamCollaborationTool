@@ -3,6 +3,7 @@ import json
 import sys
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.font_manager as fm
 from PyQt5.QtWidgets import QMainWindow, QLayout, QLabel, QPushButton, QLineEdit, QTextEdit, QGraphicsDropShadowEffect, \
     QApplication
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QTimer
@@ -21,7 +22,7 @@ from main_code.front.todolist import TodoList  # 투두리스트 캐러셀
 from main_code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd  # 공지 다이얼로그, 투두리스트 다이얼로그
 from main_code.front.team_process_list import MemberList  # 관리자 창에서 보이는 멤버 리스트 캐럿셀
 from main_code.front.admin_todo_edit_dialog import AdminTodoAdd # 관리자가 개인별 투두리스트 조회 및 추가하는 창
-
+from main_code.domain.class_db_connector import DBConnector
 # 전역변수
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -81,27 +82,33 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         for i in range(5):
             notice = Notice(['test', 'test'], 'test')
             self.notice_v_lay.addWidget(notice)
+        '''테스트 테스트 그래프 그리기'''
+        self.data = DBConnector()
 
+
+
+        # 캔버스 만들어서 그래프 그리기
         canvas = FigureCanvas(plt.figure())
         self.v_lay_graph.addWidget(canvas)
-        self.create_donut_chart()
-    '''테스트 테스트 그래프 그리기'''
+        people, cnt = self.data.return_todo_list_dict('개발부') # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
+        self.create_donut_chart(people, cnt)
 
-    def create_donut_chart(self):
-        sizes = [10, 6, 8, 4, 7]  # 투두리스트 갯수가 들어가야 함.
-        labels = ['A', 'B', 'C', 'D', 'E']  # 이름이 들어가야 함
-        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0']
-        colors_ = ['#0F9B58', '#0FBC74', '#53B83A', '#3EC56B', '#1AA867', '#0FAF52', '#0FAF6B', '#53AF37']
 
-        # Create the pie chart with wedge properties to create a donut shape
-        plt.pie(sizes, labels=labels, colors=colors_, autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.4))
+    def create_donut_chart(self, todo_people:list, todo_cnt:list):
+        sizes = todo_cnt
+        labels = todo_people
+
+        colors = ['#0F9B58', '#0FBC74', '#53B83A', '#3EC56B', '#1AA867', '#0FAF52', '#0FAF6B', '#53AF37']
+
+        # 비율에 따라 도넛 모양으로 그래프 그리기
+        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.4))
 
         # 도넛 모양으로 그래프 그리기
         centre_circle = plt.Circle((0, 0), 0.70, fc='white')
         fig = plt.gcf()
         fig.gca().add_artist(centre_circle)
 
-        # Equal aspect ratio ensures that pie is drawn as a circle
+        # 모두 동일한 비율로 그리기
         plt.axis('equal')
         plt.tight_layout()
 
@@ -200,7 +207,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             '프로필 수정': ['user.png', None],
             '채팅': ['send_black.png', self.chat_page],
             '공지': ['bell.png', self.notice_page],
-            '투두리스트': ['heart.png', self.notice_page]
+            '투두리스트': ['heart.png', self.notice_page],
+            '로그아웃':['out.png', ]
         }
 
         self.ctg_list = list(self.ctg_dict.keys())
@@ -376,13 +384,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_notice(self, result):
         print(result,'set_notice')
-        # people_lab = result[1]
-        #
-        # if len(people_lab) == 0:
-        #     people_lab = None
-        # else:
-        #     pass
-        print('왜 안 타죠??????????')
+
         for i in result:
             notice = Notice(i, self.user_role)
             self.notice_v_lay.addWidget(notice)
@@ -449,8 +451,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 로그인 함수=======================================================================
     def click_login_btn(self):
         # test test
-        self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')
-        self.Warn.exec_()
+        # self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')
+        # self.Warn.exec_()
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
         user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
 
@@ -462,6 +464,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 로그인 결과 알림 및 화면 전환
     def login(self, result):
         self.user_role = self.client_controller.client_app.user_nickname
+        print(self.user_role)
         if result:
             if '관리자' in self.client_controller.client_app.user_nickname:
                 # db에 있는 팀명 리스트 요청 리스트 받아올때 카테고리 집어넣기
@@ -473,7 +476,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.ctg_list_show()  # 카테고리 넣어주기
             self.set_main_page_profil()
             self.set_user_message()
-            self.Warn.set_dialog_type(bt_cnt=1, t_type='loginSuccessfully')  # 알림창 띄우기
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')  # 알림창 띄우기
+            self.Warn.show_dialog()
             self.user_role = self.client_controller.client_app.user_nickname
             # self.login_user_role(user_role)
             self.stackedWidget.setCurrentWidget(self.main_page)  # 화면전환
@@ -488,7 +492,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.Warn.show_dialog()
             self.stackedWidget.setCurrentWidget(self.login_page)
         else:
-            self.Warn.set_dialog_type(bt_cnt=1, text='회원가입 실패')
+            self.Warn.set_dialog_type(bt_cnt=1, t_type='register_failed')
             self.Warn.show_dialog()
 
     def set_combobox(self, result):
@@ -580,5 +584,10 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def log_out(self):
         """로그아웃 함수"""
-        self.user_role = None
-        self.stackedWidget.setCurrentWidget(self.login_page)
+        self.Warn.set_dialog_type(bt_cnt=2, t_type='log_out')
+        print('타나요')
+        if self.Warn.on_ok_btn_clicked():
+            self.user_role = None
+            self.stackedWidget.setCurrentWidget(self.login_page)
+        else:
+            pass

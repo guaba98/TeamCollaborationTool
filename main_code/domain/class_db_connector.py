@@ -230,17 +230,8 @@ class DBConnector:
 
     def delete_notice_data(self, title):
         """공지 삭제시 데이터에서도 삭제"""
-        # db 연결
-        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
-        cur = conn.cursor()
-
-        query = f"DELETE FROM \"TB_NOTICE\" WHERE \"NOTICE_TITLE\" = '{title}';"
-        # 저장
-        cur.execute(query)
-
-        # 데이터 저장 및 닫기
-        conn.commit()
-        conn.close()
+        condition = f"\"NOTICE_TITLE\" = '{title}'"
+        self.delete_specific_row(table_name="TB_NOTICE", condition=condition)
 
     # -- 특정 데이터 저장
     # 프로필
@@ -266,12 +257,19 @@ class DBConnector:
         conn.close()
 
     # -- 투두리스트
+    def delete_todo_data(self, title):
+        """투두리스트 삭제시 데이터에서도 삭제"""
+        condition = f"\"TODO_TITLE\" = '{title}'"
+        self.delete_specific_row(table_name="TB_TODO_LIST", condition=condition)
 
     def update_todo_list(self, todo_id, checked):
         """투두리스트 체크시 DB 업데이트"""
-
         condition = f"\"TODO_ID\" = '{todo_id}'"
+        time = self.return_datetime('time')
+        if checked == 0:
+            time = None
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CHECKED', data=checked, condition=condition)
+        self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CPLT_TIME', data=time, condition=condition)
 
     def insert_todo_list(self, user_no, title, contents):
         """투두리스트에 값 넣어주기"""
@@ -304,7 +302,7 @@ class DBConnector:
         c = self.start_conn()
 
         # 조건
-        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\" " \
+        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\", \"TODO_CMPLT_TIME\"" \
                     f"FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
         c.execute(sql_query)
 
@@ -314,6 +312,33 @@ class DBConnector:
         # 연결 종료
         self.end_conn()
         return results
+
+    def return_todo_list_dict(self, team_name):
+        c = self.start_conn()
+        query = "SELECT \"USER_NAME\", \"TODO_TITLE\" \
+                FROM \"TB_TEAM\" NATURAL JOIN \"TB_TODO_LIST\" " \
+                f"NATURAL JOIN \"TB_USER\" WHERE \"TEAM_NAME\" = \'{team_name}\';"
+        c.execute(query)
+
+        result = c.fetchall()
+
+        # 값을 딕셔너리로 반환받기.
+        # 예 -> {'박소연': ['이벤트 연결', '개발일지 작성', '프로필창 띄우기'], '이종혁': ['개발완성보고서 작성']}
+        result_dict = dict()
+        for i in result:
+            if i[0] in list(result_dict.keys()):
+                result_dict[i[0]].append(i[1])
+            else:
+                result_dict[i[0]] = [i[1]]
+
+        # 딕셔너리 key값 리스트로 반환, value값 갯수로 반환하기
+        todo_people = list(result_dict.keys())
+        todo_cnt = [len(cnt) for cnt in result_dict.values()]
+
+        # 결과값 리턴
+        return todo_people, todo_cnt
+
+    # def delete_todo_list(self):
 
     # db에 있는 팀명들 반환
     def return_team_name(self):
@@ -395,6 +420,15 @@ class DBConnector:
         # print('[dateimte.py]시간 포멧팅: ', now_format)
         return now_format
 
+    def return_notice_all_data(self):
+        """모든 공지를 반환합니다.(관리자용)"""
+        c = self.start_conn()
+        query = "SELECT * FROM \"TB_NOTICE\""
+        c.execute(query)
+        result = c.fetchall()
+        print(result)
+        return result
+
     def return_specific_data(self, column, table_name, condition=None, type=None):
         """특정 열 데이터만 반환합니다."""
         c = self.start_conn()
@@ -411,9 +445,27 @@ class DBConnector:
             return r_data[0][0]
         return r_data
 
-# if __name__ == '__main__':
-#     pass
-#     d = DBConnector()
-#
-#     d.insert_user(['asdf', '1234', '강이지', '이지', '영업부'])
-#
+    def delete_specific_row(self, table_name, condition):
+        """특정 열 삭제"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+
+        query = f"DELETE FROM \"{table_name}\" WHERE {condition};"
+        print(query)
+
+        # 저장
+        cur.execute(query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
+
+
+if __name__ == '__main__':
+    pass
+    d = DBConnector()
+
+    # d.return_todo_list_dict('개발부')
+    # d.return_notice_all_data()
+    d.delete_notice_data('이거 지금 ')

@@ -1,6 +1,8 @@
 import sys
 import time
 
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QFontDatabase, QFont
 
@@ -23,6 +25,15 @@ def main():
     available_families = fontDB.families()
     # for family in available_families:
     #     print(family)
+
+    # 그래프 폰트 설정(한글로)
+    # font_path = "../main_code/front/font/NanumSquareNeo-bRg.ttf"
+    # font_name = fm.FontProperties(fname=font_path).get_name()
+    # print(font_name)
+    # plt.rc('font', family=font_name)
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+    plt.rcParams['axes.unicode_minus'] = False
+
 
     client_object = ClientApp()
     client_controller = ClientController(client_object)
