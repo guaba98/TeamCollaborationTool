@@ -200,6 +200,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         # 관리자 페이지창
         self.team_process_lab.setFont(Font.text(1))
         self.team_todo_label.setFont(Font.text(1))
+        self.label.setFont(Font.title(3))
 
     def ctg_list_show(self):
         """카테고리 넣어주기"""

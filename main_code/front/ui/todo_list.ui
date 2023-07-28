@@ -119,9 +119,9 @@ border-radius:20px;</string>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>PushButton</string>
+         <string>할일 세부사항</string>
         </property>
        </widget>
       </item>

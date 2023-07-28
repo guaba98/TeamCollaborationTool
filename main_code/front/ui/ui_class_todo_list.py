@@ -57,9 +57,9 @@ class Ui_TodoForm(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
-        self.pushButton = QtWidgets.QPushButton(self.main_frame)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
+        self.label = QtWidgets.QLabel(self.main_frame)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
         self.people_lab = QtWidgets.QLabel(self.main_frame)
         self.people_lab.setObjectName("people_lab")
         self.verticalLayout.addWidget(self.people_lab)
@@ -72,7 +72,7 @@ class Ui_TodoForm(object):
         _translate = QtCore.QCoreApplication.translate
         TodoForm.setWindowTitle(_translate("TodoForm", "Form"))
         self.checkBox.setText(_translate("TodoForm", "할일이름할일이름"))
-        self.pushButton.setText(_translate("TodoForm", "PushButton"))
+        self.label.setText(_translate("TodoForm", "할일 세부사항"))
         self.people_lab.setText(_translate("TodoForm", "함께하는 사람들"))
 from main_code.front.ui import my_qrc_rc
 

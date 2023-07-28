@@ -12,7 +12,7 @@ from main_code.front.client_controller import ClientController
 
 def main():
     app = QApplication(sys.argv)
-    # app.setStyle("Fusion")
+    app.setStyle("Fusion")
 
     # 폰트
     fontDB = QFontDatabase()
@@ -22,15 +22,12 @@ def main():
     fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-dEb.ttf")
     fontDB.addApplicationFont("../main_code/front/font/NanumSquareNeo-eHv.ttf")
 
+    # 폰트 확인용
     available_families = fontDB.families()
     # for family in available_families:
     #     print(family)
 
     # 그래프 폰트 설정(한글로)
-    # font_path = "../main_code/front/font/NanumSquareNeo-bRg.ttf"
-    # font_name = fm.FontProperties(fname=font_path).get_name()
-    # print(font_name)
-    # plt.rc('font', family=font_name)
     plt.rcParams['font.family'] = 'Malgun Gothic'
     plt.rcParams['axes.unicode_minus'] = False
 
