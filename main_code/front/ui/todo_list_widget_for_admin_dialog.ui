@@ -75,6 +75,13 @@ border-radius:20px;</string>
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="end_time">
+          <property name="text">
+           <string>완료시간</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="del_btn">
           <property name="maximumSize">
            <size>

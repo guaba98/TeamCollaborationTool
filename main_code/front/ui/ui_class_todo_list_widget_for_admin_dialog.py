@@ -40,6 +40,9 @@ class Ui_TodoList(object):
         self.todo_title.setIconSize(QtCore.QSize(16, 16))
         self.todo_title.setObjectName("todo_title")
         self.h_lay.addWidget(self.todo_title)
+        self.end_time = QtWidgets.QLabel(self.main_frame)
+        self.end_time.setObjectName("end_time")
+        self.h_lay.addWidget(self.end_time)
         self.del_btn = QtWidgets.QPushButton(self.main_frame)
         self.del_btn.setMaximumSize(QtCore.QSize(24, 24))
         self.del_btn.setText("")
@@ -69,6 +72,7 @@ class Ui_TodoList(object):
         _translate = QtCore.QCoreApplication.translate
         TodoList.setWindowTitle(_translate("TodoList", "Form"))
         self.todo_title.setText(_translate("TodoList", "투두리스트 제목"))
+        self.end_time.setText(_translate("TodoList", "완료시간"))
         self.todo_detail.setText(_translate("TodoList", "할일 세부사항"))
 from main_code.front.ui import my_qrc_rc
 

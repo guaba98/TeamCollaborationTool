@@ -21,7 +21,8 @@ from main_code.front.notice import Notice  # 공지 캐러셀
 from main_code.front.todolist import TodoList  # 투두리스트 캐러셀
 from main_code.front.notice_dialog import DialogNoticeAdd, DialogToDoAdd  # 공지 다이얼로그, 투두리스트 다이얼로그
 from main_code.front.team_process_list import MemberList  # 관리자 창에서 보이는 멤버 리스트 캐럿셀
-from main_code.front.admin_todo_edit_dialog import AdminTodoAdd # 관리자가 개인별 투두리스트 조회 및 추가하는 창
+
+from main_code.front.admin_todo_edit_dialog import AdminTodoAdd  # 관리자가 개인별 투두리스트 조회 및 추가하는 창
 
 # 전역변수
 header_split = chr(1)
@@ -29,9 +30,11 @@ list_split_1 = chr(2)
 list_split_2 = chr(3)
 BUFFER = 50000
 FORMAT = "utf-8"
+# def character_page_event(img):
+#     mywindow2 = AdminTodoAdd(img)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
+#     mywindow2.exec()
 
-
-class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
+class NoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 시그널 선언
     reg_id_lab_signal = pyqtSignal(bool)
     recv_emit_insertuser = pyqtSignal(bool)
@@ -41,6 +44,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     recv_get_notice_signal = pyqtSignal(list)
     recv_get_todolist_signal = pyqtSignal(list)
     member_todo_list_for_admin_signal = pyqtSignal(tuple)
+    member_todo_list_for_admin_signal2 = pyqtSignal(list)
     refresh_todolist_signal = pyqtSignal()
     refresh_notice_signal = pyqtSignal()
     admin_login_signal = pyqtSignal(list)
@@ -50,7 +54,8 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def __init__(self, client_controller):
         super().__init__()
-
+        # self.adminadd_list = []
+        self.adminadd = None
         self.ctg_clicked = None
         self.user_role = None  # 로그인한 유저의 역할
 
@@ -63,8 +68,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.Todo_add = None
         # self.Notice_add = DialogNoticeAdd(self, self.team_list)
         # self.Todo_add = DialogToDoAdd(self, self.team_list)
-
-
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -84,15 +87,13 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         #     notice = Notice(['test', 'test'], 'test')
         #     self.notice_v_lay.addWidget(notice)
 
-
         # # 캔버스 만들어서 그래프 그리기
         # canvas = FigureCanvas(plt.figure())
         # self.v_lay_graph.addWidget(canvas)
         # people, cnt = self.data.return_todo_list_dict('개발부') # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
         # self.create_donut_chart(people, cnt)
 
-
-    def create_donut_chart(self, todo_people:list, todo_cnt:list):
+    def create_donut_chart(self, todo_people: list, todo_cnt: list):
         sizes = todo_cnt
         labels = todo_people
 
@@ -109,8 +110,6 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         # 모두 동일한 비율로 그리기
         plt.axis('equal')
         plt.tight_layout()
-
-
 
     # 변수
     def init_var(self):
@@ -137,6 +136,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.recv_get_notice_signal.connect(self.set_notice)
         self.recv_get_todolist_signal.connect(self.set_todolist)
         self.member_todo_list_for_admin_signal.connect(self.show_member_todo_list_for_admin2)
+        self.member_todo_list_for_admin_signal2.connect(self.show_member_todo_list_for_admin3)
         self.refresh_todolist_signal.connect(self.get_todolist)
         self.refresh_notice_signal.connect(self.get_notice)
         self.admin_login_signal.connect(self.set_admin_ctg)
@@ -145,11 +145,14 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.update_user_message_signal.connect(self.set_user_message)
         self.get_team_member_signal.connect(self.set_team_member)
         self.update_timer.start()
+
+
     def set_main_page_profil(self):
         user_team = self.client_controller.client_app.user_name
         user_name = self.client_controller.client_app.user_team
         self.user_team.setText(user_team)
         self.user_name.setText(user_name)
+
     def set_user_message(self):
         state = self.client_controller.client_app.user_message
         self.user_state.setText(state)
@@ -303,9 +306,15 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
         print(user_id)
+
     def show_member_todo_list_for_admin2(self, result):
         print('show_member_todo_list_for_admin2')
-        adtodialog = AdminTodoAdd(self, result)
+        self.adminadd = AdminTodoAdd(self, result)
+        self.adminadd.exec_()
+
+
+    def show_member_todo_list_for_admin3(self, result):
+        self.adminadd.test(result)
 
     # 유저 프로필 상메 업데이트
     def update_user_message(self, user_message):
@@ -335,19 +344,32 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_team_member{header_split}{ctg_name}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-        print('팀에 속한 멤버들 받아와')
+
     # 팀원 목록 반환받음
     def set_team_member(self, result):
-        print('셋 멤버 왜안옴?')
-
         self.clear_layout(self.team_mem_v_lay)
-
         members = result
-
-        print(result, 'main에서 멤버 받아오는지 확인')
         for i in members:
             user = MemberList(self, i)
             self.team_mem_v_lay.addWidget(user)
+
+    def admin_del_todo_list_send2(self, todo_title):
+        print('삭제 하자!!!!!!!!!!!', todo_title)
+        message = f"{f'admin_del_todo_list_send{header_split}{todo_title}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
+
+    def admin_todo_checked_send2(self, todo_id, checked):
+        print('암튼 눌림', todo_id, checked)
+        message = f"{f'admin_todo_checked_send{header_split}{todo_id}{list_split_1}{checked}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
+
+    def admin_todo_list_plus2(self, title, contents, user_id):
+        message = f"{f'admin_todo_list_plus{header_split}{title}{list_split_1}{contents}{list_split_1}{user_id}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
+        pass
 
     # 투루리스트==========================================
     def insert_todo_list(self, title, contents):
@@ -391,15 +413,17 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
     def set_notice(self, result):
-        print(result,'set_notice')
+        print(result, 'set_notice')
 
         for i in result:
             notice = Notice(self, i, self.user_role)
             self.notice_v_lay.addWidget(notice)
+
     def del_notice(self, title):
         msg = title
         message = f"{f'delete_notice{header_split}{msg}':{BUFFER}}".encode(FORMAT)
         self.client_controller.controller_send_message(message)
+
     # 공지를 db에요청 함수
     def get_notice(self):
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
@@ -418,7 +442,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.team_page)
         self.set_font()  # 폰트 설정
-        self.style_init() # ui 설정
+        self.style_init()  # ui 설정
         super().show()
 
     def style_init(self):

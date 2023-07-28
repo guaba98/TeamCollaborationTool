@@ -264,10 +264,13 @@ class DBConnector:
 
     def update_todo_list(self, todo_id, checked):
         """투두리스트 체크시 DB 업데이트"""
+        print('체크 누르면 여기옴?')
         condition = f"\"TODO_ID\" = '{todo_id}'"
         time = self.return_datetime('time')
-        if checked == 0:
-            time = None
+
+        if checked == '0':
+            time = '0'
+        print(time)
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CHECKED', data=checked, condition=condition)
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CPLT_TIME', data=time, condition=condition)
 
@@ -292,6 +295,28 @@ class DBConnector:
         conn.commit()
         conn.close()
 
+    def insert_admin_todo_list(self, user_no, title, contents):
+        """어드민이 투두리스트에 값 넣어주기"""
+        # db 연결
+        conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
+        cur = conn.cursor()
+
+        # condition = f"\"USER_ID\" = '{user_no}';"
+        # user_no = self.return_specific_data('USER_NO', 'TB_USER', condition)
+        # 데이터 저장
+        insert_query = f"INSERT INTO public.\"TB_TODO_LIST\" " \
+                       f"(\"USER_NO\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_TIME\")" \
+                       f" VALUES ('{user_no}', '{title}', '{contents}', '{str(self.return_datetime('time'))}')"
+        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
+
+        # 저장
+        cur.execute(insert_query)
+
+        # 데이터 저장 및 닫기
+        conn.commit()
+        conn.close()
+        return user_no, title, contents, 0
+
     def get_todo_list(self, user_no):
         """
         투두리스트 목록 반환
@@ -302,8 +327,8 @@ class DBConnector:
         c = self.start_conn()
 
         # 조건
-        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\", \"TODO_CPLT_TIME\""\
-                    f"FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
+        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\", \"TODO_CPLT_TIME\"" \
+                    f"FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no} ORDER BY \"TODO_ID\" ASC"
         c.execute(sql_query)
 
         # 결과 가져오기
@@ -381,7 +406,18 @@ class DBConnector:
         # 연결 종료
         self.end_conn()
         return results
-
+    def return_todo_list_by_title(self, title):
+        """
+        투두리스트 타이틀을 입력받아 그 행을 반환합니다.
+        :param title: 투두리스트 제목
+        :return: 투두리스트 제목에 맞는 행
+        """
+        c = self.start_conn()
+        query = f"SELECT * FROM \"TB_TODO_LIST\" WHERE \"TODO_TITLE\"='{title}'"
+        print(query)
+        c.execute(query)
+        result = c.fetchall()
+        return result
     def return_team_members(self, user_no):
         """
         유저 번호를 입력하면 속한 팀원들을 모두 반환함
@@ -444,6 +480,18 @@ class DBConnector:
         if type is None:
             return r_data[0][0]
         return r_data
+
+    def return_user_no(self, user_id):
+        """
+        유저 아이디를 받으면 넘버로 돌려줌
+        :param user_id:
+        :return:
+        """
+        c = self.start_conn()
+        condition = f"\"USER_ID\" = '{user_id}'"
+        user_no = self.return_specific_data(table_name='TB_USER', column='USER_NO', condition=condition)
+        print(user_no)
+        return user_no
 
     def delete_specific_row(self, table_name, condition):
         """특정 열 삭제"""

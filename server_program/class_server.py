@@ -117,7 +117,6 @@ class Server():
             elif header == 'duple':  # 회원가입 아이디 중복확인
                 substance = decode_msg.split(header_split)[1]
                 join_username = substance
-                print('[server]-중복확인 데이터 확인',join_username)
                 result = self.db_conn.duple_reg_id(join_username) # DB에 연결해 아이디 중복확인
                 if result: # 사용 가능한 아이디일 때
                     response_header = f"{f'duple{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
@@ -129,7 +128,6 @@ class Server():
             elif header == 'insertuser':  # 회원가입
                 register_user_info = decode_msg.split(header_split)[1]
                 register_user_info =eval(register_user_info)
-                print(register_user_info)
                 result = self.db_conn.insert_user(register_user_info)
 
                 if result is True:
@@ -158,7 +156,6 @@ class Server():
                 recv_msg = decode_msg.split(header_split)[1]
                 recv_msg = recv_msg.split(list_split_1)
                 user_no, user_nn = recv_msg
-                print('[recv-get_notice]',user_no, user_nn)
 
                 if '관리자' in user_nn:
                     result = self.db_conn.return_notice_all_data()
@@ -192,9 +189,7 @@ class Server():
                 result = self.db_conn.get_todo_list(user_no)
                 # 합치기
                 result = json.dumps(result)
-                print(result)
                 response_header = f"{f'recv_get_member_todo_list_for_admin{header_split}{result}{list_split_1}{user_id}{list_split_1}{user_name}'}"
-                print(response_header)
                 client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'update_user_message':
@@ -224,7 +219,6 @@ class Server():
                 proflie_message = decode_msg.split(header_split)[1]
                 proflie_message = eval(proflie_message)
                 title, contents, team = proflie_message
-                print(title, contents, team)
                 title_no = self.db_conn.return_team_num(team)
 
                 self.db_conn.insert_notice_data(title_no, title, contents)
@@ -247,11 +241,9 @@ class Server():
             elif header == 'get_team_member':
                 # todo: 멤버들 받아오기
                 team_name = decode_msg.split(header_split)[1]
-                print('get_team_member', team_name)
                 result = self.db_conn.return_team_members_for_admin(team_name)
                 # result = [('no','name','id','pw','nn','message','date','team'),('no2','name2','id2','pw2','nn2','message2','date2','team')]
                 result = json.dumps(result)
-                print('서버에서 반환된 멤버 목록 json',result)
                 response_header = f"{f'recv_get_team_member{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
                 # self.send_message(client_socket, response_header)
@@ -261,6 +253,32 @@ class Server():
                 notice_title = decode_msg.split(header_split)[1]
                 print('delete_notice', notice_title)
                 result = self.db_conn.delete_notice_data(notice_title)
+
+            elif header == 'admin_del_todo_list_send':
+                result = decode_msg.split(header_split)[1]
+                self.db_conn.delete_todo_data(result)
+
+            elif header == 'admin_todo_checked_send':
+                result = decode_msg.split(header_split)[1]
+                todo_id, checked = result.split(list_split_1)
+                result = self.db_conn.update_todo_list(todo_id, checked)
+
+
+            elif header == 'admin_todo_list_plus':
+                result = decode_msg.split(header_split)[1]
+                title, contents, user_id = result.split(list_split_1)
+                user_no = self.db_conn.return_user_no(user_id)
+
+                self.db_conn.insert_admin_todo_list(user_no, title, contents)
+
+                result = self.db_conn.return_todo_list_by_title(title)
+
+                result = json.dumps(result)
+
+                response_header = f"{f'recv_get_member_todo_list_for_admin2{header_split}{result}'}"
+                client_socket.send(bytes(response_header, "UTF-8"))
+
+
 
         except:
             pass

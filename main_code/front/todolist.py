@@ -10,14 +10,14 @@ class TodoList(QWidget, Ui_TodoForm):
     def __init__(self, main_window, result, people_lab, user_role):
         super().__init__()
         self.setupUi(self)
+        self.main_window = main_window
+        self.user_role = user_role
+        self.todo_id, self.todo, todo_list, checked, time, cplt_time = result
+        people_lab = people_lab
         self.init_ui()
         self.set_btn_trigger()
 
         #
-        self.main_window = main_window
-        self.user_role = user_role
-        self.todo_id, todo, todo_list, checked, time, cplt_time = result
-        people_lab = people_lab
 
         # 관리자인지 확인
         if '관리자' in self.user_role:
@@ -28,13 +28,13 @@ class TodoList(QWidget, Ui_TodoForm):
         if people_lab != None:
             self.people_lab.setText('함께하는 사람들 ' + ','.join(people_lab))
         self.label.setText(todo_list)
-        self.checkBox.setText(todo)
+        self.checkBox.setText(self.todo)
         self.set_checked(checked)
 
     def init_ui(self):
         self.people_lab.setFont(Font.contents(4))
         self.checkBox.setFont(Font.button(6))
-        self.checkBox.setText(todo)
+        self.checkBox.setText(self.todo)
         self.checkBox.setFont(Font.button(6))
         self.checkbox.setStyleSheet("""
                     QCheckBox::indicator {

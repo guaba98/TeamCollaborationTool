@@ -11,7 +11,7 @@ from class_client.class_client import ClientApp
 # from main_code.front.class_custom_message_box import NoFrameMessageBox
 
 # ui 임풜트 예아
-from main_code.front.main_window import WidgetNoticeBorad
+from main_code.front.main_window import NoticeBorad
 
 header_split = chr(1)
 list_split_1 = chr(2)
@@ -27,7 +27,7 @@ class ClientController(QtWidgets.QWidget):
         self.client_app = ClientApp(self)
         # self.client_app.set_widget(self)
         # ui 인슬퉐트화
-        self.main_window = WidgetNoticeBorad(self)
+        self.main_window = NoticeBorad(self)
         # ui 동작 관련 변수
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
@@ -51,6 +51,8 @@ class ClientController(QtWidgets.QWidget):
         self.main_window.recv_get_todolist_signal.emit(p)
     def emit_member_todo_list_for_admin(self, p):
         self.main_window.member_todo_list_for_admin_signal.emit(p)
+    def emit_member_todo_list_for_admin2(self, p):
+        self.main_window.member_todo_list_for_admin_signal2.emit(p)
 
     def emit_refresh_todolist(self):
         self.main_window.refresh_todolist_signal.emit()

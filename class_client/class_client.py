@@ -131,8 +131,15 @@ class ClientApp:
             todo_list = eval(todo_list)
             # print(todo_list, user_id, user_name)
             result = todo_list, user_id, user_name
-            print('recv_get_member_todo_list_for_admin', result)
+            print(result)
             self.client_controller.emit_member_todo_list_for_admin(result)
+
+        elif header == 'recv_get_member_todo_list_for_admin2':
+            print('여기서 터짐?')
+            result = parsed[1]
+            todo_list = eval(result)
+            print('어드민이 추가한 투두',todo_list)
+            self.client_controller.emit_member_todo_list_for_admin2(todo_list)
 
         elif header == 'update_user_message':
             result = parsed[1]
