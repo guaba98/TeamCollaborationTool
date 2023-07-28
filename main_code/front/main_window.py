@@ -51,6 +51,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
     set_combobox_signal = pyqtSignal(list)
     update_user_message_signal = pyqtSignal()
     get_team_member_signal = pyqtSignal(list)
+    set_matplotlib_signal = pyqtSignal(list)
 
     def __init__(self, client_controller):
         super().__init__()
@@ -87,11 +88,9 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         #     notice = Notice(['test', 'test'], 'test')
         #     self.notice_v_lay.addWidget(notice)
 
-        # # 캔버스 만들어서 그래프 그리기
-        # canvas = FigureCanvas(plt.figure())
-        # self.v_lay_graph.addWidget(canvas)
-        # people, cnt = self.data.return_todo_list_dict('개발부') # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
-        # self.create_donut_chart(people, cnt)
+
+
+
 
     def create_donut_chart(self, todo_people: list, todo_cnt: list):
         sizes = todo_cnt
@@ -144,6 +143,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.set_combobox_signal.connect(self.set_combobox)
         self.update_user_message_signal.connect(self.set_user_message)
         self.get_team_member_signal.connect(self.set_team_member)
+        self.set_matplotlib_signal.connect(self.set_matplotlib)
         self.update_timer.start()
 
 
@@ -289,6 +289,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
                 break
             # 클릭한 카테고리의 이름이 팀이름중 하나이면
             if ctg_name in self.team_list:
+                self.get_matplotlib(ctg_name)
                 self.get_team_member(ctg_name)
                 break
             elif ctg_name == c:
@@ -296,6 +297,21 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.adminevent_dict[ctg_name][1]()
                 self.adminevent_dict[ctg_name][2]()
                 self.inner_stackedWidget.setCurrentWidget(self.admin_ctg_dict[c][1])
+    def get_matplotlib(self, ctg_name):
+        message = f"{f'get_matplotlib{header_split}{ctg_name}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
+        # people, cnt = self.data.return_todo_list_dict('개발부')  # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
+
+    def set_matplotlib(self, result):
+        print('그래프 확인',result)
+        # 캔버스 만들어서 그래프 그리기
+        self.clear_layout(self.v_lay_graph)
+        canvas = FigureCanvas(plt.figure())
+        self.v_lay_graph.addWidget(canvas)
+        people, cnt = result
+        print(people, cnt)
+        self.create_donut_chart(people, cnt)
 
     def set_admin_ctg(self, result):
         self.admin_ctg_list_show(result)

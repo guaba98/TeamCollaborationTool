@@ -172,3 +172,9 @@ class ClientApp:
             result = eval(result)
             print('[class_client-recv_get_team_member]',result)
             self.client_controller.emit_get_team_member(result)
+
+        elif header == 'get_matplotlib':
+            result = parsed[1]
+            result = eval(result)
+            print('get_matplotlib, ',result)
+            self.client_controller.emit_set_matplotlib(result)

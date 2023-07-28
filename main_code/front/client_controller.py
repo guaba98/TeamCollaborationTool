@@ -40,17 +40,25 @@ class ClientController(QtWidgets.QWidget):
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-cBd.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
+
     # 좌상단 프로필
     def emit_update_user_message(self):
         self.main_window.update_user_message_signal.emit()
+
     def emit_get_team_member(self, p):
         self.main_window.get_team_member_signal.emit(p)
+
+    # 그래프
+    def emit_set_matplotlib(self, p):
+        self.main_window.set_matplotlib_signal.emit(p)
 
     # 투두 ==============================
     def emit_recv_get_todolist(self, p):
         self.main_window.recv_get_todolist_signal.emit(p)
+
     def emit_member_todo_list_for_admin(self, p):
         self.main_window.member_todo_list_for_admin_signal.emit(p)
+
     def emit_member_todo_list_for_admin2(self, p):
         self.main_window.member_todo_list_for_admin_signal2.emit(p)
 
@@ -111,6 +119,7 @@ class ClientController(QtWidgets.QWidget):
     # 회원가입 ============================================================
     def emit_duple(self, result):  # 아이디 중복 확인 결과 보내기
         self.main_window.reg_id_lab_signal.emit(result)
+
     def emit_set_combobox(self, result):
         self.main_window.set_combobox_signal.emit(result)
 

@@ -263,6 +263,20 @@ class Server():
                 todo_id, checked = result.split(list_split_1)
                 result = self.db_conn.update_todo_list(todo_id, checked)
 
+            # 그래프 만드는 값 보내기
+            elif header == 'get_matplotlib':
+                result = decode_msg.split(header_split)[1]
+                print(result,'!@#!@$!FQWFQF')
+                result = self.db_conn.return_todo_list_dict(result)
+
+                result = json.dumps(result)
+                response_header = f"{f'get_matplotlib{header_split}{result}'}"
+                client_socket.send(bytes(response_header, "UTF-8"))
+
+                # people, cnt = result
+                # response_header = f"{f'get_matplotlib{header_split}{people}{list_split_1}{cnt}':{self.BUFFER}}".encode(self.FORMAT)
+                # self.send_message(client_socket, response_header)
+
 
             elif header == 'admin_todo_list_plus':
                 result = decode_msg.split(header_split)[1]
