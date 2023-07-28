@@ -280,6 +280,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             # 클릭한 카테고리의 이름이 팀이름중 하나이면
             if ctg_name in self.team_list:
                 self.get_team_member(ctg_name)
+                break
             elif ctg_name == c:
                 self.clear_layout(self.adminevent_dict[ctg_name][0])  # 레이아웃 비우기
                 self.adminevent_dict[ctg_name][1]()
@@ -317,14 +318,19 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 팀 화면============================================
     # 팀이름을 인자로 멤버들 반환요청
     def get_team_member(self, ctg_name):
+        self.label.setText(ctg_name)
         message = f"{f'get_team_member{header_split}{ctg_name}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
         print('팀에 속한 멤버들 받아와')
     # 팀원 목록 반환받음
     def set_team_member(self, result):
-        self.clear_layout(team_mem_v_lay)
+        print('셋 멤버 왜안옴?')
+
+        self.clear_layout(self.team_mem_v_lay)
+
         members = result
+
         print(result, 'main에서 멤버 받아오는지 확인')
         for i in members:
             user = MemberList(self, i)
@@ -395,7 +401,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-        self.stackedWidget.setCurrentWidget(self.main_page)
+        self.stackedWidget.setCurrentWidget(self.login_page)
         self.inner_stackedWidget.setCurrentWidget(self.team_page)
         self.set_font()  # 폰트 설정
         self.style_init() # ui 설정

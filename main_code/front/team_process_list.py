@@ -8,11 +8,11 @@ from main_code.front.Font import Font
 class MemberList(QWidget, Ui_MemberWidget):
     """관리자 창에서 멤버들을 보여주는 창"""
 
-    def __init__(self, user_info):
+    def __init__(self, main_window, user_info):
         super().__init__()
         self.setupUi(self)
-        # self.name = name
-        # self.main_window = main_window
+        self.user_no,  self.user_id, self.user_pw, self.name, self.role,self.message, self.date, self.team = user_info
+        self.main_window = main_window
         # self.role = role
         # self.user_id = user_id
 
@@ -28,7 +28,7 @@ class MemberList(QWidget, Ui_MemberWidget):
 
     def set_ui(self):
         self.name_lab.setText(self.name) # 값 넣어주기
-        self.role_lab.setText(self.role)
+        self.role_lab.setText(self.team)
         # self.show_btn.setIcon(QIcon('../front/src_img/right.png'))
         # self.show_btn.setIconSize(self.show_btn.size())
 
