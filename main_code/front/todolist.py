@@ -12,7 +12,7 @@ class TodoList(QWidget, Ui_TodoForm):
         self.setupUi(self)
         self.main_window = main_window
         self.user_role = user_role
-        self.todo_id, todo, todo_list, checked, time = result
+        self.todo_id, todo, todo_list, checked, time, cplt_time = result
         people_lab = people_lab
         # self.checkBox.clicked.connect()
         # self.checkBox.clicked(checked)

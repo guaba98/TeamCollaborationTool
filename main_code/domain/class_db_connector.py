@@ -209,6 +209,14 @@ class DBConnector:
         # 데이터 저장 및 닫기
         conn.commit()
         conn.close()
+    def return_notice_all_data(self):
+        """모든 공지를 반환합니다.(관리자용)"""
+        c = self.start_conn()
+        query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" FROM \"TB_NOTICE\""
+        c.execute(query)
+        result = c.fetchall()
+        print(result)
+        return result
 
     def get_notice_list(self, user_no):
         """공지에서 유저가 속한 팀 기준으로 공지 제목, 내용을 가져옴"""
@@ -269,9 +277,12 @@ class DBConnector:
 
     def update_todo_list(self, todo_id, checked):
         """투두리스트 체크시 DB 업데이트"""
-
         condition = f"\"TODO_ID\" = '{todo_id}'"
+        time = self.return_datetime('time')
+        if checked == 0:
+            time = None
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CHECKED', data=checked, condition=condition)
+        self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CPLT_TIME', data=time, condition=condition)
 
     def insert_todo_list(self, user_no, title, contents):
         """투두리스트에 값 넣어주기"""
@@ -304,7 +315,7 @@ class DBConnector:
         c = self.start_conn()
 
         # 조건
-        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\" " \
+        sql_query = f"SELECT \"TODO_ID\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_CHECKED\", \"TODO_TIME\", \"TODO_CPLT_TIME\""\
                     f"FROM \"TB_TODO_LIST\" WHERE \"USER_NO\" = {user_no}"
         c.execute(sql_query)
 

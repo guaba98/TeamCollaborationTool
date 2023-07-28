@@ -49,6 +49,8 @@ class ClientController(QtWidgets.QWidget):
     # 투두 ==============================
     def emit_recv_get_todolist(self, p):
         self.main_window.recv_get_todolist_signal.emit(p)
+    def emit_member_todo_list_for_admin(self, p):
+        self.main_window.member_todo_list_for_admin_signal.emit(p)
 
     def emit_refresh_todolist(self):
         self.main_window.refresh_todolist_signal.emit()

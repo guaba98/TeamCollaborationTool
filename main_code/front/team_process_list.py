@@ -41,5 +41,4 @@ class MemberList(QWidget, Ui_MemberWidget):
     # 2. 데이터에 있는 자료를 가져와서 멤버를 띄워준다.
     def clicked_memeber(self):
         """여기서 멤버 다이얼로그를 보여줍니다."""
-        print(self.name)
-        self.main_window.show_member_todo_list_for_admin(self.name)
+        self.main_window.show_member_todo_list_for_admin(self.user_id, self.user_no, self.name)

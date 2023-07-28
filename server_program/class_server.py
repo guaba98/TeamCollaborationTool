@@ -155,11 +155,17 @@ class Server():
                 # client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'get_notice':  # 공지 client에 보내주기
-                user_no = decode_msg.split(header_split)[1]
-                print('[recv-get_notice]',user_no)
-                result = self.db_conn.get_notice_list(user_no)
-                result = json.dumps(result)
+                recv_msg = decode_msg.split(header_split)[1]
+                recv_msg = recv_msg.split(list_split_1)
+                user_no, user_nn = recv_msg
+                print('[recv-get_notice]',user_no, user_nn)
 
+                if '관리자' in user_nn:
+                    result = self.db_conn.return_notice_all_data()
+                else:
+                    result = self.db_conn.get_notice_list(user_no)
+
+                result = json.dumps(result)
                 response_header = f"{f'recv_get_notice{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
 
@@ -176,6 +182,19 @@ class Server():
                 result = json.dumps(result)
 
                 response_header = f"{f'recv_get_todolist{header_split}{result}'}"
+                client_socket.send(bytes(response_header, "UTF-8"))
+
+            elif header == 'get_todolist2':  #
+                todolist_info = decode_msg.split(header_split)[1] # 데이터 받아오기
+                todolist_info = todolist_info.split(list_split_1)
+                user_id, user_name, user_no = todolist_info
+                # 투두 리스트 받아오기
+                result = self.db_conn.get_todo_list(user_no)
+                # 합치기
+                result = json.dumps(result)
+                print(result)
+                response_header = f"{f'recv_get_member_todo_list_for_admin{header_split}{result}{list_split_1}{user_id}{list_split_1}{user_name}'}"
+                print(response_header)
                 client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'update_user_message':

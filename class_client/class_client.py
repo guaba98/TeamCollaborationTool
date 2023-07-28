@@ -124,6 +124,16 @@ class ClientApp:
             result = eval(result)
             self.client_controller.emit_recv_get_todolist(result)
 
+        elif header == 'recv_get_member_todo_list_for_admin':
+            result = parsed[1]
+            result = result.split(list_split_1)
+            todo_list, user_id, user_name = result
+            todo_list = eval(todo_list)
+            # print(todo_list, user_id, user_name)
+            result = todo_list, user_id, user_name
+            print('recv_get_member_todo_list_for_admin', result)
+            self.client_controller.emit_member_todo_list_for_admin(result)
+
         elif header == 'update_user_message':
             result = parsed[1]
             self.user_message = result

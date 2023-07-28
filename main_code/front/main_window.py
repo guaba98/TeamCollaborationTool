@@ -39,6 +39,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     recv_login_signal = pyqtSignal(bool)
     recv_get_notice_signal = pyqtSignal(list)
     recv_get_todolist_signal = pyqtSignal(list)
+    member_todo_list_for_admin_signal = pyqtSignal(tuple)
     refresh_todolist_signal = pyqtSignal()
     refresh_notice_signal = pyqtSignal()
     admin_login_signal = pyqtSignal(list)
@@ -131,6 +132,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.recv_login_signal.connect(self.login)
         self.recv_get_notice_signal.connect(self.set_notice)
         self.recv_get_todolist_signal.connect(self.set_todolist)
+        self.member_todo_list_for_admin_signal.connect(self.show_member_todo_list_for_admin2)
         self.refresh_todolist_signal.connect(self.get_todolist)
         self.refresh_notice_signal.connect(self.get_notice)
         self.admin_login_signal.connect(self.set_admin_ctg)
@@ -290,9 +292,15 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     def set_admin_ctg(self, result):
         self.admin_ctg_list_show(result)
 
-    def show_member_todo_list_for_admin(self, name):
+    def show_member_todo_list_for_admin(self, user_id, user_no, user_name):
+        message = f"{f'get_todolist2{header_split}{user_id}{list_split_1}{user_name}{list_split_1}{user_no}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
 
-        print(name)
+        print(user_id)
+    def show_member_todo_list_for_admin2(self, result):
+        print('show_member_todo_list_for_admin2')
+        adtodialog = AdminTodoAdd(self, result)
 
     # 유저 프로필 상메 업데이트
     def update_user_message(self, user_message):
@@ -378,23 +386,20 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
     def set_notice(self, result):
-        print(result,'set_notice')
-
-
         for i in result:
             notice = Notice(self, i, self.user_role)
             self.notice_v_lay.addWidget(notice)
     def del_notice(self, title):
         msg = title
         message = f"{f'delete_notice{header_split}{msg}':{BUFFER}}".encode(FORMAT)
-        print('삭제될 공지 타이틀:',title)
         self.client_controller.controller_send_message(message)
     # 공지를 db에요청 함수
     def get_notice(self):
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
         # 유저가 입력한 로그인 정보 encode
         user_no = self.client_controller.client_app.user_no
-        message = f"{f'get_notice{header_split}{user_no}':{BUFFER}}".encode(
+        user_nn = self.client_controller.client_app.user_nickname
+        message = f"{f'get_notice{header_split}{user_no}{list_split_1}{user_nn}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
 
