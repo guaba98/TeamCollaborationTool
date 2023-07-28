@@ -343,14 +343,15 @@ class DBConnector:
         :return: 팀원들을 리스트에 담아 반환
         """
         c = self.start_conn()
-        query = f"SELECT \"USER_NAME\" FROM \"TB_USER\" NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" = '{team_name}';"
+        query = f"SELECT \"USER_NO\", \"USER_ID\", \"USER_PW\", \"USER_NAME\", \"USER_MESSAGE\", \"USER_CREATE_DATE\", \"TEAM_NAME\" " \
+                f"FROM \"TB_USER\" NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" = '{team_name}';"
         print(query)
 
         c.execute(query)
 
-        # results = c.fetchall()
-        results = [row[0] for row in c.fetchall()]
-        print('[db_connector.py - return_team_members_]: ', results)
+        results = c.fetchall()
+        # results = [row[0] for row in c.fetchall()]
+        print('[db_connector.py - return_team_members_for_admin]: ', results)
 
         # 연결 종료
         self.end_conn()
@@ -410,9 +411,10 @@ class DBConnector:
             return r_data[0][0]
         return r_data
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 #     pass
-#     d = DBConnector()
+    d = DBConnector()
 #
-#     d.insert_user(['asdf', '1234', '강이지', '이지', '영업부'])
+    # d.insert_user(['asdf', '1234', '강이지', '이지', '영업부'])
+    d.return_team_members_for_admin('개발부')
 #
