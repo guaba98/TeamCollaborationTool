@@ -6,9 +6,10 @@ from main_code.front.Font import Font
 
 
 class Notice(QWidget, Ui_Notice_widget):
-    def __init__(self, result, user_role):
+    def __init__(self, main_window, result, user_role):
         super().__init__()
         self.setupUi(self)
+        self.main_window = main_window
         # title, contents = result[0], result[1]
         title, contents = result
         print(title, contents)
@@ -16,9 +17,10 @@ class Notice(QWidget, Ui_Notice_widget):
         self.label.setFont(Font.title(3))
         self.detail_lab.setText(contents)
         self.detail_lab.setFont(Font.text(3))
-        self.del_btn.clicked.connect(lambda state: self.close())
+        self.del_btn.clicked.connect(lambda state, title = title: self.close(title))
 
-    def close(self):
+    def close(self, title):
+        self.main_window.del_notice(title)
         super().close()
 
 # if __name__ == '__main__':

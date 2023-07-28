@@ -23,6 +23,7 @@ class TodoList(QWidget, Ui_TodoForm):
 
         if people_lab != None:
             self.people_lab.setText('함께하는 사람들 ' + ','.join(people_lab))
+        self.label.setText(todo_list)
         self.checkBox.setText(todo)
         self.checkBox.setFont(Font.button(6))
         self.people_lab.setFont(Font.contents(4))

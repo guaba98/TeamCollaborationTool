@@ -237,5 +237,11 @@ class Server():
                 client_socket.send(bytes(response_header, "UTF-8"))
                 # self.send_message(client_socket, response_header)
 
+            elif header == 'delete_notice':
+                # todo: 멤버들 받아오기
+                notice_title = decode_msg.split(header_split)[1]
+                print('delete_notice', notice_title)
+                result = self.db_conn.delete_notice_data(notice_title)
+
         except:
             pass

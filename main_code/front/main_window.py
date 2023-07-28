@@ -78,9 +78,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         #     user = MemberList(self, '이름', '역할', 'admin')
         #     self.team_mem_v_lay.addWidget(user)
 
-        for i in range(5):
-            notice = Notice(['test', 'test'], 'test')
-            self.notice_v_lay.addWidget(notice)
+        # for i in range(5):
+        #     notice = Notice(['test', 'test'], 'test')
+        #     self.notice_v_lay.addWidget(notice)
 
         canvas = FigureCanvas(plt.figure())
         self.v_lay_graph.addWidget(canvas)
@@ -350,14 +350,17 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_get_todolist()
 
     def set_todolist(self, result):
-        print(result, '투두리스트 정보 받아온거')
+        """
+        받아온 유저의 투두리스트들을 캐러셀로 만들어 집어넣는다
+        :param result:
+        :return:
+        """
         people_lab = result[1]
 
         if len(people_lab) == 0:
             people_lab = None
         else:
             pass
-        print('투두리스트 확인1')
         for i in result[0]:
             todo = TodoList(self, i, people_lab, self.user_role)
             self.notice_v_lay.addWidget(todo)
@@ -376,18 +379,17 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_notice(self, result):
         print(result,'set_notice')
-        # people_lab = result[1]
-        #
-        # if len(people_lab) == 0:
-        #     people_lab = None
-        # else:
-        #     pass
+
 
         for i in result:
-            notice = Notice(i, self.user_role)
+            notice = Notice(self, i, self.user_role)
             self.notice_v_lay.addWidget(notice)
-
-    # 공지를 db에서 받아오는 함수
+    def del_notice(self, title):
+        msg = title
+        message = f"{f'delete_notice{header_split}{msg}':{BUFFER}}".encode(FORMAT)
+        print('삭제될 공지 타이틀:',title)
+        self.client_controller.controller_send_message(message)
+    # 공지를 db에요청 함수
     def get_notice(self):
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
         # 유저가 입력한 로그인 정보 encode

@@ -50,6 +50,12 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
         print('[notice_dialog] 제목: ', title, '내용', contents)
         self.main_window.insert_notice(title, contents, team)
         print('[notice_dialog] 제목: ', title, '내용', contents)
+        self.close()
+    def close(self):
+        self.title_edit.clear()
+        self.contents_edit.clear()
+        self.team.setCurrentIndex(0)
+        super().close()
 
 
 class DialogToDoAdd(QDialog, Ui_NoticeDialog):
@@ -96,7 +102,11 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
         print('[todo_dialog] 제목: ', title, '내용', contents)
         plus_todo = title, contents
         self.main_window.insert_todo_list(title, contents)
-
+        self.close()
+    def close(self):
+        self.title_edit.clear()
+        self.contents_edit.clear()
+        super().close()
 
 if __name__ == '__main__':
     pass
