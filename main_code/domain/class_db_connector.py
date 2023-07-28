@@ -126,7 +126,7 @@ class DBConnector:
 
     def insert_user(self, list_):
         """회원가입 정보 db에 추가"""
-        user_id, join_pw, join_name,  join_nickname, input_reg_team= list_
+        user_id, join_pw, join_name, join_nickname, input_reg_team = list_
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
         join_date = self.return_datetime('date')
@@ -336,6 +336,26 @@ class DBConnector:
         print("팀 번호:", team_no)
         return team_no
 
+    def return_team_members_for_admin(self, team_name):
+        """
+        팀 이름을 입력하면 속한 팀원들을 모두 반환함
+        :param team_name: 팀 이름
+        :return: 팀원들을 리스트에 담아 반환
+        """
+        c = self.start_conn()
+        query = f"SELECT \"USER_NAME\" FROM \"TB_USER\" NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" = '{team_name}';"
+        print(query)
+
+        c.execute(query)
+
+        # results = c.fetchall()
+        results = [row[0] for row in c.fetchall()]
+        print('[db_connector.py - return_team_members_]: ', results)
+
+        # 연결 종료
+        self.end_conn()
+        return results
+
     def return_team_members(self, user_no):
         """
         유저 번호를 입력하면 속한 팀원들을 모두 반환함
@@ -389,7 +409,6 @@ class DBConnector:
         if type is None:
             return r_data[0][0]
         return r_data
-
 
 # if __name__ == '__main__':
 #     pass

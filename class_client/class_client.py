@@ -149,3 +149,9 @@ class ClientApp:
             result = eval(result)
             print(result)
             self.client_controller.emit_set_combobox(result)
+
+        elif header == 'recv_get_team_member':
+            result = parsed[1]
+            result = eval(result)
+            print('[class_client-recv_get_team_member]',result)
+            self.client_controller.emit_get_team_member(result)

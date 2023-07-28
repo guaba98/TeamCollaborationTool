@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
-    <height>181</height>
+    <width>772</width>
+    <height>185</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <widget class="QFrame" name="main_frame">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>750</width>
        <height>163</height>
       </size>
      </property>
@@ -70,7 +70,17 @@ border-radius:20px;</string>
            </size>
           </property>
           <property name="text">
-           <string>삭제</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../src_img/my_qrc.qrc">
+            <normaloff>:/newPrefix/close.png</normaloff>:/newPrefix/close.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -116,6 +126,8 @@ border-radius:20px;</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../src_img/my_qrc.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,6 +1,8 @@
 # 모듈
 import json
 import sys
+# import matplotlib.pyplot as plt
+# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtWidgets import QMainWindow, QLayout, QLabel, QPushButton, QLineEdit, QTextEdit, QGraphicsDropShadowEffect, \
     QApplication
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QTimer
@@ -42,6 +44,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
     admin_login_signal = pyqtSignal(list)
     set_combobox_signal = pyqtSignal(list)
     update_user_message_signal = pyqtSignal()
+    get_team_member_signal = pyqtSignal(list)
 
     def __init__(self, client_controller):
         super().__init__()
@@ -70,10 +73,39 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.set_btn_trigger()
         self.init_func()
 
-        '''테스트 중'''
+        # '''테스트 중'''
+        # for i in range(5):
+        #     user = MemberList(self, '이름', '역할', 'admin')
+        #     self.team_mem_v_lay.addWidget(user)
+
         for i in range(5):
-            user = MemberList(self, '이름', '역할', 'admin')
-            self.team_mem_v_lay.addWidget(user)
+            notice = Notice(['test', 'test'], 'test')
+            self.notice_v_lay.addWidget(notice)
+
+        canvas = FigureCanvas(plt.figure())
+        self.v_lay_graph.addWidget(canvas)
+        self.create_donut_chart()
+    '''테스트 테스트 그래프 그리기'''
+
+    def create_donut_chart(self):
+        sizes = [10, 6, 8, 4, 7]  # 투두리스트 갯수가 들어가야 함.
+        labels = ['A', 'B', 'C', 'D', 'E']  # 이름이 들어가야 함
+        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0']
+        colors_ = ['#0F9B58', '#0FBC74', '#53B83A', '#3EC56B', '#1AA867', '#0FAF52', '#0FAF6B', '#53AF37']
+
+        # Create the pie chart with wedge properties to create a donut shape
+        plt.pie(sizes, labels=labels, colors=colors_, autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.4))
+
+        # 도넛 모양으로 그래프 그리기
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        fig = plt.gcf()
+        fig.gca().add_artist(centre_circle)
+
+        # Equal aspect ratio ensures that pie is drawn as a circle
+        plt.axis('equal')
+        plt.tight_layout()
+
+
 
     # 변수
     def init_var(self):
@@ -105,6 +137,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.update_timer.timeout.connect(self.set_scrollbar)
         self.set_combobox_signal.connect(self.set_combobox)
         self.update_user_message_signal.connect(self.set_user_message)
+        self.get_team_member_signal.connect(self.set_team_member)
         self.update_timer.start()
     def set_main_page_profil(self):
         user_team = self.client_controller.client_app.user_name
@@ -244,7 +277,9 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
                 p_ = ProFile(self, img=None, name=name, state=state)
                 p_.show_dialog()
                 break
-
+            # 클릭한 카테고리의 이름이 팀이름중 하나이면
+            if ctg_name in self.team_list:
+                self.get_team_member(ctg_name)
             elif ctg_name == c:
                 self.clear_layout(self.adminevent_dict[ctg_name][0])  # 레이아웃 비우기
                 self.adminevent_dict[ctg_name][1]()
@@ -279,9 +314,21 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
             else:
                 self.clear_layout(item.layout())
 
-    # 팀 화면
-    def get_team_member(self):
+    # 팀 화면============================================
+    # 팀이름을 인자로 멤버들 반환요청
+    def get_team_member(self, ctg_name):
+        message = f"{f'get_team_member{header_split}{ctg_name}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
         print('팀에 속한 멤버들 받아와')
+    # 팀원 목록 반환받음
+    def set_team_member(self, result):
+        self.clear_layout(team_mem_v_lay)
+        members = result
+        print(result, 'main에서 멤버 받아오는지 확인')
+        for i in members:
+            user = MemberList(self, i)
+            self.team_mem_v_lay.addWidget(user)
 
     # 투루리스트==========================================
     def insert_todo_list(self, title, contents):
@@ -348,7 +395,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         message = f"{f'get_team_name_list2{header_split}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
-        self.stackedWidget.setCurrentWidget(self.login_page)
+        self.stackedWidget.setCurrentWidget(self.main_page)
         self.inner_stackedWidget.setCurrentWidget(self.team_page)
         self.set_font()  # 폰트 설정
         self.style_init() # ui 설정

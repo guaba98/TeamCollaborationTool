@@ -14,6 +14,11 @@ list_split_2 = chr(3)
 
 
 class Server():
+    '''
+    실습실 소연: 10.10.20.103
+    실습실 종혁: 10.10.20.109
+    기숙사 독서실 : 192.168.0.88
+    '''
     # HOST = '10.10.20.103'#gethostbyname(gethostname())
     HOST = gethostbyname(gethostname())
     PORT = 5050
@@ -218,6 +223,18 @@ class Server():
                 result = self.db_conn.return_team_name()
                 response_header = f"{f'recv_get_team_name_list2{header_split}{result}':{self.BUFFER}}".encode(self.FORMAT)
                 self.send_message(client_socket, response_header)
+
+            # 팀이름을 인자로 멤버들 받아오기
+            elif header == 'get_team_member':
+                # todo: 멤버들 받아오기
+                team_name = decode_msg.split(header_split)[1]
+                print('get_team_member', team_name)
+                result = self.db_conn.return_team_members_for_admin(team_name)
+                # result = [['no','name','id','pw','nn','message','date']['no2','name2','id2','pw2','nn2','message2','date2']]
+                result = json.dumps(result)
+                response_header = f"{f'recv_get_team_member{header_split}{result}'}"
+                client_socket.send(response_header)
+                # self.send_message(client_socket, response_header)
 
         except:
             pass

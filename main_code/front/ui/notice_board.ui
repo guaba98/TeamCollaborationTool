@@ -395,7 +395,7 @@ background-color: white;}</string>
              <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -550,6 +550,36 @@ background-color: white;}</string>
             </property>
             <property name="placeholderText">
              <string>닉네임을 입력하세요</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="reg_nn_lab_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>팀명</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(242, 245, 253);
+border-radius:5px;</string>
             </property>
            </widget>
           </item>
@@ -773,7 +803,7 @@ background-color: white;}</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/newPrefix/user_green.png</pixmap>
+                   <pixmap resource="../src_img/my_qrc.qrc">:/newPrefix/user_green.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -895,20 +925,92 @@ background-color: white;}</string>
                 <number>7</number>
                </property>
                <item>
-                <layout class="QVBoxLayout" name="notice_v_lay"/>
-               </item>
-               <item>
-                <spacer name="notice_v_spacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
+                <widget class="QScrollArea" name="notice_scrollarea">
+                 <property name="styleSheet">
+                  <string notr="true">
+            QScrollBar:vertical {
+                border: none;
+                background: #E4EAEE;
+                width: 10px;
+                margin: 0px;
+            }
+
+            QScrollBar::handle:vertical {
+                background: #14C871;
+                min-height: 20px;
+                border-radius: 5px;
+            }
+
+            QScrollBar::handle:vertical:hover {
+                background: #0F9B58;
+            }
+
+            QScrollBar::sub-line:vertical,
+            QScrollBar::add-line:vertical {
+                border: none;
+                height: 0px;
+            }
+</string>
                  </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>596</height>
-                  </size>
+                 <property name="frameShape">
+                  <enum>QFrame::NoFrame</enum>
                  </property>
-                </spacer>
+                 <property name="widgetResizable">
+                  <bool>true</bool>
+                 </property>
+                 <widget class="QWidget" name="notice_scrollAreaWidgetContents">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>828</width>
+                    <height>561</height>
+                   </rect>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>826</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_4">
+                   <property name="spacing">
+                    <number>5</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <layout class="QVBoxLayout" name="notice_v_lay"/>
+                   </item>
+                   <item>
+                    <spacer name="notice_v_spacer">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Expanding</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>825</width>
+                       <height>483</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
                </item>
                <item>
                 <widget class="QWidget" name="bottom_widget" native="true">
@@ -969,7 +1071,7 @@ background-color: rgb(20, 200, 113);</string>
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset>
+                     <iconset resource="../src_img/my_qrc.qrc">
                       <normaloff>:/newPrefix/plus-icon.png</normaloff>:/newPrefix/plus-icon.png</iconset>
                     </property>
                     <property name="iconSize">
@@ -1033,8 +1135,8 @@ background-color: rgb(20, 200, 113);</string>
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>850</width>
-                    <height>544</height>
+                    <width>829</width>
+                    <height>16</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1148,7 +1250,7 @@ QPushButton#send_btn{
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="../src_img/my_qrc.qrc">
                    <normaloff>:/newPrefix/send_green.png</normaloff>:/newPrefix/send_green.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -1198,10 +1300,58 @@ QPushButton#send_btn{
               <property name="styleSheet">
                <string notr="true">background-color: rgb(15, 155, 88);</string>
               </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>819</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
              <widget class="QScrollArea" name="scrollArea">
+              <property name="styleSheet">
+               <string notr="true">
+            QScrollBar:vertical {
+                border: none;
+                background: #E4EAEE;
+                width: 10px;
+                margin: 0px;
+            }
+
+            QScrollBar::handle:vertical {
+                background: #14C871;
+                min-height: 20px;
+                border-radius: 5px;
+            }
+
+            QScrollBar::handle:vertical:hover {
+                background: #0F9B58;
+            }
+
+            QScrollBar::sub-line:vertical,
+            QScrollBar::add-line:vertical {
+                border: none;
+                height: 0px;
+            }
+</string>
+              </property>
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
               </property>
@@ -1213,8 +1363,8 @@ QPushButton#send_btn{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>753</width>
-                 <height>367</height>
+                 <width>850</width>
+                 <height>573</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1288,6 +1438,9 @@ QPushButton#send_btn{
                          <property name="text">
                           <string>팀업무진행도</string>
                          </property>
+                         <property name="alignment">
+                          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                         </property>
                         </widget>
                        </item>
                        <item>
@@ -1302,6 +1455,11 @@ QPushButton#send_btn{
                           <string notr="true">background-color: rgb(255, 255, 255);
 border-radius:10px;</string>
                          </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_11">
+                          <item>
+                           <layout class="QVBoxLayout" name="v_lay_graph"/>
+                          </item>
+                         </layout>
                         </widget>
                        </item>
                       </layout>
@@ -1323,6 +1481,9 @@ border-radius:10px;</string>
                       </property>
                       <property name="text">
                        <string>팀원별 투두리스트</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                       </property>
                      </widget>
                     </item>
