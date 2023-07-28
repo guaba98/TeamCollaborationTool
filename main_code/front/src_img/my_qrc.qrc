@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>plus.png</file>
     <file>close.png</file>
     <file>right_green.png</file>
     <file>right.png</file>
