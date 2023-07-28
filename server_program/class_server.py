@@ -230,10 +230,11 @@ class Server():
                 team_name = decode_msg.split(header_split)[1]
                 print('get_team_member', team_name)
                 result = self.db_conn.return_team_members_for_admin(team_name)
-                # result = [['no','name','id','pw','nn','message','date']['no2','name2','id2','pw2','nn2','message2','date2']]
+                # result = [('no','name','id','pw','nn','message','date','team'),('no2','name2','id2','pw2','nn2','message2','date2','team')]
                 result = json.dumps(result)
+                print('서버에서 반환된 멤버 목록 json',result)
                 response_header = f"{f'recv_get_team_member{header_split}{result}'}"
-                client_socket.send(response_header)
+                client_socket.send(bytes(response_header, "UTF-8"))
                 # self.send_message(client_socket, response_header)
 
         except:
