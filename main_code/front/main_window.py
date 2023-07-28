@@ -329,7 +329,7 @@ class WidgetNoticeBorad(QMainWindow, Ui_NoticeBoard):
         #     people_lab = None
         # else:
         #     pass
-
+        print('왜 안 타죠??????????')
         for i in result:
             notice = Notice(i, self.user_role)
             self.notice_v_lay.addWidget(notice)
