@@ -214,7 +214,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         }
 
         self.ctg_list = list(self.ctg_dict.keys())
-        self.event_dict = {'채팅': [None, self.get_chat, self.plus_button.hide],
+        self.event_dict = {'채팅': [None, self.pass_, self.plus_button.hide],
                            '공지': [self.notice_v_lay, self.get_notice, self.plus_button.hide],
                            '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show],
                            '....': [self.team_mem_v_lay, self.plus_button.hide]
@@ -224,7 +224,8 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             img_name = self.ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role=self.user_role)
             self.category_v_lay.addWidget(ctg_)
-
+    def pass_(self):
+        print('패스')
     def click_plus_button(self):
         actions = {
             '공지': self.Notice_add.exec_,
@@ -263,7 +264,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.admin_ctg_dict[i] = ['user.png', self.team_page]
 
         self.admin_ctg_list = list(self.admin_ctg_dict.keys())
-        self.adminevent_dict = {'채팅': [None, self.get_chat, self.plus_button.hide],
+        self.adminevent_dict = {'채팅': [None, self.pass_, self.plus_button.hide],
                                 '공지': [self.notice_v_lay, self.get_notice, self.plus_button.show],
                                 '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show]
                                 }
@@ -304,13 +305,11 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         # people, cnt = self.data.return_todo_list_dict('개발부')  # db에서 값 가져오기(서버에서 연결하는 부분으로 추가 예정)
 
     def set_matplotlib(self, result):
-        print('그래프 확인',result)
         # 캔버스 만들어서 그래프 그리기
         self.clear_layout(self.v_lay_graph)
         canvas = FigureCanvas(plt.figure())
         self.v_lay_graph.addWidget(canvas)
         people, cnt = result
-        print(people, cnt)
         self.create_donut_chart(people, cnt)
 
     def set_admin_ctg(self, result):
@@ -321,10 +320,8 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
 
-        print(user_id)
 
     def show_member_todo_list_for_admin2(self, result):
-        print('show_member_todo_list_for_admin2')
         self.adminadd = AdminTodoAdd(self, result)
         self.adminadd.exec_()
 
@@ -363,20 +360,20 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 팀원 목록 반환받음
     def set_team_member(self, result):
+        self.inner_stackedWidget.setCurrentWidget(self.team_page)
         self.clear_layout(self.team_mem_v_lay)
         members = result
         for i in members:
             user = MemberList(self, i)
             self.team_mem_v_lay.addWidget(user)
 
+
     def admin_del_todo_list_send2(self, todo_title):
-        print('삭제 하자!!!!!!!!!!!', todo_title)
         message = f"{f'admin_del_todo_list_send{header_split}{todo_title}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
 
     def admin_todo_checked_send2(self, todo_id, checked):
-        print('암튼 눌림', todo_id, checked)
         message = f"{f'admin_todo_checked_send{header_split}{todo_id}{list_split_1}{checked}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
@@ -390,7 +387,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
     # 투루리스트==========================================
     def insert_todo_list(self, title, contents):
         msg = title, contents, self.client_controller.client_app.user_no
-        print(msg)
         message = f"{f'insert_todo{header_split}{msg}':{BUFFER}}".encode(
             FORMAT)
         self.client_controller.controller_send_message(message)
@@ -429,9 +425,8 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
     def set_notice(self, result):
-        print(result, 'set_notice')
-
         for i in result:
+            print(i,'공지 오류')
             notice = Notice(self, i, self.user_role)
             self.notice_v_lay.addWidget(notice)
 
@@ -474,8 +469,11 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 채팅 =========================================================================================
     # 전송버튼 클릭시 채팅을 서버에 보내는 함수
-    def get_chat(self):
-        print('채팅창 열때 실해')
+    def get_chat(self): # 로그인 할때 채팅 기록 불러오기
+        user_id = self.client_controller.client_app.user_id
+        message = f"{f'get_chatin_log{header_split}{user_id}':{BUFFER}}".encode(
+            FORMAT)
+        self.client_controller.controller_send_message(message)
 
     def click_send_btn(self):
 
@@ -491,7 +489,10 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.chat_v_lay.addWidget(message_widget)
 
     def recv_chat(self, result):  # 다른 사람이 보낸 메시지라면
-        user_no, team_no, name, chat = result
+        if len(result) > 2:
+            user_no, team_no, name, chat = result
+        else:
+            name, chat = result
         message_widget = YourMsg(name, chat)
         self.chat_v_lay.addWidget(message_widget)
 
@@ -525,8 +526,11 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.client_controller.controller_send_message(message)
             else:
                 self.ctg_list_show()  # 카테고리 넣어주기
+
             self.set_main_page_profil()
             self.set_user_message()
+            print('로그인 확인')
+            self.get_chat()
             self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')  # 알림창 띄우기
             self.Warn.show_dialog()
             self.user_role = self.client_controller.client_app.user_nickname

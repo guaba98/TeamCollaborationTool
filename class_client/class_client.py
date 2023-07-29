@@ -178,3 +178,9 @@ class ClientApp:
             result = eval(result)
             print('get_matplotlib, ',result)
             self.client_controller.emit_set_matplotlib(result)
+
+        elif header == 'recv_get_chatin_log':
+            result = parsed[1]
+            result = eval(result)
+            print('recv_get_chatin_log',result)
+            self.client_controller.emit_get_chatin_log(result)

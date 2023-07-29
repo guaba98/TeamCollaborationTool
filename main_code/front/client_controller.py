@@ -138,3 +138,6 @@ class ClientController(QtWidgets.QWidget):
             self.main_window.emit_signal_my_chat.emit(result)
         else:  # 다른 유저가 보낸 메시지면
             self.main_window.emit_signal_chat.emit(result)
+    def emit_get_chatin_log(self, result):
+            for i in result:
+                self.main_window.emit_signal_chat.emit(i)

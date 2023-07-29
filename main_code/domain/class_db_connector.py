@@ -509,6 +509,37 @@ class DBConnector:
         conn.commit()
         conn.close()
 
+    def return_chat_log(self, user_id):
+        """
+        유저 아이디를 기준으로 마지막으로 유저가 채팅한 시간과 현재 시간 사이에 온 채팅을 접속할 때 넣어준다.
+        :param user_id:
+        :return: 채팅 기록 리턴
+        """
+
+        c = self.start_conn()
+        user_no = self.return_user_no(user_id=user_id)
+
+        # 유저의 마지막 채팅 시간 구하기
+        query = f"SELECT \"CHAT_TIME\" FROM \"TB_CHAT\" WHERE \"USER_NO\" = '{user_no}' " \
+                f"ORDER BY \"CHAT_TIME\" DESC LIMIT 1"
+        c.execute(query)
+        results = c.fetchall()
+        last_chat_time = results[0][0] # 유저의 마지막 채팅 시간
+        print('마지막 채팅 시간', last_chat_time)
+
+        # 현재 시간 구하기
+        now = self.return_datetime('time')
+        print(now)
+
+        # 마지막 채팅 시간과 현재 시간 사이의 채팅들 불러오기
+        query_ = "SELECT \"USER_NAME\", \"CHAT_LOG\", \"CHAT_TIME\" FROM \"TB_CHAT\" " \
+                 f"WHERE \"CHAT_TIME\" > '{last_chat_time}' " \
+                 f"AND \"CHAT_TIME\" < '{now}';"
+        c.execute(query_)
+        chats = [(n[0], n[1]) for n in c.fetchall()] # 이름, 내용 반환
+        print('현재 시간과 유저의 마지막 사이 채팅 시간 사이 온 채팅들', chats)
+
+        return chats
 
 if __name__ == '__main__':
     pass

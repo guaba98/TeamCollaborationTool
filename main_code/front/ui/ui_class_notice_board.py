@@ -376,11 +376,35 @@ class Ui_NoticeBoard(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.chat_scrollarea = QtWidgets.QScrollArea(self.chat_widget)
+        self.chat_scrollarea.setStyleSheet("\n"
+"            QScrollBar:vertical {\n"
+"                border: none;\n"
+"                background: #E4EAEE;\n"
+"                width: 10px;\n"
+"                margin: 0px;\n"
+"            }\n"
+"\n"
+"            QScrollBar::handle:vertical {\n"
+"                background: #14C871;\n"
+"                min-height: 20px;\n"
+"                border-radius: 5px;\n"
+"            }\n"
+"\n"
+"            QScrollBar::handle:vertical:hover {\n"
+"                background: #0F9B58;\n"
+"            }\n"
+"\n"
+"            QScrollBar::sub-line:vertical,\n"
+"            QScrollBar::add-line:vertical {\n"
+"                border: none;\n"
+"                height: 0px;\n"
+"            }\n"
+"")
         self.chat_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.chat_scrollarea.setWidgetResizable(True)
         self.chat_scrollarea.setObjectName("chat_scrollarea")
         self.chat_scrollarea_contents = QtWidgets.QWidget()
-        self.chat_scrollarea_contents.setGeometry(QtCore.QRect(0, 0, 829, 16))
+        self.chat_scrollarea_contents.setGeometry(QtCore.QRect(0, 0, 850, 544))
         self.chat_scrollarea_contents.setObjectName("chat_scrollarea_contents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.chat_scrollarea_contents)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)

@@ -140,9 +140,9 @@ class Server():
             elif header == 'send_chat':  # 채팅 받기
                 send_chat = decode_msg.split(header_split)[1] # 데이터 받아오기
                 send_chat2 = send_chat.split(list_split_1)
-                user_no,_,user_name, message = send_chat2
-                result = self.db_conn.insert_chat_log(user_no, message) #todo 채팅 내용 저장
-                response_header = f"{f'recv_chat{header_split}{send_chat}'}"   # 헤더만들기
+                user_no, team_no, name, chat = send_chat2
+                result = self.db_conn.insert_chat_log(user_no, chat) #todo 채팅 내용 저장
+                response_header = f"{f'recv_chat{header_split}{user_no}{list_split_1}{team_no}{list_split_1}{name}{list_split_1}{chat}'}"   # 헤더만들기
 
                 clients = self.clients.copy()
                 for i in clients:
@@ -266,9 +266,7 @@ class Server():
             # 그래프 만드는 값 보내기
             elif header == 'get_matplotlib':
                 result = decode_msg.split(header_split)[1]
-                print(result,'!@#!@$!FQWFQF')
                 result = self.db_conn.return_todo_list_dict(result)
-
                 result = json.dumps(result)
                 response_header = f"{f'get_matplotlib{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
@@ -290,6 +288,15 @@ class Server():
                 result = json.dumps(result)
 
                 response_header = f"{f'recv_get_member_todo_list_for_admin2{header_split}{result}'}"
+                client_socket.send(bytes(response_header, "UTF-8"))
+
+            elif header == 'get_chatin_log':
+                result = decode_msg.split(header_split)[1]
+                user_id = result
+                chat_log = self.db_conn.return_chat_log(user_id)
+                result = json.dumps(chat_log)
+
+                response_header = f"{f'recv_get_chatin_log{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
 
 

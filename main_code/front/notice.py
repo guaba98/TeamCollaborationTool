@@ -9,10 +9,11 @@ class Notice(QWidget, Ui_Notice_widget):
     def __init__(self, main_window, result, user_role):
         super().__init__()
         self.setupUi(self)
+        print(result,'공지 오류')
         self.main_window = main_window
         # title, contents = result[0], result[1]
-        title, contents = result
-        print(title, contents)
+        notice_id, title, contents, cplt_time, checked = result
+        print(notice_id, title, contents, cplt_time, checked)
         self.label.setText(title)
         self.label.setFont(Font.title(3))
         self.detail_lab.setText(contents)
