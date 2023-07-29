@@ -36,7 +36,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="login_page">
        <property name="styleSheet">
@@ -161,7 +161,7 @@ background-color: white;}</string>
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>admin</string>
+             <string/>
             </property>
             <property name="placeholderText">
              <string>아이디를 입력하세요</string>
@@ -207,7 +207,10 @@ background-color: white;}</string>
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>1234</string>
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
             </property>
             <property name="placeholderText">
              <string>비밀번호를 입력하세요</string>
@@ -616,6 +619,9 @@ border-radius:5px;</string>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
             <property name="placeholderText">
              <string>비밀번호를 입력하세요</string>
             </property>
@@ -653,6 +659,9 @@ border-radius:5px;</string>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
             </property>
             <property name="placeholderText">
              <string>비밀번호를 다시 입력해 주세요</string>

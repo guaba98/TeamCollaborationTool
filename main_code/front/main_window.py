@@ -460,7 +460,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
         self.stackedWidget.setCurrentWidget(self.login_page)
-        self.inner_stackedWidget.setCurrentWidget(self.notice_page)
+        self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         self.set_font()  # 폰트 설정
         self.style_init()  # ui 설정
         super().show()
@@ -615,7 +615,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_reg_name_lab(self):
         self.reg_name_lab.setText('이름은 두 글자 이상이여야 합니다.')
-        self.reg_name_lab_lab.setStyleSheet('color:red;')
+        self.reg_name_lab.setStyleSheet('color:red;')
 
     def set_reg_nn_lab(self):
         self.reg_nn_lab.setText('닉네임은 두 글자 이상이여야 합니다.')
@@ -637,13 +637,20 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         if len(self.reg_name_edit.text()) < 2:
             self.set_reg_name_lab()
             return False
+        else:
+            self.reg_name_lab.setStyleSheet('color:black;')
 
         if len(self.reg_nn_edit.text()) < 2:
             self.set_reg_nn_lab()
             return False
-        if len(self.reg_pw_edit.text()) > 6:
+        else:
+            self.reg_nn_lab.setStyleSheet('color:black;')
+
+        if len(self.reg_pw_edit.text()) < 6:
             self.set_reg_pw_lab2()
             return False
+        else:
+            self.reg_pw_lab.setStyleSheet('color:black;')
 
         if self.reg_pw_edit.text() != self.reg_pw_check_edit.text():
             self.set_reg_pw_lab()
