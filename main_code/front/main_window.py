@@ -460,7 +460,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
         self.stackedWidget.setCurrentWidget(self.login_page)
-        self.inner_stackedWidget.setCurrentWidget(self.notice_page)
+        self.inner_stackedWidget.setCurrentWidget(self.chat_page)
         self.set_font()  # 폰트 설정
         self.style_init()  # ui 설정
         super().show()
@@ -541,6 +541,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             self.set_user_message()
             print('로그인 확인')
             self.get_chat()
+            # self.
             self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')  # 알림창 띄우기
             self.Warn.show_dialog()
             self.user_role = self.client_controller.client_app.user_nickname
@@ -641,7 +642,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         if len(self.reg_nn_edit.text()) < 2:
             self.set_reg_nn_lab()
             return False
-        if len(self.reg_pw_edit.text()) > 6:
+        if len(self.reg_pw_edit.text()) < 6:
             self.set_reg_pw_lab2()
             return False
 

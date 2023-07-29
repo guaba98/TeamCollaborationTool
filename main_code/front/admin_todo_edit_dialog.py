@@ -52,7 +52,7 @@ class ToDoMiniList(QWidget, Ui_TodoList):
     def todo_title_clicked(self):
         if self.checked == 1:
             self.checked = 0
-            self.end_time.setText('0')
+            self.end_time.setText('')
         elif self.checked == 0:
             now = datetime.now()  # 시간
             now_format = now.strftime("%Y-%m-%d %H:%M:%S")  # 년 월 일 시 분 초
@@ -106,6 +106,7 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
             # i.checkbox.clicked.connect(self.todo_checked_send)
         # self.findChild
         self.cancel_btn.clicked.connect(self.close)
+        self.admit_btn.clicked.connect(self.close)
 
         self.cancel_lab.mousePressEvent = lambda event: self.close_window(event)
 
