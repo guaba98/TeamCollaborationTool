@@ -16,6 +16,8 @@ class Notice(QWidget, Ui_Notice_widget):
             notice_id, title, contents, cplt_time, checked = result
         else:
              title, contents = result
+        if '관리자' not in user_role:
+            self.del_btn.hide()
         self.label.setText(title)
         self.label.setFont(Font.title(3))
         self.detail_lab.setText(contents)

@@ -231,6 +231,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
     def pass_(self):
         print('패스')
     def click_plus_button(self):
+        print('눌릴텐데')
         actions = {
             '공지': self.Notice_add.exec_,
             '투두리스트': self.Todo_add.exec_

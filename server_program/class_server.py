@@ -21,6 +21,7 @@ class Server():
     '''
     # HOST = '10.10.20.103'#gethostbyname(gethostname())
     HOST = gethostbyname(gethostname())
+    print(HOST)
     PORT = 5050
     BUFFER = 50000
     FORMAT = 'utf-8'
