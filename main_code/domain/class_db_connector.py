@@ -80,7 +80,6 @@ class DBConnector:
         # 결과 가져오기
         results = c.fetchall()
         results_ = [results[0] + (team_name,)]
-        print('[db_connector.py - log_in]결과값: ', results_)
         # 연결 종료
         self.end_conn()
 
@@ -91,7 +90,6 @@ class DBConnector:
 
     # -- 로그인 기록 넣기
     def insert_login_log(self, login_id):
-        print('타나요')
         # 커서 생성
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         condition = f'"USER_ID"=\'{login_id}\''
@@ -99,7 +97,6 @@ class DBConnector:
         time = self.return_datetime('time')
         insert_query = f"INSERT INTO public.\"TB_LOG\" (\"USER_ID\", \"USER_NAME\", \"USER_LOGIN_TIME\") " \
                        f"VALUES ('{login_id}', '{user_nm}', '{time}')"
-        print('[db_connector - insert_login_log]: 쿼리문', insert_query)
         cur = conn.cursor()
 
         cur.execute(insert_query)
@@ -133,7 +130,6 @@ class DBConnector:
 
         insert_query = f"INSERT INTO public.\"TB_USER\" (\"USER_NAME\", \"USER_ID\", \"USER_PW\", \"USER_NM\", \"USER_CREATE_DATE\") " \
                        f"VALUES ('{join_name}', '{user_id}', '{join_pw}', '{join_nickname}', '{join_date}')"
-        print('[db_connector - insert_login_log]: 쿼리문', insert_query)
 
         cur.execute(insert_query)
 
@@ -152,7 +148,6 @@ class DBConnector:
 
         insert_query_2 = "INSERT INTO public.\"TB_TEAM\" (\"TEAM_NO\", \"TEAM_NAME\", \"TEAM_ROLE\", \"USER_NO\")" \
                          f" VALUES ('{team_no}', '{team_name}', '{'팀원'}', '{user_no}')"
-        print('[db_connector - insert_login_log]: 쿼리문2', insert_query_2)
         cur.execute(insert_query_2)
         conn.commit()
         cur.close()
@@ -176,7 +171,6 @@ class DBConnector:
         insert_query = f"INSERT INTO public.\"TB_CHAT\" " \
                        f"(\"TEAM_NO\", \"USER_NO\", \"USER_NAME\", \"CHAT_LOG\", \"CHAT_TIME\")" \
                        f" VALUES ('{team_no}', '{user_no}', '{user_name}', '{chat}', '{str(chat_time)}')"
-        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
         cur.execute(insert_query)
@@ -201,7 +195,6 @@ class DBConnector:
         insert_query = f"INSERT INTO public.\"TB_NOTICE\" " \
                        f"(\"NOTICE_TITLE\", \"NOTICE_CONTENTS\", \"TEAM_NO\", \"UPDATE_DATE\")" \
                        f" VALUES ('{title}', '{contents}', '{team_no}', '{str(self.return_datetime('time'))}')"
-        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
         cur.execute(insert_query)
@@ -213,17 +206,12 @@ class DBConnector:
     def get_notice_list(self, user_no):
         """공지에서 유저가 속한 팀 기준으로 공지 제목, 내용을 가져옴"""
         c = self.start_conn()
-        # query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" " \
-        #         "FROM \"TB_NOTICE\" NATURAL JOIN \"TB_TEAM\" " \
-        #         f"WHERE \"TEAM_NO\" = (SELECT \"TEAM_NO\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});"
+
         query = "SELECT \"NOTICE_TITLE\", \"NOTICE_CONTENTS\" " \
                 "FROM \"TB_NOTICE\" WHERE \"TEAM_NO\" = " \
                 f"(SELECT \"TEAM_NO\" FROM \"TB_TEAM\" NATURAL JOIN \"TB_USER\" WHERE \"USER_NO\" = {user_no});"
-        print(query)
         c.execute(query)
         result = c.fetchall()
-        # print('[db_connector.py - get_notice_list]: ', result)
-        print(result)
 
         self.end_conn()  # 커서 닫기
         return result
@@ -249,7 +237,7 @@ class DBConnector:
         query = f"UPDATE public.\"{table_name}\" SET \"{column}\" = '{data}'"
         if condition is not None:
             query += f" WHERE {condition}"
-        print('쿼리문', query)
+
         cur.execute(query)
 
         # 데이터 저장 및 닫기
@@ -264,13 +252,13 @@ class DBConnector:
 
     def update_todo_list(self, todo_id, checked):
         """투두리스트 체크시 DB 업데이트"""
-        print('체크 누르면 여기옴?')
+
         condition = f"\"TODO_ID\" = '{todo_id}'"
         time = self.return_datetime('time')
 
         if checked == '0':
             time = '0'
-        print(time)
+
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CHECKED', data=checked, condition=condition)
         self.update_specific_data(table_name='TB_TODO_LIST', column='TODO_CPLT_TIME', data=time, condition=condition)
 
@@ -280,13 +268,10 @@ class DBConnector:
         conn = psycopg2.connect(host=host, database=database, user=user, password=password, port=port)
         cur = conn.cursor()
 
-        # condition = f"\"USER_ID\" = '{user_no}';"
-        # user_no = self.return_specific_data('USER_NO', 'TB_USER', condition)
         # 데이터 저장
         insert_query = f"INSERT INTO public.\"TB_TODO_LIST\" " \
                        f"(\"USER_NO\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_TIME\")" \
                        f" VALUES ('{user_no}', '{title}', '{contents}', '{str(self.return_datetime('time'))}')"
-        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
         cur.execute(insert_query)
@@ -307,7 +292,6 @@ class DBConnector:
         insert_query = f"INSERT INTO public.\"TB_TODO_LIST\" " \
                        f"(\"USER_NO\", \"TODO_TITLE\", \"TODO_LIST\", \"TODO_TIME\")" \
                        f" VALUES ('{user_no}', '{title}', '{contents}', '{str(self.return_datetime('time'))}')"
-        print('[db_connector - insert_chat_log]: 쿼리문', insert_query)
 
         # 저장
         cur.execute(insert_query)
@@ -333,7 +317,7 @@ class DBConnector:
 
         # 결과 가져오기
         results = c.fetchall()
-        print('[db_connector.py - get_todo_list]: ', results)
+
         # 연결 종료
         self.end_conn()
         return results
@@ -348,7 +332,6 @@ class DBConnector:
         result = c.fetchall()
 
         # 값을 딕셔너리로 반환받기.
-        # 예 -> {'박소연': ['이벤트 연결', '개발일지 작성', '프로필창 띄우기'], '이종혁': ['개발완성보고서 작성']}
         result_dict = dict()
         for i in result:
             if i[0] in list(result_dict.keys()):
@@ -373,7 +356,7 @@ class DBConnector:
 
         # 결과 가져오기
         results = [row[0] for row in c.fetchall()]
-        print('[db_connector.py - return_team_name]: ', results)
+
         # 연결 종료 및 반환
         self.end_conn()
         return results
@@ -383,7 +366,7 @@ class DBConnector:
         self.start_conn()
         con = f"\"TEAM_NAME\" = '{team_name}'"
         team_no = self.return_specific_data(column='TEAM_NO', table_name='TB_TEAM', condition=con)
-        print("팀 번호:", team_no)
+
         return team_no
 
     def return_team_members_for_admin(self, team_name):
@@ -395,17 +378,15 @@ class DBConnector:
         c = self.start_conn()
         query = f"SELECT \"USER_NO\", \"USER_ID\", \"USER_PW\", \"USER_NAME\", \"USER_NM\", \"USER_MESSAGE\", \"USER_CREATE_DATE\", \"TEAM_NAME\" " \
                 f"FROM \"TB_USER\" NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" = '{team_name}';"
-        print(query)
 
         c.execute(query)
 
         results = c.fetchall()
-        # results = [row[0] for row in c.fetchall()]
-        print('[db_connector.py - return_team_members_for_admin]: ', results)
 
         # 연결 종료
         self.end_conn()
         return results
+
     def return_todo_list_by_title(self, title):
         """
         투두리스트 타이틀을 입력받아 그 행을 반환합니다.
@@ -414,10 +395,11 @@ class DBConnector:
         """
         c = self.start_conn()
         query = f"SELECT * FROM \"TB_TODO_LIST\" WHERE \"TODO_TITLE\"='{title}'"
-        print(query)
+
         c.execute(query)
         result = c.fetchall()
         return result
+
     def return_team_members(self, user_no):
         """
         유저 번호를 입력하면 속한 팀원들을 모두 반환함
@@ -428,14 +410,12 @@ class DBConnector:
         query = f'SELECT \"USER_NAME\" FROM \"TB_USER\" ' \
                 f'NATURAL JOIN \"TB_TEAM\" WHERE \"TEAM_NAME\" ' \
                 f'= (SELECT \"TEAM_NAME\" FROM \"TB_TEAM\" WHERE \"USER_NO\" = {user_no});'
-        print(query)
 
         # 쿼리 실행
         c.execute(query)
 
         # results = c.fetchall()
         results = [row[0] for row in c.fetchall()]
-        print('[db_connector.py - return_team_members]: ', results)
 
         # 연결 종료
         self.end_conn()
@@ -462,7 +442,7 @@ class DBConnector:
         query = "SELECT * FROM \"TB_NOTICE\""
         c.execute(query)
         result = c.fetchall()
-        print(result)
+
         return result
 
     def return_specific_data(self, column, table_name, condition=None, type=None):
@@ -472,7 +452,6 @@ class DBConnector:
         query = f"SELECT \"{column}\" FROM public.\"{table_name}\""
         if condition is not None:
             query += f" WHERE {condition}"
-        print(query)
 
         c.execute(query)
         r_data = c.fetchall()
@@ -490,7 +469,7 @@ class DBConnector:
         c = self.start_conn()
         condition = f"\"USER_ID\" = '{user_id}'"
         user_no = self.return_specific_data(table_name='TB_USER', column='USER_NO', condition=condition)
-        print(user_no)
+
         return user_no
 
     def delete_specific_row(self, table_name, condition):
@@ -500,7 +479,6 @@ class DBConnector:
         cur = conn.cursor()
 
         query = f"DELETE FROM \"{table_name}\" WHERE {condition};"
-        print(query)
 
         # 저장
         cur.execute(query)
@@ -524,27 +502,18 @@ class DBConnector:
                 f"ORDER BY \"CHAT_TIME\" DESC LIMIT 1"
         c.execute(query)
         results = c.fetchall()
-        last_chat_time = results[0][0] # 유저의 마지막 채팅 시간
-        print('마지막 채팅 시간', last_chat_time)
+        last_chat_time = results[0][0]  # 유저의 마지막 채팅 시간
 
         # 현재 시간 구하기
         now = self.return_datetime('time')
-        print(now)
 
         # 마지막 채팅 시간과 현재 시간 사이의 채팅들 불러오기
         query_ = "SELECT \"USER_NAME\", \"CHAT_LOG\", \"CHAT_TIME\" FROM \"TB_CHAT\" " \
                  f"WHERE \"CHAT_TIME\" > '{last_chat_time}' " \
                  f"AND \"CHAT_TIME\" < '{now}';"
         c.execute(query_)
-        chats = [(n[0], n[1]) for n in c.fetchall()] # 이름, 내용 반환
-        print('현재 시간과 유저의 마지막 사이 채팅 시간 사이 온 채팅들', chats)
+        chats = [(n[0], n[1]) for n in c.fetchall()]  # 이름, 내용 반환
 
         return chats
 
-if __name__ == '__main__':
-    pass
-    d = DBConnector()
 
-    # d.return_todo_list_dict('개발부')
-    # d.return_notice_all_data()
-    d.delete_notice_data('이거 지금 ')

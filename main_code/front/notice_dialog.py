@@ -40,17 +40,13 @@ class DialogNoticeAdd(QDialog, Ui_NoticeDialog):
 
     def add_notice(self):
         """여기서 공지를 서버에 넘깁니다."""
-        '''
-        1. 공지 서버로 전달 -> db 저장
-        2. 공지 버티컬 레이아웃에 추가
-        '''
+
         title = self.title_edit.text()
         contents = self.contents_edit.toPlainText()
         team = self.team.currentText()
-        print('[notice_dialog] 제목: ', title, '내용', contents)
         self.main_window.insert_notice(title, contents, team)
-        print('[notice_dialog] 제목: ', title, '내용', contents)
         self.close()
+
     def close(self):
         self.title_edit.clear()
         self.contents_edit.clear()
@@ -93,24 +89,13 @@ class DialogToDoAdd(QDialog, Ui_NoticeDialog):
 
     def add_todo(self):
         """여기서 투두리스트를 서버에 넘깁니다."""
-        '''
-        1. 투두리스트 서버로 전달 -> db 저장
-        2. 투두리스트 버티컬 레이아웃에 추가
-        '''
+
         title = self.title_edit.text()
         contents = self.contents_edit.toPlainText()
-        print('[todo_dialog] 제목: ', title, '내용', contents)
-        plus_todo = title, contents
         self.main_window.insert_todo_list(title, contents)
         self.close()
+
     def close(self):
         self.title_edit.clear()
         self.contents_edit.clear()
         super().close()
-
-if __name__ == '__main__':
-    pass
-    # # 폰트
-    # app = QApplication(sys.argv)
-    # notice = DialogToDoAdd()
-    # notice.exec()

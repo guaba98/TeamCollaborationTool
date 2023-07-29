@@ -17,12 +17,6 @@ class ProFile(QDialog, Ui_ProfileDialog):
         self.main_window = main_window
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
-        # 값 넣어주기
-        # 현재 실행 파일의 경로
-        # current_dir = os.path.dirname(os.path.abspath(__file__))
-        # img_path = os.path.join(current_dir, "", "src_img", f"{img}")
-        # print(img_path)
-        # self.profile_img.setPixmap(QPixmap(img))
         self.name_lab.setText(name)
         self.state_edit.setText(state)
 
@@ -38,7 +32,6 @@ class ProFile(QDialog, Ui_ProfileDialog):
     def change_profile(self):
         """여기에서 프로필 상태메세지를 변경합니다."""
         profile_message = self.state_edit.text()
-        print(profile_message)
         self.main_window.update_user_message(profile_message)
         self.close()
 

@@ -21,7 +21,6 @@ class Server():
     '''
     # HOST = '10.10.20.103'#gethostbyname(gethostname())
     HOST = gethostbyname(gethostname())
-    print(HOST)
     PORT = 5050
     BUFFER = 50000
     FORMAT = 'utf-8'
@@ -31,7 +30,6 @@ class Server():
     def __init__(self, db_conn: DBConnector):
         self._serverSocket = socket(AF_INET, SOCK_STREAM)
         self.db_conn = db_conn
-        # print(self.db_conn.log_in('123', '142'))
         self.server_socket = None
         self.config = None
         self.sockets_list = list()
@@ -87,7 +85,6 @@ class Server():
                 del self.clients[notified_socket]
 
     def send_message(self, client_socket: socket, result):
-        # print(f"Server SENDED: ({result})".split())
         client_socket.send(result)
 
     def receive_message(self, client_socket: socket):
@@ -95,7 +92,6 @@ class Server():
             recv_message = client_socket.recv(self.BUFFER)
             decode_msg = recv_message.decode(self.FORMAT).strip()  # recv 메시지
             header = decode_msg.split(header_split)[0]  # recv 메시지의 header
-            print(header)
             if header == 'login':  # client에서 유저 id pw를 받아와 db에서 조회후 client에 결과값을 보낸다
                 substance = decode_msg.split(header_split)[1]
                 data = substance.split(list_split_1)
@@ -112,7 +108,6 @@ class Server():
 
                     response_header = f"{f'login{header_split}{user_info}'}"
 
-                    # self.send_message(client_socket, response_header)
                     client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'duple':  # 회원가입 아이디 중복확인
@@ -142,7 +137,7 @@ class Server():
                 send_chat = decode_msg.split(header_split)[1] # 데이터 받아오기
                 send_chat2 = send_chat.split(list_split_1)
                 user_no, team_no, name, chat = send_chat2
-                result = self.db_conn.insert_chat_log(user_no, chat) #todo 채팅 내용 저장
+                result = self.db_conn.insert_chat_log(user_no, chat)
                 response_header = f"{f'recv_chat{header_split}{user_no}{list_split_1}{team_no}{list_split_1}{name}{list_split_1}{chat}'}"   # 헤더만들기
 
                 clients = self.clients.copy()
@@ -151,7 +146,6 @@ class Server():
                         i.send(bytes(response_header, "UTF-8"))
                     except:
                         continue
-                # client_socket.send(bytes(response_header, "UTF-8"))
 
             elif header == 'get_notice':  # 공지 client에 보내주기
                 recv_msg = decode_msg.split(header_split)[1]
@@ -240,19 +234,14 @@ class Server():
 
             # 팀이름을 인자로 멤버들 받아오기
             elif header == 'get_team_member':
-                # todo: 멤버들 받아오기
                 team_name = decode_msg.split(header_split)[1]
                 result = self.db_conn.return_team_members_for_admin(team_name)
-                # result = [('no','name','id','pw','nn','message','date','team'),('no2','name2','id2','pw2','nn2','message2','date2','team')]
                 result = json.dumps(result)
                 response_header = f"{f'recv_get_team_member{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
-                # self.send_message(client_socket, response_header)
 
             elif header == 'delete_notice':
-                # todo: 멤버들 받아오기
                 notice_title = decode_msg.split(header_split)[1]
-                print('delete_notice', notice_title)
                 result = self.db_conn.delete_notice_data(notice_title)
 
             elif header == 'admin_del_todo_list_send':
@@ -272,9 +261,7 @@ class Server():
                 response_header = f"{f'get_matplotlib{header_split}{result}'}"
                 client_socket.send(bytes(response_header, "UTF-8"))
 
-                # people, cnt = result
-                # response_header = f"{f'get_matplotlib{header_split}{people}{list_split_1}{cnt}':{self.BUFFER}}".encode(self.FORMAT)
-                # self.send_message(client_socket, response_header)
+
 
 
             elif header == 'admin_todo_list_plus':

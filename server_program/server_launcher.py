@@ -5,7 +5,5 @@ from server_program.class_server import Server
 
 if __name__ == '__main__':
     conn = DBConnector()
-    # conn.create_tables()
-
     server = Server(conn)
     server.start()

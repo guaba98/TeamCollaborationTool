@@ -9,6 +9,7 @@ from main_code.front.ui.ui_class_todo_list_widget_for_admin_dialog import Ui_Tod
 # from main_code.domain.class_db_connector import DBConnector
 from main_code.front.Font import Font
 from datetime import datetime
+
 '''
 관리자가 개인별 투두리스트 조회 및 추가하는 창 
 
@@ -22,7 +23,8 @@ class ToDoMiniList(QWidget, Ui_TodoList):
         self.ui_init()
         self.set_btn_trigger()
         self.admintodoadd = admintodoadd
-        self.title, self.todo_id, self.checked, self.contents, self.cmplt_time, self.user_id = str(title), todo_id, checked, contents, cmplt_time, user_id
+        self.title, self.todo_id, self.checked, self.contents, self.cmplt_time, self.user_id = str(
+            title), todo_id, checked, contents, cmplt_time, user_id
         self.todo_title.setText(self.title)
         self.todo_detail.setText(contents)
 
@@ -39,11 +41,9 @@ class ToDoMiniList(QWidget, Ui_TodoList):
         self.end_time.setFont(Font.text(4))
         self.todo_detail.setFont(Font.text(4))
 
-
     def set_btn_trigger(self):
         self.del_btn.clicked.connect(self.del_todo_list)
         self.todo_title.clicked.connect(self.todo_title_clicked)
-
 
     def del_todo_list(self):
         self.admintodoadd.admin_del_todo_list_send(self.title)
@@ -72,8 +72,6 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
         self.checkbox_list = []
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
-        # self.user_name = user_name
-        # self.data = DBConnector()
         self.table_init()  # 투두리스트 값 넣어주기
         self.style_init()  # 값 넣어주기
         self.event_init()  # 버튼 연결 이벤트
@@ -87,7 +85,6 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
             self.todo_list_save.append(todo_form)
             self.admin_todo_lay.addWidget(todo_form)
         self.pushButton.clicked.connect(self.admin_todo_list_plus)
-        print(self.checkbox_list)
 
     def style_init(self):
         # 이름 적용 및 폰트 적용
@@ -98,13 +95,8 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
         self.todo_title_lab.setFont(Font.text(4, t_blod=False))
         self.todo_contents_lab.setFont(Font.text(4, t_blod=False))
 
-
     def event_init(self):
         # 다이얼로그 안에 체크박스가 클릭될때마다 신호보냄
-        for i in self.checkbox_list:
-            print(i.findChildren())
-            # i.checkbox.clicked.connect(self.todo_checked_send)
-        # self.findChild
         self.cancel_btn.clicked.connect(self.close)
         self.admit_btn.clicked.connect(self.close)
 
@@ -123,9 +115,6 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
         title = self.todo_title_textedit.toPlainText()
         contents = self.todo_contents_plain.toPlainText()
         self.main_window.admin_todo_list_plus2(title, contents, self.user_id)
-        # self.main_window.show_member_todo_list_for_admin3()
-
-        pass
 
     def test(self, todo_info):
         for todo in todo_info:
@@ -133,6 +122,3 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
             todo_form = ToDoMiniList(self, todo_id, checked, title, contents, cplt_time, self.user_id)
             self.todo_list_save.append(todo_form)
             self.admin_todo_lay.addWidget(todo_form)
-
-if __name__ == '__main__':
-    passs

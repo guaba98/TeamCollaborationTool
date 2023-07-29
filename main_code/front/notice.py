@@ -9,9 +9,7 @@ class Notice(QWidget, Ui_Notice_widget):
     def __init__(self, main_window, result, user_role):
         super().__init__()
         self.setupUi(self)
-        print(result,'공지 오류')
         self.main_window = main_window
-        # title, contents = result[0], result[1]
         if len(result) > 2:
             notice_id, title, contents, cplt_time, checked = result
         else:
@@ -27,16 +25,3 @@ class Notice(QWidget, Ui_Notice_widget):
     def close(self, title):
         self.main_window.del_notice(title)
         super().close()
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     app.setStyle('Fusion')
-#     msgbox = Notice('제목','내용')
-#     # msgbox.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
-#     # msgbox.show_dialog()
-#     # msgbox.exec_()
-#     msgbox.show()
-#     while 1:
-#         pass
-
-    # n = Notice('제목','내용')

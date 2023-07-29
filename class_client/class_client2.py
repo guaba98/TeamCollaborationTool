@@ -14,7 +14,7 @@ list_split_1 = chr(2)
 list_split_2 = chr(3)
 
 
-class ClientApp:
+class ClientApp2:
     def __init__(self, client_controller=None):
         super().__init__()
         self.client_controller = client_controller

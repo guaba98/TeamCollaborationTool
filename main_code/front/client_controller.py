@@ -1,14 +1,10 @@
 import random
 import sys
 
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QFontDatabase
-from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 
 from class_client.class_client import ClientApp
-# from main_code.front.class_custom_message_box import NoFrameMessageBox
 
 # ui 임풜트 예아
 from main_code.front.main_window import NoticeBorad
@@ -38,13 +34,6 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
         self.main_window = None
-        # # 폰트
-        # fontDB = QFontDatabase()
-        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-aLt.ttf")
-        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-bRg.ttf")
-        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-cBd.ttf")
-        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-dEb.ttf")
-        # fontDB.addApplicationFont("../front/font/NanumSquareNeo-eHv.ttf")
 
     # 좌상단 프로필
     def emit_update_user_message(self):
@@ -108,9 +97,9 @@ class ClientController(QtWidgets.QWidget):
     # 런처 실행시 나오는 window ===========================================================================
     def run(self):  # 시작화면 show
         self.main_window = set_main_window(self)
-        print(self.main_window)
         # self.main_window.show()
         self.main_window.show()
+
     def re_(self):
         self.main_window = set_main_window(self)
         self.main_window.show()

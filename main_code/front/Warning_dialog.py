@@ -94,13 +94,3 @@ class DialogWarning(QDialog, Ui_WarnDialog):
 
     def show_dialog(self):
         self.exec_()
-
-
-if __name__ == '__main__':
-    # app = QApplication(sys.argv)
-    # app.setStyle('Fusion')
-    # msgbox = DialogWarning()
-    # msgbox.set_dialog_type(bt_cnt=1, t_type='register_cmplt')
-    # msgbox.show_dialog()
-
-    pass

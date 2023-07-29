@@ -30,6 +30,8 @@ list_split_1 = chr(2)
 list_split_2 = chr(3)
 BUFFER = 50000
 FORMAT = "utf-8"
+
+
 # def character_page_event(img):
 #     mywindow2 = AdminTodoAdd(img)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
 #     mywindow2.exec()
@@ -55,7 +57,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def __init__(self, client_controller):
         super().__init__()
-        # self.adminadd_list = []
         self.adminadd = None
         self.ctg_clicked = None
         self.user_role = None  # 로그인한 유저의 역할
@@ -67,8 +68,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.team_list = None
         self.Notice_add = None
         self.Todo_add = None
-        # self.Notice_add = DialogNoticeAdd(self, self.team_list)
-        # self.Todo_add = DialogToDoAdd(self, self.team_list)
+
         # window frame 설정
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -78,19 +78,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         # 버튼 트리거 함수 호출
         self.set_btn_trigger()
         self.init_func()
-
-        # '''테스트 중'''
-        # for i in range(5):
-        #     user = MemberList(self, '이름', '역할', 'admin')
-        #     self.team_mem_v_lay.addWidget(user)
-
-        # for i in range(5):
-        #     notice = Notice(['test', 'test'], 'test')
-        #     self.notice_v_lay.addWidget(notice)
-
-
-
-
 
     def create_donut_chart(self, todo_people: list, todo_cnt: list):
         sizes = todo_cnt
@@ -145,7 +132,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.get_team_member_signal.connect(self.set_team_member)
         self.set_matplotlib_signal.connect(self.set_matplotlib)
         self.update_timer.start()
-
 
     def set_main_page_profil(self):
         user_team = self.client_controller.client_app.user_name
@@ -228,10 +214,11 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             img_name = self.ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role=self.user_role)
             self.category_v_lay.addWidget(ctg_)
+
     def pass_(self):
-        print('패스')
+        pass
+
     def click_plus_button(self):
-        print('눌릴텐데')
         actions = {
             '공지': self.Notice_add.exec_,
             '투두리스트': self.Todo_add.exec_
@@ -284,10 +271,12 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             img_name = self.admin_ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role=self.user_role)
             self.category_v_lay.addWidget(ctg_)
+
     def logout_(self):
         self.close()
         self.client_controller.re_()
         # self.stackedWidget.setCurrentWidget(self.login_page)
+
     def admin_ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기(관리자)"""
         name = self.client_controller.client_app.user_name
@@ -309,6 +298,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
                 self.adminevent_dict[ctg_name][1]()
                 self.adminevent_dict[ctg_name][2]()
                 self.inner_stackedWidget.setCurrentWidget(self.admin_ctg_dict[c][1])
+
     def get_matplotlib(self, ctg_name):
         message = f"{f'get_matplotlib{header_split}{ctg_name}':{BUFFER}}".encode(
             FORMAT)
@@ -331,11 +321,9 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
 
-
     def show_member_todo_list_for_admin2(self, result):
         self.adminadd = AdminTodoAdd(self, result)
         self.adminadd.exec_()
-
 
     def show_member_todo_list_for_admin3(self, result):
         self.adminadd.test(result)
@@ -377,7 +365,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         for i in members:
             user = MemberList(self, i)
             self.team_mem_v_lay.addWidget(user)
-
 
     def admin_del_todo_list_send2(self, todo_title):
         message = f"{f'admin_del_todo_list_send{header_split}{todo_title}':{BUFFER}}".encode(
@@ -436,7 +423,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_notice(self, result):
         for i in result:
-            print(i,'공지 오류')
             notice = Notice(self, i, self.user_role)
             self.notice_v_lay.addWidget(notice)
 
@@ -479,7 +465,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 채팅 =========================================================================================
     # 전송버튼 클릭시 채팅을 서버에 보내는 함수
-    def get_chat(self): # 로그인 할때 채팅 기록 불러오기
+    def get_chat(self):  # 로그인 할때 채팅 기록 불러오기
         user_id = self.client_controller.client_app.user_id
         message = f"{f'get_chatin_log{header_split}{user_id}':{BUFFER}}".encode(
             FORMAT)
@@ -513,9 +499,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     # 로그인 함수=======================================================================
     def click_login_btn(self):
-        # test test
-        # self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')
-        # self.Warn.exec_()
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
         user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
         self.login_id_edit.clear()
@@ -540,7 +523,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
             self.set_main_page_profil()
             self.set_user_message()
-            print('로그인 확인')
             self.get_chat()
             self.Warn.set_dialog_type(bt_cnt=1, t_type='login_cmplt')  # 알림창 띄우기
             self.Warn.show_dialog()
@@ -595,9 +577,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         input_reg_name = self.reg_name_edit.text()
         input_reg_nn = self.reg_nn_edit.text()
         input_reg_team = self.comboBox.currentText()
-        # self.comboBox:QComboBox
-        # self.comboBox.currentText()
-        print(input_reg_team)
         result = [input_reg_id, input_reg_pw, input_reg_name, input_reg_nn, input_reg_team]
 
         user_info = json.dumps(result)
@@ -625,6 +604,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
     def set_reg_pw_lab(self):
         self.reg_pw_lab.setText('비밀번호가 같지 않습니다.')
         self.reg_pw_lab.setStyleSheet('color:red;')
+
     def set_reg_pw_lab2(self):
         self.reg_pw_lab.setText('비밀번호를 6자리 이상 적어주세요.')
         self.reg_pw_lab.setStyleSheet('color:red;')
