@@ -615,15 +615,15 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_reg_name_lab(self):
         self.reg_name_lab.setText('이름은 두 글자 이상이여야 합니다.')
-        self.reg_id_lab.setStyleSheet('color:red;')
+        self.reg_name_lab.setStyleSheet('color:red;')
 
     def set_reg_nn_lab(self):
         self.reg_nn_lab.setText('닉네임은 두 글자 이상이여야 합니다.')
-        self.reg_id_lab.setStyleSheet('color:red;')
+        self.reg_nn_lab.setStyleSheet('color:red;')
 
     def set_reg_pw_lab(self):
         self.reg_pw_lab.setText('비밀번호가 같지 않습니다.')
-        self.reg_id_lab.setStyleSheet('color:red;')
+        self.reg_pw_check_lab.setStyleSheet('color:red;')
 
     # 유저가 입력한 회원가입조건 검사
     def register_check(self):
