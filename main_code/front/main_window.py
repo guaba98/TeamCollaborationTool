@@ -460,7 +460,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             FORMAT)
         self.client_controller.controller_send_message(message)
         self.stackedWidget.setCurrentWidget(self.login_page)
-        self.inner_stackedWidget.setCurrentWidget(self.team_page)
+        self.inner_stackedWidget.setCurrentWidget(self.notice_page)
         self.set_font()  # 폰트 설정
         self.style_init()  # ui 설정
         super().show()
@@ -615,15 +615,18 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_reg_name_lab(self):
         self.reg_name_lab.setText('이름은 두 글자 이상이여야 합니다.')
-        self.reg_id_lab.setStyleSheet('color:red;')
+        self.reg_name_lab_lab.setStyleSheet('color:red;')
 
     def set_reg_nn_lab(self):
         self.reg_nn_lab.setText('닉네임은 두 글자 이상이여야 합니다.')
-        self.reg_id_lab.setStyleSheet('color:red;')
+        self.reg_nn_lab.setStyleSheet('color:red;')
 
     def set_reg_pw_lab(self):
         self.reg_pw_lab.setText('비밀번호가 같지 않습니다.')
-        self.reg_id_lab.setStyleSheet('color:red;')
+        self.reg_pw_lab.setStyleSheet('color:red;')
+    def set_reg_pw_lab2(self):
+        self.reg_pw_lab.setText('비밀번호를 6자리 이상 적어주세요.')
+        self.reg_pw_lab.setStyleSheet('color:red;')
 
     # 유저가 입력한 회원가입조건 검사
     def register_check(self):
@@ -637,6 +640,9 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
         if len(self.reg_nn_edit.text()) < 2:
             self.set_reg_nn_lab()
+            return False
+        if len(self.reg_pw_edit.text()) > 6:
+            self.set_reg_pw_lab2()
             return False
 
         if self.reg_pw_edit.text() != self.reg_pw_check_edit.text():
