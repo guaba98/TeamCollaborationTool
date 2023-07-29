@@ -18,7 +18,7 @@ class ProFile(QDialog, Ui_ProfileDialog):
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
         # 값 넣어주기
-        # # 현재 실행 파일의 경로
+        # 현재 실행 파일의 경로
         # current_dir = os.path.dirname(os.path.abspath(__file__))
         # img_path = os.path.join(current_dir, "", "src_img", f"{img}")
         # print(img_path)
