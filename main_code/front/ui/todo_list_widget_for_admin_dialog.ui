@@ -63,6 +63,24 @@ border-radius:20px;</string>
             <pointsize>12</pointsize>
            </font>
           </property>
+          <property name="styleSheet">
+           <string notr="true">
+                   QCheckBox::indicator {
+                       width: 20px;
+                      height: 20px;
+                   }
+                     QCheckBox::indicator:unchecked {
+                        border: 0.5px solid #14C871;
+                        border-radius: 10px;
+                         background-color: #ffffff;
+                     }
+                    QCheckBox::indicator:checked {
+                        
+	image: url(:/newPrefix/check.png);
+        
+                     }
+       </string>
+          </property>
           <property name="text">
            <string>투두리스트 제목</string>
           </property>

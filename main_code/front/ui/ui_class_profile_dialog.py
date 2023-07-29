@@ -52,6 +52,7 @@ class Ui_ProfileDialog(object):
         self.profile_img.setStyleSheet("\n"
 "border-radius:75px;")
         self.profile_img.setText("")
+        self.profile_img.setPixmap(QtGui.QPixmap(":/newPrefix/user_green.png"))
         self.profile_img.setScaledContents(True)
         self.profile_img.setObjectName("profile_img")
         self.h_lay.addWidget(self.profile_img)

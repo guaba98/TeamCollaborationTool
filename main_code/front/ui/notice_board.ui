@@ -955,6 +955,9 @@ border-radius:5px;</string>
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
                  </property>
+                 <property name="horizontalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                 </property>
                  <property name="widgetResizable">
                   <bool>true</bool>
                  </property>
@@ -975,7 +978,7 @@ border-radius:5px;</string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_4">
                    <property name="spacing">
-                    <number>5</number>
+                    <number>0</number>
                    </property>
                    <property name="leftMargin">
                     <number>0</number>
@@ -1161,8 +1164,8 @@ background-color: rgb(20, 200, 113);</string>
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>850</width>
-                    <height>544</height>
+                    <width>829</width>
+                    <height>16</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1392,8 +1395,8 @@ QPushButton#send_btn{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>850</width>
-                 <height>574</height>
+                 <width>753</width>
+                 <height>367</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">

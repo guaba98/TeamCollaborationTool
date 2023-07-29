@@ -113,7 +113,13 @@ background-color: rgb(255, 255, 255);}</string>
             </size>
            </property>
            <property name="text">
-            <string>사진</string>
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../src_img/my_qrc.qrc">:/newPrefix/user_green.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -186,6 +192,32 @@ background-color: rgb(255, 255, 255);}</string>
       </item>
       <item>
        <widget class="QScrollArea" name="scrollArea">
+        <property name="styleSheet">
+         <string notr="true">
+            QScrollBar:vertical {
+                border: none;
+                background: #E4EAEE;
+                width: 10px;
+                margin: 0px;
+            }
+
+            QScrollBar::handle:vertical {
+                background: #14C871;
+                min-height: 20px;
+                border-radius: 5px;
+            }
+
+            QScrollBar::handle:vertical:hover {
+                background: #0F9B58;
+            }
+
+            QScrollBar::sub-line:vertical,
+            QScrollBar::add-line:vertical {
+                border: none;
+                height: 0px;
+            }
+</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
         </property>
@@ -198,7 +230,7 @@ background-color: rgb(255, 255, 255);}</string>
            <x>0</x>
            <y>0</y>
            <width>428</width>
-           <height>233</height>
+           <height>240</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -237,11 +269,11 @@ background-color: rgb(255, 255, 255);}</string>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>140</height>
+          <height>125</height>
          </size>
         </property>
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
@@ -284,6 +316,12 @@ background-color: rgb(255, 255, 255);}</string>
                <height>30</height>
               </size>
              </property>
+             <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOff</enum>
+             </property>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOff</enum>
+             </property>
             </widget>
            </item>
            <item row="2" column="0">
@@ -301,7 +339,7 @@ background-color: rgb(255, 255, 255);}</string>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>60</height>
+               <height>40</height>
               </size>
              </property>
             </widget>
@@ -336,8 +374,8 @@ background-color: rgb(255, 255, 255);}</string>
             <widget class="QPushButton" name="pushButton">
              <property name="minimumSize">
               <size>
-               <width>50</width>
-               <height>50</height>
+               <width>40</width>
+               <height>40</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -348,7 +386,7 @@ background-color: rgb(255, 255, 255);}</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(20, 200, 113);
-border-radius: 25px;
+border-radius: 20px;
 </string>
              </property>
              <property name="text">
@@ -360,8 +398,8 @@ border-radius: 25px;
              </property>
              <property name="iconSize">
               <size>
-               <width>30</width>
-               <height>30</height>
+               <width>25</width>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -370,6 +408,22 @@ border-radius: 25px;
          </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>8</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <layout class="QHBoxLayout" name="h_bottom_lay">
