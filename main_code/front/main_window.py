@@ -615,7 +615,7 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
 
     def set_reg_name_lab(self):
         self.reg_name_lab.setText('이름은 두 글자 이상이여야 합니다.')
-        self.reg_name_lab.setStyleSheet('color:red;')
+        self.reg_name_lab_lab.setStyleSheet('color:red;')
 
     def set_reg_nn_lab(self):
         self.reg_nn_lab.setText('닉네임은 두 글자 이상이여야 합니다.')
