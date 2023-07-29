@@ -14,14 +14,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TodoForm(object):
     def setupUi(self, TodoForm):
         TodoForm.setObjectName("TodoForm")
-        TodoForm.resize(813, 183)
+        TodoForm.resize(801, 183)
+        TodoForm.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(TodoForm)
         self.verticalLayout_2.setContentsMargins(10, 10, 10, 10)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.main_frame = QtWidgets.QFrame(TodoForm)
-        self.main_frame.setMinimumSize(QtCore.QSize(785, 163))
-        self.main_frame.setMaximumSize(QtCore.QSize(3421234, 163))
+        self.main_frame.setMinimumSize(QtCore.QSize(0, 163))
+        self.main_frame.setMaximumSize(QtCore.QSize(16777215, 163))
         self.main_frame.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-radius:20px;")
         self.main_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -39,6 +40,19 @@ class Ui_TodoForm(object):
         font = QtGui.QFont()
         font.setPointSize(15)
         self.checkBox.setFont(font)
+        self.checkBox.setStyleSheet(" QCheckBox::indicator {\n"
+"                        width: 25px;\n"
+"                        height: 25px;\n"
+"                    }\n"
+"                    QCheckBox::indicator:unchecked {\n"
+"                        border: 0.5px solid #14C871;\n"
+"                        border-radius: 13px;\n"
+"                        background-color: #ffffff;\n"
+"                    }\n"
+"                    QCheckBox::indicator:checked {\n"
+"                        \n"
+"    image: url(:/newPrefix/check.png);\n"
+"                       }")
         self.checkBox.setObjectName("checkBox")
         self.h_lay.addWidget(self.checkBox)
         self.del_btn = QtWidgets.QPushButton(self.main_frame)

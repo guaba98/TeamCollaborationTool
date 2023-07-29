@@ -19,19 +19,31 @@ class ToDoMiniList(QWidget, Ui_TodoList):
     def __init__(self, admintodoadd, todo_id, checked, title, contents, cmplt_time, user_id):
         super().__init__()
         self.setupUi(self)
+        self.ui_init()
         self.set_btn_trigger()
         self.admintodoadd = admintodoadd
         self.title, self.todo_id, self.checked, self.contents, self.cmplt_time, self.user_id = str(title), todo_id, checked, contents, cmplt_time, user_id
         self.todo_title.setText(self.title)
         self.todo_detail.setText(contents)
-        self.end_time.setText(cmplt_time)
+
+        if cmplt_time == '0':
+            self.end_time.setText('')
+        else:
+            self.end_time.setText(cmplt_time)
 
         if self.checked == 1:
             self.todo_title.setChecked(True)
 
+    def ui_init(self):
+        self.todo_title.setFont(Font.button(1))
+        self.end_time.setFont(Font.text(4))
+        self.todo_detail.setFont(Font.text(4))
+
+
     def set_btn_trigger(self):
         self.del_btn.clicked.connect(self.del_todo_list)
         self.todo_title.clicked.connect(self.todo_title_clicked)
+
 
     def del_todo_list(self):
         self.admintodoadd.admin_del_todo_list_send(self.title)
@@ -82,6 +94,10 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
         self.name_lab.setFont(Font.text(2))
         self.admit_btn.setFont(Font.button(3))
         self.cancel_btn.setFont(Font.button(3))
+        self.todo_add_title_lab.setFont(Font.title(5))
+        self.todo_title_lab.setFont(Font.text(4, t_blod=False))
+        self.todo_contents_lab.setFont(Font.text(4, t_blod=False))
+
 
     def event_init(self):
         # 다이얼로그 안에 체크박스가 클릭될때마다 신호보냄
@@ -90,6 +106,11 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
             # i.checkbox.clicked.connect(self.todo_checked_send)
         # self.findChild
         self.cancel_btn.clicked.connect(self.close)
+
+        self.cancel_lab.mousePressEvent = lambda event: self.close_window(event)
+
+    def close_window(self, evnet):
+        self.close()
 
     def admin_del_todo_list_send(self, todo_title):
         self.main_window.admin_del_todo_list_send2(todo_title)
@@ -112,74 +133,5 @@ class AdminTodoAdd(QDialog, Ui_AdminTodoDialog):
             self.todo_list_save.append(todo_form)
             self.admin_todo_lay.addWidget(todo_form)
 
-
-
-        # print(self.checkbox_list)
-        # todo_id, title, contents, checked, cplt_time = todo_info[0], todo_info[1], todo_info[2], todo_info[3], \
-        # todo_info[5]
-        # todo_form = ToDoMiniList(self, todo_id, checked, title, contents, cplt_time, self.user_id)
-        # self.admin_todo_lay.addWidget(todo_form)
-        # print('이거 되야되는데')
-    # def add_todo_form(self, checked, todo, cplt_time):
-    #     todo_form = self.create_todo_form(checked, todo, cplt_time, self.user_id)
-    #     # self.checkbox_list.append(todo_form.findChildren(QCheckBox)[0])
-    #     self.checkbox_list.append(todo_form)
-    #     self.admin_todo_lay.addWidget(todo_form)
-    #
-    # def create_todo_form(self, checked, todo_, cplt_time, user_id):
-    #     """체크박스 폼 만들어주는 함수"""
-    #     user_id = user_id
-    #     todo_form = QWidget()
-    #     layout = QHBoxLayout(todo_form)
-    #     layout.setContentsMargins(0, 0, 0, 0)
-    #
-    #     # 체크박스, 라벨
-    #     checkbox = QCheckBox()
-    #     checkbox.setMinimumSize(QSize(26, 26))
-    #     checkbox.setMaximumSize(QSize(26, 26))
-    #     checkbox.setObjectName('checkbox')
-    #     if checked == 1:
-    #         checkbox.setChecked(True)
-    #
-    #     todo_label = QLabel()
-    #     todo_label.setObjectName('todo_label')
-    #     todo_label.setText(todo_)
-    #     todo_label.setFont(Font.text(3))
-    #     todo_label.setAlignment(Qt.AlignCenter)
-    #
-    #     time_label = QLabel()
-    #     time_label.setText(cplt_time)
-    #     time_label.setFont(Font.text(3))
-    #     time_label.setObjectName('time_label')
-    #     time_label.setAlignment(Qt.AlignCenter)
-    #
-    #     # 레이아웃에 위젯 추가
-    #     layout.addWidget(checkbox)
-    #     layout.addWidget(todo_label)
-    #     layout.addWidget(time_label)
-    #
-    #     checkbox.setStyleSheet("""
-    #         QCheckBox::indicator {
-    #             width: 25px;
-    #             height: 25px;
-    #         }
-    #         QCheckBox::indicator:unchecked {
-    #             border: 0.5px solid #14C871;
-    #             border-radius: 13px;
-    #             background-color: #ffffff;
-    #         }
-    #         QCheckBox::indicator:checked {
-    #             image: url('./src_img/check.png');
-    #         }
-    #     """)
-    #
-    #     return todo_form
-
-
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    # self.todo_list, self.user_id, self.user_name = [['제목', '내용', '1', '시간'], 'admin', '소연']
-    # title, contents, checked, cplt_time = ['제목', '내용', '1', '시간']
-
-    todo = AdminTodoAdd('window', ([['id', '제목', '내용', '1', '시간', 'test']], 'admin', '소연'))
-    todo.exec()
+    passs

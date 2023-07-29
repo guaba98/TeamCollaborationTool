@@ -12,7 +12,7 @@ from main_code.front.client_controller import ClientController
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
+    # app.setStyle("Fusion")
 
     # 폰트
     fontDB = QFontDatabase()

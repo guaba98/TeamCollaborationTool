@@ -37,6 +37,22 @@ class Ui_TodoList(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.todo_title.setFont(font)
+        self.todo_title.setStyleSheet("\n"
+"                   QCheckBox::indicator {\n"
+"                       width: 20px;\n"
+"                      height: 20px;\n"
+"                   }\n"
+"                     QCheckBox::indicator:unchecked {\n"
+"                        border: 0.5px solid #14C871;\n"
+"                        border-radius: 10px;\n"
+"                         background-color: #ffffff;\n"
+"                     }\n"
+"                    QCheckBox::indicator:checked {\n"
+"                        \n"
+"    image: url(:/newPrefix/check.png);\n"
+"        \n"
+"                     }\n"
+"       ")
         self.todo_title.setIconSize(QtCore.QSize(16, 16))
         self.todo_title.setObjectName("todo_title")
         self.h_lay.addWidget(self.todo_title)

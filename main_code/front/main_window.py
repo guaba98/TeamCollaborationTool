@@ -186,8 +186,9 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         reg_lab = self.register_page.findChildren(QLabel)
         reg_edit = self.register_page.findChildren(QLineEdit)
         [lab.setFont(Font.text(3)) for lab in reg_lab]
+        self.comboBox.setFont(Font.text(3))
         [edit.setFont(Font.text(3, False)) for edit in reg_edit]
-        self.reg_title_lab.setFont(Font.title(1))
+        self.reg_title_lab.setFont(Font.title(2))
         self.reg_sub_title.setFont(Font.text(3))
         self.reg_register_btn.setFont(Font.button(1))
 
