@@ -20,6 +20,11 @@ BUFFER = 50000
 FORMAT = "utf-8"
 
 
+def set_main_window(clientcontroller):
+    main_window = NoticeBorad(clientcontroller)
+    return main_window
+
+
 class ClientController(QtWidgets.QWidget):
 
     def __init__(self, client_app=ClientApp):
@@ -32,7 +37,7 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
-
+        self.main_window = None
         # # 폰트
         # fontDB = QFontDatabase()
         # fontDB.addApplicationFont("../front/font/NanumSquareNeo-aLt.ttf")
@@ -102,7 +107,14 @@ class ClientController(QtWidgets.QWidget):
 
     # 런처 실행시 나오는 window ===========================================================================
     def run(self):  # 시작화면 show
+        self.main_window = set_main_window(self)
+        print(self.main_window)
+        # self.main_window.show()
         self.main_window.show()
+    def re_(self):
+        self.main_window = set_main_window(self)
+        self.main_window.show()
+        # self.main_window.show()
 
     # 로그인 ===============================================================
 
@@ -138,6 +150,7 @@ class ClientController(QtWidgets.QWidget):
             self.main_window.emit_signal_my_chat.emit(result)
         else:  # 다른 유저가 보낸 메시지면
             self.main_window.emit_signal_chat.emit(result)
+
     def emit_get_chatin_log(self, result):
-            for i in result:
-                self.main_window.emit_signal_chat.emit(i)
+        for i in result:
+            self.main_window.emit_signal_chat.emit(i)

@@ -210,14 +210,17 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             '프로필 수정': ['user.png', None],
             '채팅': ['send_black.png', self.chat_page],
             '공지': ['bell.png', self.notice_page],
-            '투두리스트': ['heart.png', self.notice_page]
+            '투두리스트': ['heart.png', self.notice_page],
+            '로그아웃': ['out.png', self.notice_page]
         }
 
         self.ctg_list = list(self.ctg_dict.keys())
         self.event_dict = {'채팅': [None, self.pass_, self.plus_button.hide],
                            '공지': [self.notice_v_lay, self.get_notice, self.plus_button.hide],
                            '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show],
+                           '로그아웃': [None, self.logout_, self.plus_button.show],
                            '....': [self.team_mem_v_lay, self.plus_button.hide]
+
                            }
 
         for ctg in self.ctg_list:  # 카테고리 이미지, 카테고리 이름 넣어주기
@@ -263,10 +266,13 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         for i in result:
             self.admin_ctg_dict[i] = ['user.png', self.team_page]
 
+        self.admin_ctg_dict['로그아웃'] = ['out.png', self.notice_page]
+
         self.admin_ctg_list = list(self.admin_ctg_dict.keys())
         self.adminevent_dict = {'채팅': [None, self.pass_, self.plus_button.hide],
                                 '공지': [self.notice_v_lay, self.get_notice, self.plus_button.show],
-                                '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show]
+                                '투두리스트': [self.notice_v_lay, self.get_todolist, self.plus_button.show],
+                                '로그아웃': [None, self.logout_, self.plus_button.show]
                                 }
         # 팀카테고리별 클릭 이벤트 설정
         for i in result:
@@ -276,7 +282,10 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
             img_name = self.admin_ctg_dict[ctg][0]
             ctg_ = CtgList(img_name=img_name, c_name=ctg, parent=self, role=self.user_role)
             self.category_v_lay.addWidget(ctg_)
-
+    def logout_(self):
+        self.close()
+        self.client_controller.re_()
+        # self.stackedWidget.setCurrentWidget(self.login_page)
     def admin_ctg_list_trigger(self, ctg_name):
         """카테고리에 따라 페이지 변경 혹은 창 띄우기(관리자)"""
         name = self.client_controller.client_app.user_name
@@ -392,7 +401,6 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         self.client_controller.controller_send_message(message)
 
     def get_todolist(self):
-        # 유저가 입력한 로그인 정보 encode
         self.clear_layout(self.notice_v_lay)  # 레이아웃 비우기
         self.client_controller.controller_send_get_todolist()
 
@@ -508,7 +516,8 @@ class NoticeBorad(QMainWindow, Ui_NoticeBoard):
         # self.Warn.exec_()
         user_input_id = self.login_id_edit.text()  # 유저가 입력한 id
         user_input_pw = self.login_pw_edit.text()  # 유저가 입력한 pw
-
+        self.login_id_edit.clear()
+        self.login_pw_edit.clear()
         # 유저가 입력한 로그인 정보 encode
         message = f"{f'login{header_split}{user_input_id}{list_split_1}{user_input_pw}':{BUFFER}}".encode(
             FORMAT)

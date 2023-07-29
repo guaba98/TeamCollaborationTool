@@ -12,8 +12,10 @@ class Notice(QWidget, Ui_Notice_widget):
         print(result,'공지 오류')
         self.main_window = main_window
         # title, contents = result[0], result[1]
-        notice_id, title, contents, cplt_time, checked = result
-        print(notice_id, title, contents, cplt_time, checked)
+        if len(result) > 2:
+            notice_id, title, contents, cplt_time, checked = result
+        else:
+             title, contents = result
         self.label.setText(title)
         self.label.setFont(Font.title(3))
         self.detail_lab.setText(contents)
